@@ -1,0 +1,22 @@
+.header{
+  width: 100%;
+  background-color: #f3f3f4;
+  height: 50px;
+  position: fixed;
+  z-index: 20;
+  border-bottom: 1px solid #d4d1d1;
+  .searchButton{
+    background-color: #529bcf;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    border-radius: 7px;
+    margin: 6px 0 0 10px;
+    .close-icon{
+      font-size: 27px;
+      color: white;
+      line-height: 35px;
+      padding-left: 4px;
+    }
+  }
+}
