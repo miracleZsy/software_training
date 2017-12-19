@@ -10,9 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/view',function (){
+Route::get('/index',function (){
    return view('index');
 });
-Route::get('index',function (){
-    echo 'hello index';
-});
+//customer部分
+Route::post('/customer/insert','CustomerController');
