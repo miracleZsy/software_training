@@ -48,8 +48,8 @@ class SessionController extends Controller
         unset($_SESSION['captcha']);
         $_SESSION['captcha']['code'] = $captcha->getPhrase();
         $_SESSION['captcha']['expired_at'] = time() + 60;
-//        header('Content-type: image/jpeg');
+        header('Content-type: image/jpeg');
         print_r($_SESSION['captcha']['code']);
-//        $captcha->output();
+        $captcha->output();
     }
 }
