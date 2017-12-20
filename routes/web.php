@@ -20,3 +20,4 @@ Route::post('/share/shareList','ShareController@shareList');
 Route::post('/share/sharedList','ShareController@sharedList');
 Route::post('/share/insert','ShareController@insert');
 Route::post('/share/delete','ShareController@delete');
+
