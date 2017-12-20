@@ -11,7 +11,7 @@ const NavBarMap = {
         tag:<div>客户管理</div>,
     },
     2:{
-        url:'/aboutMe',
+        url:'/customerDetail',
         tag:<div>我</div>,
     },
 };

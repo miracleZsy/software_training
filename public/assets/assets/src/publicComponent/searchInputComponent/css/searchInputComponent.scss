@@ -5,7 +5,12 @@
   position: fixed;
   z-index: 20;
   border-bottom: 1px solid #d4d1d1;
-  .searchButton{
+  max-width: 1037px;
+  &.close{
+    left: 0;
+    max-width: 1288px;
+  }
+  .sideButton{
     background-color: #529bcf;
     cursor: pointer;
     width: 35px;
@@ -18,5 +23,11 @@
       line-height: 35px;
       padding-left: 4px;
     }
+  }
+  .searchInput {
+    width: 200px;
+    position: absolute;
+    right: 15px;
+    top: 9px;
   }
 }

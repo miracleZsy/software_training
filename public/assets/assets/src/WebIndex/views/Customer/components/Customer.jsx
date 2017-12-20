@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import '../css/index.scss';
 import CreateCustomer from './CreateCustomer';
 import { Button } from 'antd';
+import CustomerRightTopContainer from "./CustomerRightTopContainer";
+import CustomerTable from "./CustomerTable";
 class Customer extends Component {
     constructor() {
         super();
         this.state = {
-            visible: false
+            visible: false,
+            tab: 'ssss'
         };
     }
     showModal = () => {
@@ -21,13 +24,16 @@ class Customer extends Component {
             if (err) {
                 return;
             }
-            // console.log('Received values of form: ', values);
+            console.log('Received values of form: ', values);
             form.resetFields();
             this.setState({ visible: false });
         });
     };
     saveFormRef = (form) => {
         this.form = form;
+    };
+    getContent = (e) => {
+        // console.log(e.target.innerHTML);
     };
     render() {
         return (
@@ -46,14 +52,17 @@ class Customer extends Component {
                         />
                     </div>
                     <div className="customerLeftBottom">
-                        <span>全部</span>
+                        <span onClick={this.getContent}>全部</span>
                         <span>一般客户</span>
                         <span>意向客户</span>
                         <span>已成交客户</span>
                     </div>
                 </div>
                 <div className="customerRight">
-
+                    <CustomerRightTopContainer />
+                    <div className="customerInforTable">
+                        <CustomerTable />
+                    </div>
                 </div>
             </div>
         );

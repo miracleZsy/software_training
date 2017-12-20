@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { HashRouter, Route, Redirect, Switch } from 'react-router-dom';
 import Customer from '../views/Customer/components/Customer';
+import CustomerDetail from '../views/Customer/components/CustomerDetail';
 import Login from '../views/Login/components/Login';
 import ControlTotalComponent from '../views/ControlTotalComponent/ControlTotalComponent';
 
@@ -17,8 +18,9 @@ class RoutesComponent extends Component {
             <Switch>
                 <Route path="/login" component={Login} />
                 <Route path="/customer" exact component={ consoleWrap(Customer) } />
+                <Route path="/customer/Detail" exact component={ consoleWrap(CustomerDetail) } />
                 {/*<Route path="/comment" component={ consoleWrap(CommentTotal) } />*/}
-                <Redirect to={ '/login' } />
+                <Redirect to={ '/customer' } />
             </Switch>
         );
     }
