@@ -22,11 +22,6 @@ class Session
             $user->username = $token->getClaim('username');
             $user->uuid = $token->getClaim('uuid');
             $request->attributes->set('user', $user);
-            $token = Auth::create()->buildToken([
-                'username' => $user->username,
-                'uuid' => $user->uuid
-            ]);
-            setcookie('token', (String)$token, time() + 3600, '/');
             return $next($request);
         } else die(json_encode([
             'code' => 401,
