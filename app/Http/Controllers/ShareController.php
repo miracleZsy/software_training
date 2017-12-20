@@ -10,8 +10,11 @@ class ShareController extends Controller
 {
     public function shareList(Request $request)
     {
-        $uuid = $request->get('uuid');
-        $shares = Share::where('uuid_send', $uuid)->join('customer', 'share.customer_id', '=', 'customer.id')->get()->toArray();
+        $uuid = $request->get('user')->uuid;
+        $shares = Share::where('uuid_send', $uuid)
+            ->join('customer', 'share.customer_id', '=', 'customer.id')
+            ->select('customer.id', 'customer.name', 'share.created_at as share_time', 'customer.tel', 'customer.pic_url')
+            ->get()->toArray();
         $this->json_die([
             'code' => 200,
             'msg' => 'success',
@@ -21,8 +24,10 @@ class ShareController extends Controller
 
     public function sharedList(Request $request)
     {
-        $uuid = $request->get('uuid');
-        $shares = Share::where('uuid_received', $uuid)->join('customer', 'share.customer_id', '=', 'customer.id')->get()->toArray();
+        $uuid = $request->get('user')->uuid;
+        $shares = Share::where('uuid_received', $uuid)->join('customer', 'share.customer_id', '=', 'customer.id')
+            ->select('customer.id', 'customer.name', 'share.created_at as share_time', 'customer.tel', 'customer.pic_url')
+            ->get()->toArray();
         $this->json_die([
             'code' => 200,
             'msg' => 'success',
@@ -37,7 +42,7 @@ class ShareController extends Controller
         Assert::numeric($_POST['customer_id'], 'customer id should be int type');
         $uuidReceived = $_POST['uuid_received'];
         $customerId = $_POST['customer_id'];
-        $id = Share::insertNewShare($request->get('uuid'), $uuidReceived, $customerId);
+        $id = Share::insertNewShare($request->get('user')->uuid, $uuidReceived, $customerId);
         if ($id) $this->json_die([
             'code' => 200,
             'msg' => 'success',
@@ -51,8 +56,9 @@ class ShareController extends Controller
         Assert::notEmpty($_POST['id'], 'which id can not be empty');
         Assert::numeric($_POST['id'], 'id should be int type');
         $id = $_POST['id'];
-        $uuid = $request->get('uuid');
+        $uuid = $request->get('user')->uuid;
         $share = Share::where('id', $id)->where('uuid_received', $uuid)->orWhere('uuid_send', $uuid);
-        if ($share->delete()) $this->json_die(['code'=>200, 'msg'=>'success']);
+        if ($share->delete()) $this->json_die(['code' => 200, 'msg' => 'success']);
+        else $this->json_die(['code' => 500, 'msg' => 'unknown error']);
     }
 }

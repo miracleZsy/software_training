@@ -16,7 +16,7 @@ class Auth
     public static function create(){
         return new self();
     }
-    public function buildToken($clams, $expire = 60)
+    public function buildToken($clams, $expire = 3600)
     {
         $singer = new Sha512();
         $token = new \Lcobucci\JWT\Builder();
