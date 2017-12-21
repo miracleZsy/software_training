@@ -11,7 +11,6 @@ class Customer extends Component {
         super();
         this.state = {
             visible: false,
-            tab: 'ssss'
         };
     }
     showModal = () => {

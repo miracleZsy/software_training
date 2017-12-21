@@ -4,23 +4,6 @@ import * as customerAjax from '../ajaxOperation/customerAjax';
 import { Table, Popconfirm } from 'antd';
 import CreateCustomer from "./CreateCustomer";
 
-const data = [];
-for (let i = 0; i < 20; i++) {
-    data.push({
-        key: i,
-        index: i,
-        staff_code: `s00000${i}`,
-        username: 'shuxiaotai',
-        department: '技术部',
-        education: '大学',
-        major: '软件工程',
-        age: 21,
-        address: '浙江省杭州市拱墅区丰登街56号',
-        role: '管理员',
-        email: '760684681@qq.com',
-        is_check: '已审核'
-    });
-}
 const pagination = {
     defaultPageSize: 6
 };
@@ -35,11 +18,11 @@ class CustomerTable extends Component {
 
     componentWillMount() {
         const { fetchCustomer } = this.props;
-        // fetchCustomer();
+        fetchCustomer();
     }
     onDeleteCustomer = (key, index) => {
         const { deleteCustomer } = this.props;
-        // deleteCustomer(key, index);
+        deleteCustomer(key, index);
     };
     onUpdateCustomer = (key, index) => {
         // const { deleteCustomer } = this.props;
@@ -107,7 +90,7 @@ class CustomerTable extends Component {
         const { customerData } = this.props;
         return (
             <div>
-                <Table columns={this.createColumns()} dataSource={data} pagination={pagination} />
+                <Table columns={this.createColumns()} dataSource={customerData} pagination={pagination} />
                 <CreateCustomer
                     ref={this.saveFormRef}
                     visible={this.state.visible}
@@ -138,4 +121,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default CustomerTable;
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerTable);

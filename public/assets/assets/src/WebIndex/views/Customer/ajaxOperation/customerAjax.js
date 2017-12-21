@@ -2,9 +2,9 @@ import axiosUtil from '../../../../lib/axiosUtil';
 import { message } from 'antd';
 import * as customerAction from '../../Customer/actions/customerAction';
 
-const fetchCustomerAddress = '';
-const deleteCustomerAddress = '';
-const addCustomerAddress = '';
+const fetchCustomerAddress = '/software_training/public/customer/list';
+const deleteCustomerAddress = '/software_training/public/customer/delete';
+const addCustomerAddress = '/software_training/public/customer/insert';
 
 export const fetchCustomer = () => (dispatch) => axiosUtil('post', fetchCustomerAddress, {})
     .then((value) => {
