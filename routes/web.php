@@ -10,9 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/view',function (){
-   return view('index');
+
+Route::post('/test',function (){
+   echo '123';
 });
-Route::get('index',function (){
-    echo 'hello index';
-});
+
+
