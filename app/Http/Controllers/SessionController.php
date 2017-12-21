@@ -6,6 +6,7 @@ use App\sys\Config;
 use App\User;
 use Gregwar\Captcha\CaptchaBuilder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
 use Webmozart\Assert\Assert;
 use App\traits\Auth;
@@ -19,26 +20,32 @@ class SessionController extends Controller
 {
     public function login()
     {
-        Assert::notEmpty($_POST['username'], 'username can not be null');
-        Assert::notEmpty($_POST['password'], 'password can not be null');
-        Assert::notEmpty($_POST['code'], 'code can not be null');
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $code = $_POST['code'];
-        session_start();
-
-        $captcha = isset($_SESSION['captcha'])?$_SESSION['captcha']:'';
-        if (!empty($captcha)&&$captcha['expired_at'] < time() || $code !== $captcha['code']) $this->json_die(['code' => 409, 'msg' => 'captcha error or expire']);
-        $user = User::selectUserByUsername($username);
-        if (!empty($user) && md5(md5($password) . $user->salt) === $user->password) {
-            unset($_SESSION['captcha']);
-            $token = Auth::create()->buildToken([
-                'username' => $user->username,
-                'uuid' => $user->uuid
-            ]);
-            setcookie('token', (String)$token, time() + 3600, '/');
-            $this->json_die(['code' => 200, 'msg' => 'success']);
-        } else $this->json_die(['code' => 403, 'msg' => 'password or username error']);
+        try {
+            Assert::notEmpty($_POST['username'], 'username can not be null');
+            Assert::notEmpty($_POST['password'], 'password can not be null');
+            Assert::notEmpty($_POST['code'], 'code can not be null');
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+            $code = $_POST['code'];
+            session_start();
+            $captcha = isset($_SESSION['captcha']) ? $_SESSION['captcha'] : '';
+            if (!empty($captcha) && $captcha['expired_at'] < time() || $code !== $captcha['code']) $this->json_die(['code' => 409, 'msg' => 'captcha error or expire']);
+            $user = User::selectUserByUsername($username);
+            if (!empty($user) && md5(md5($password) . $user->salt) === $user->password) {
+                unset($_SESSION['captcha']);
+                $token = Auth::create()->buildToken([
+                    'username' => $user->username,
+                    'uuid' => $user->uuid
+                ]);
+                setcookie('token', (String)$token, time() + 3600, '/');
+                $this->json_die(['code' => 200, 'msg' => 'success']);
+            } else $this->json_die(['code' => 403, 'msg' => 'password or username error']);
+        } catch (\InvalidArgumentException $e) {
+            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->json_die(['code' => 500, 'msg' => 'unknown error']);
+        }
     }
 
     public function captcha()
