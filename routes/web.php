@@ -10,8 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/index',function (){
    return view('index');
 });
 //customer部分
-Route::post('/customer/insert','CustomerController');
+Route::post('/customer/insert','CustomerController@insert');
+
+Route::post('/test',function (){
+   echo '123';
+});

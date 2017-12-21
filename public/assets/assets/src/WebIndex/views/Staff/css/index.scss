@@ -1,0 +1,23 @@
+.staffContainer{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  .innerSideBar{
+    flex: 3;
+    //background-color: #1b6d85;
+    max-width: 180px;
+    min-height: 538px;
+    border-right: 1px solid #d4d1d1;
+    .innerSideBarTitle{
+      width: 100%;
+      height: 60px;
+      font-size: 15px;
+      text-align: center;
+      padding-top: 14px;
+    }
+  }
+  .staffContent {
+    padding: 20px;
+    display: flex;
+  }
+}

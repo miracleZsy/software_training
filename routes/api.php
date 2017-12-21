@@ -12,7 +12,10 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+//session 部分 不需要token
+Route::get('/index',function (){
+    return view('index');
 });
+Route::post('/login','SessionController@login');
+Route::post('/register','SessionController@register');
+Route::get('/captcha','SessionController@captcha');
