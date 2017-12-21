@@ -15,8 +15,10 @@ class CustomerController extends Controller
         $customers = Customer::where('uuid',$request->get('user')->uuid)->select('id','name','created_at','tel','pic_url')->orderBy('created_at','desc');
         $this->json_die([
            'code'=>200,
-           'count'=>$customers->count(),
-           'data'=>$customers->forPage($page,$size)->get()->toArray()
+           'msg'=>'success',
+           'data'=>[
+               'count'=>$customers->count(),
+               'customer'=>$customers->forPage($page,$size)->get()->toArray()]
         ]);
 
     }
