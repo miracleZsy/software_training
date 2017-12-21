@@ -30,8 +30,8 @@ class SessionController extends Controller
         $captcha = isset($_SESSION['captcha'])?$_SESSION['captcha']:'';
         if (!empty($captcha)&&$captcha['expired_at'] < time() || $code !== $captcha['code']) $this->json_die(['code' => 409, 'msg' => 'captcha error or expire']);
         $user = User::selectUserByUsername($username);
-        unset($_SESSION['captcha']);
         if (!empty($user) && md5(md5($password) . $user->salt) === $user->password) {
+            unset($_SESSION['captcha']);
             $token = Auth::create()->buildToken([
                 'username' => $user->username,
                 'uuid' => $user->uuid
