@@ -68,11 +68,13 @@ class Login extends Component {
                     <Input
                         className="inputInfor"
                         onChange={this.changeUsernameValue}
+                        placeholder="请输入用户名"
                     />
                     <Input
                         className="inputInfor"
                         onChange={this.changePasswordValue}
                         type="password"
+                        placeholder="请输入密码"
                     />
                     <div className="vertifyCode">
                         <Input
