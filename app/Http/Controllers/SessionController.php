@@ -26,8 +26,9 @@ class SessionController extends Controller
         $password = $_POST['password'];
         $code = $_POST['code'];
         session_start();
-        $captcha = $_SESSION['captcha'];
-        if ($captcha['expired_at'] < time() || $code !== $captcha['code']) $this->json_die(['code' => 409, 'msg' => 'captcha error or expire']);
+
+        $captcha = isset($_SESSION['captcha'])?$_SESSION['captcha']:'';
+        if (!empty($captcha)&&$captcha['expired_at'] < time() || $code !== $captcha['code']) $this->json_die(['code' => 409, 'msg' => 'captcha error or expire']);
         $user = User::selectUserByUsername($username);
         unset($_SESSION['captcha']);
         if (!empty($user) && md5(md5($password) . $user->salt) === $user->password) {
