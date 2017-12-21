@@ -18,6 +18,8 @@ const axiosUtil = (method, url, data = {}, timeout = 8000) => {
                     return 403;  //用户名或密码错误
                 case 409:
                     return 409;  //验证码错误
+                case 500:
+                    return 500;
                 }
             }
         })

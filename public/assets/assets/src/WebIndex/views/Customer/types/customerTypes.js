@@ -1,0 +1,7 @@
+
+export const FETCH_CUSTOMER = 'FETCH_CUSTOMER';
+
+export const DELETE_CUSTOMER = 'DELETE_CUSTOMER';
+
+export const ADD_CUSTOMER = 'ADD_CUSTOMER';
+

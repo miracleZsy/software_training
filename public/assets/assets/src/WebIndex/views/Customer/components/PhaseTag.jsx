@@ -10,19 +10,15 @@ class PhaseTag extends Component {
         };
     }
     handleChange(index, checked) {
-        const { selectedTags } = this.state;
-        // const nextSelectedTags = checked ?
-        //     [...selectedTags, index] :
-        //     selectedTags.filter(t => t !== index);
+        const { summarize } = this.props;
         let nextSelectedTags ;
-        if(checked) {
-            nextSelectedTags = [...selectedTags, index];
-        }else {
-            nextSelectedTags = selectedTags.filter(t => t !== index);
-        }
-        // console.log('You are interested in: ', nextSelectedTags);
+        nextSelectedTags = [index];
         this.setState({ selectedTags: nextSelectedTags });
-        // console.log(selectedTags.length);
+        if(summarize  === '客户阶段') {
+            // console.log('客户阶段');
+        }else {
+            // console.log('创建时间');
+        }
     }
 
     render() {
@@ -30,7 +26,7 @@ class PhaseTag extends Component {
         const { tagsFromServer, summarize } = this.props;
         return (
             <div className="tagContainer">
-                <div style={{ marginRight: 8, display: 'inline' }}>{summarize}</div>
+                <div style={{ marginRight: 23, display: 'inline', fontSize: 15 }}>{summarize}</div>
                 {tagsFromServer.map((tag, index) => (
                     <CheckableTag
                         key={index}

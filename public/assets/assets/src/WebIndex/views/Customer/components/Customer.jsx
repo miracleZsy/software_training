@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import '../css/index.scss';
+import * as customerAjax from '../ajaxOperation/customerAjax';
 import CreateCustomer from './CreateCustomer';
 import { Button } from 'antd';
 import CustomerRightTopContainer from "./CustomerRightTopContainer";
@@ -20,11 +22,13 @@ class Customer extends Component {
     };
     handleCreate = () => {
         const form = this.form;
+        const { addCustomer } = this.props;
         form.validateFields((err, values) => {
             if (err) {
                 return;
             }
-            console.log('Received values of form: ', values);
+            // console.log('Received values of form: ', values);
+            addCustomer(values);
             form.resetFields();
             this.setState({ visible: false });
         });
@@ -49,6 +53,8 @@ class Customer extends Component {
                             visible={this.state.visible}
                             onCancel={this.handleCancel}
                             onCreate={this.handleCreate}
+                            title="新增用户"
+                            okText="创建"
                         />
                     </div>
                     <div className="customerLeftBottom">
@@ -69,4 +75,17 @@ class Customer extends Component {
     }
 }
 
-export default Customer;
+// const mapStateToProps = (state) => {
+//     return {
+//         customerData: state.customerReducer.customerData,
+//     };
+// };
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addCustomer: (customerCreated) => {
+            dispatch(customerAjax.addCustomer(customerCreated));
+        },
+    };
+};
+export default connect(null, mapDispatchToProps)(Customer);

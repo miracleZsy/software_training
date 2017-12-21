@@ -6,16 +6,16 @@ const Option = Select.Option;
 
 const CreateCustomer = Form.create()(
     (props) => {
-        const { visible, onCancel, onCreate, form } = props;
+        const { visible, onCancel, onCreate, form, okText, title } = props;
         const { getFieldDecorator } = form;
         return (
             <Modal
                 visible={visible}
-                title="新增客户"
-                okText="Create"
+                title={title}
+                okText={okText}
                 onCancel={onCancel}
                 onOk={onCreate}
-                style={{ top: -4 }}
+                style={{ top: 0 }}
             >
                 <Form layout="vertical">
                     <Row gutter={16}>
