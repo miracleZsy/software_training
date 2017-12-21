@@ -27,7 +27,7 @@ class SessionController extends Controller
         $code = $_POST['code'];
         session_start();
         $captcha = $_SESSION['captcha'];
-        if (!$captcha['expired_at'] > time() && !$code === $captcha['code']) $this->json_die(['code' => 409, 'msg' => 'captcha error or expire']);
+        if ($captcha['expired_at'] < time() || $code !== $captcha['code']) $this->json_die(['code' => 409, 'msg' => 'captcha error or expire']);
         $user = User::selectUserByUsername($username);
         unset($_SESSION['captcha']);
         if (!empty($user) && md5(md5($password) . $user->salt) === $user->password) {
@@ -49,7 +49,6 @@ class SessionController extends Controller
         $_SESSION['captcha']['code'] = $captcha->getPhrase();
         $_SESSION['captcha']['expired_at'] = time() + 60;
         header('Content-type: image/jpeg');
-        print_r($_SESSION['captcha']['code']);
         $captcha->output();
     }
 }
