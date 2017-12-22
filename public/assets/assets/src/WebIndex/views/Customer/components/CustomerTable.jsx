@@ -5,9 +5,6 @@ import * as customerAction from '../actions/customerAction';
 import { Table, Popconfirm } from 'antd';
 import CreateCustomer from "./CreateCustomer";
 
-const pagination = {
-    defaultPageSize: 6
-};
 
 class CustomerTable extends Component {
     constructor() {
@@ -28,13 +25,13 @@ class CustomerTable extends Component {
         deleteCustomer(id, index);
     };
     onUpdateCustomer = (id, index) => {
-        const { customerData, getCheckedCustomer } = this.props;
+        const { getCheckedCustomer } = this.props;
         this.setState({ visible: true });
         // console.log(customerData);
         // console.log(id);
         // console.log(index);
-        console.log(customerData.slice(index, index + 1)[0]); //对象
-        getCheckedCustomer(customerData.slice(index, index + 1)[0]);
+        getCheckedCustomer(id);
+        // console.log(customerData.slice(index, index + 1)[0]); //对象
     };
     onShareCustomer = (key, index) => {
         // const { deleteUser } = this.props;
@@ -99,6 +96,10 @@ class CustomerTable extends Component {
                 item.index = index;
             });
         }
+        const pagination = {
+            defaultPageSize: 6,
+        };
+
         return (
             <div>
                 <Table
@@ -136,8 +137,8 @@ const mapDispatchToProps = (dispatch) => {
         deleteCustomer: (key, index) => {
             dispatch(customerAjax.deleteCustomer(key, index));
         },
-        getCheckedCustomer: (checkedCustomer) => {
-            dispatch(customerAction.getCheckedCustomer(checkedCustomer));
+        getCheckedCustomer: (id) => {
+            dispatch(customerAjax.getCheckedCustomer(id));
         }
     };
 };

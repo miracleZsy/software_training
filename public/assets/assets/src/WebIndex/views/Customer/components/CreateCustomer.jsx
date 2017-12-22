@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Modal, Form, Input, Row, Col, DatePicker, Select } from 'antd';
+import moment from 'moment';
 const FormItem = Form.Item;
 const InputGroup = Input.Group;
 const Option = Select.Option;
@@ -7,7 +8,11 @@ const Option = Select.Option;
 const CreateCustomer = Form.create()(
     (props) => {
         const { visible, onCancel, onCreate, form, okText, title, checkedCustomer } = props;
-        const { getFieldDecorator } = form;
+        const { getFieldDecorator, setFieldsValue } = form;
+        {
+            console.log(checkedCustomer);
+            // console.log(checkedCustomer);
+        }
         return (
             <Modal
                 visible={visible}
@@ -32,7 +37,7 @@ const CreateCustomer = Form.create()(
                         <Col span={12}>
                             <FormItem label="性别">
                                 {getFieldDecorator('sex', {
-                                    initialValue:checkedCustomer !== undefined ? checkedCustomer['sex'] : '',
+                                    initialValue:checkedCustomer !== undefined ? (checkedCustomer['sex']) : '请选择性别',
                                     rules: [{ required: true, message: '请选择性别!' }],
                                 })(
                                     <Select
@@ -49,7 +54,7 @@ const CreateCustomer = Form.create()(
                         <Col span={12}>
                             <FormItem label="生日">
                                 {getFieldDecorator('birthday', {
-                                    initialValue:checkedCustomer !== undefined ? checkedCustomer['birthday'] : '',
+                                    initialValue:checkedCustomer !== undefined ? moment(checkedCustomer['birthday']) : '',
                                 })(
                                     <DatePicker format="YYYY-MM-DD" style={{ width: 236 }} />
                                 )}
@@ -86,6 +91,8 @@ const CreateCustomer = Form.create()(
                             <FormItem label="手机号码">
                                 {getFieldDecorator('tel', {
                                     initialValue:checkedCustomer !== undefined ? checkedCustomer['tel'] : '',
+                                    rules: [
+                                        { required: true, message: '请输入正确的手机号!', pattern: new RegExp('^1[3,4,5,7,8]\\d{9}$') }],
                                 })(
                                     <Input />
                                 )}

@@ -6,6 +6,7 @@ import moment from 'moment';
 const fetchCustomerAddress = '/software_training/public/customer/list';
 const deleteCustomerAddress = '/software_training/public/customer/delete';
 const addCustomerAddress = '/software_training/public/customer/insert';
+const getCheckedCustomerAddress = '/software_training/public/customer/select';
 
 export const fetchCustomer = (page = 0) => (dispatch) => axiosUtil('post', fetchCustomerAddress, {
     page: page
@@ -47,5 +48,12 @@ export const deleteCustomer = (key, index) => (dispatch) => axiosUtil('post', de
             dispatch(customerAction.deleteCustomer(index));
             message.info('删除成功!');
         }
+    });
+
+export const getCheckedCustomer = (id) => (dispatch) => axiosUtil('post', getCheckedCustomerAddress, {
+    id: id
+})
+    .then((value) => {
+        dispatch(customerAction.getCheckedCustomer(value));
     });
 

@@ -14,7 +14,7 @@ const SearchInputComponent = (props) => {
                 <Search
                     placeholder="搜索"
                     onSearch={value => {
-                        // console.log(value);
+                        console.log(value);
                     }}
                 />
             </div>
