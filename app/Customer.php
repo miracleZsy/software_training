@@ -23,8 +23,8 @@ class Customer extends Model
             'origin' => $origin,
             'QQ' => $QQ,
             'birthday' => $birthday,
-            'sex' => $sex,
-            'type' => $type,
+            'sex' => (int)$sex,
+            'type' => (int)$type,
             'uuid' => $uuid,
             'phase'=>1
         ]);
