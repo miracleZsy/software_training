@@ -104,8 +104,8 @@ class CustomerController extends Controller
             Assert::notEmpty($_POST['id'], 'id can not be empty');
             Assert::numeric($_POST['id'], 'id must be int');
             $id = $_POST['id'];
-            $customer = Customer::find($id)->where('uuid', $request->get('user')->uuid)->first();
-            if ($customer) $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $customer]);
+            $customer = Customer::find($id);
+            if ($customer&&$customer->uuid === $request->get('user')->uuid) $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $customer]);
             else $this->json_die(['code' => 403, 'msg' => 'customer not found']);
         } catch (\InvalidArgumentException $e) {
             $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
