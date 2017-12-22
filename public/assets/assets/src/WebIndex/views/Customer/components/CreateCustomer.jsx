@@ -6,7 +6,7 @@ const Option = Select.Option;
 
 const CreateCustomer = Form.create()(
     (props) => {
-        const { visible, onCancel, onCreate, form, okText, title } = props;
+        const { visible, onCancel, onCreate, form, okText, title, checkedCustomer } = props;
         const { getFieldDecorator } = form;
         return (
             <Modal
@@ -21,7 +21,8 @@ const CreateCustomer = Form.create()(
                     <Row gutter={16}>
                         <Col span={12}>
                             <FormItem label="姓名">
-                                {getFieldDecorator('username', {
+                                {getFieldDecorator('name', {
+                                    initialValue:checkedCustomer !== undefined ? checkedCustomer['name'] : '',
                                     rules: [{ required: true, message: '请输入姓名!' }],
                                 })(
                                     <Input />
@@ -31,13 +32,14 @@ const CreateCustomer = Form.create()(
                         <Col span={12}>
                             <FormItem label="性别">
                                 {getFieldDecorator('sex', {
+                                    initialValue:checkedCustomer !== undefined ? checkedCustomer['sex'] : '',
                                     rules: [{ required: true, message: '请选择性别!' }],
                                 })(
                                     <Select
                                         placeholder="选择性别"
                                     >
-                                        <Option value="男">男</Option>
-                                        <Option value="女">女</Option>
+                                        <Option value="1">男</Option>
+                                        <Option value="2">女</Option>
                                     </Select>
                                 )}
                             </FormItem>
@@ -46,14 +48,18 @@ const CreateCustomer = Form.create()(
                     <Row gutter={16}>
                         <Col span={12}>
                             <FormItem label="生日">
-                                {getFieldDecorator('birthday')(
-                                    <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" style={{ width: 236 }} />
+                                {getFieldDecorator('birthday', {
+                                    initialValue:checkedCustomer !== undefined ? checkedCustomer['birthday'] : '',
+                                })(
+                                    <DatePicker format="YYYY-MM-DD" style={{ width: 236 }} />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={12}>
                             <FormItem label="工作">
-                                {getFieldDecorator('work')(
+                                {getFieldDecorator('work', {
+                                    initialValue:checkedCustomer !== undefined ? checkedCustomer['work'] : '',
+                                })(
                                     <Input />
                                 )}
                             </FormItem>
@@ -62,20 +68,25 @@ const CreateCustomer = Form.create()(
                     <Row gutter={16}>
                         <Col span={12}>
                             <FormItem label="客户类别">
-                                {getFieldDecorator('customerType')(
+                                {getFieldDecorator('type', {
+                                    initialValue:checkedCustomer !== undefined ? checkedCustomer['type'] : '请选择客户类别',
+                                    rules: [{ required: true, message: '请选择客户类别!' }],
+                                })(
                                     <Select
                                         placeholder="选择客户类别"
                                     >
-                                        <Option value="一般客户">一般客户</Option>
-                                        <Option value="意向客户">意向客户</Option>
-                                        <Option value="已成交客户">已成交客户</Option>
+                                        <Option value="1">一般客户</Option>
+                                        <Option value="2">意向客户</Option>
+                                        <Option value="3">已成交客户</Option>
                                     </Select>
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={12}>
                             <FormItem label="手机号码">
-                                {getFieldDecorator('tel')(
+                                {getFieldDecorator('tel', {
+                                    initialValue:checkedCustomer !== undefined ? checkedCustomer['tel'] : '',
+                                })(
                                     <Input />
                                 )}
                             </FormItem>
@@ -85,6 +96,7 @@ const CreateCustomer = Form.create()(
                         <Col span={12}>
                             <FormItem label="邮件">
                                 {getFieldDecorator('email', {
+                                    initialValue:checkedCustomer !== undefined ? checkedCustomer['email'] : '',
                                     rules: [{
                                         type: 'email', message: '请输入有效的邮箱地址',
                                     }],
@@ -95,7 +107,9 @@ const CreateCustomer = Form.create()(
                         </Col>
                         <Col span={12}>
                             <FormItem label="地址">
-                                {getFieldDecorator('address')(
+                                {getFieldDecorator('address', {
+                                    initialValue:checkedCustomer !== undefined ? checkedCustomer['address'] : '',
+                                })(
                                     <Input />
                                 )}
                             </FormItem>
@@ -104,21 +118,29 @@ const CreateCustomer = Form.create()(
                     <Row gutter={16}>
                         <Col span={12}>
                             <FormItem label="来源">
-                                {getFieldDecorator('source')(
+                                {getFieldDecorator('origin', {
+                                    initialValue:checkedCustomer !== undefined ? checkedCustomer['origin'] : '',
+                                })(
                                     <Input />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={12}>
                             <FormItem label="QQ">
-                                {getFieldDecorator('qq')(
+                                {getFieldDecorator('QQ', {
+                                    initialValue:checkedCustomer !== undefined ? checkedCustomer['QQ'] : '',
+                                })(
                                     <Input />
                                 )}
                             </FormItem>
                         </Col>
                     </Row>
                     <FormItem label="备注">
-                        {getFieldDecorator('remark')(<Input type="textarea" />)}
+                        {getFieldDecorator('remark', {
+                            initialValue:checkedCustomer !== undefined ? checkedCustomer['remark'] : '',
+                        })(
+                            <Input type="textarea" />
+                        )}
                     </FormItem>
 
                 </Form>

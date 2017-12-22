@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as customerAjax from '../ajaxOperation/customerAjax';
+import * as customerAction from '../actions/customerAction';
 import { Table, Popconfirm } from 'antd';
 import CreateCustomer from "./CreateCustomer";
 
@@ -20,15 +21,20 @@ class CustomerTable extends Component {
         const { fetchCustomer } = this.props;
         fetchCustomer();
     }
-    onDeleteCustomer = (key, index) => {
+    onDeleteCustomer = (id, index) => {
         const { deleteCustomer } = this.props;
-        deleteCustomer(key, index);
+        // console.log(id);
+        // console.log(index);id
+        deleteCustomer(id, index);
     };
-    onUpdateCustomer = (key, index) => {
-        // const { deleteCustomer } = this.props;
+    onUpdateCustomer = (id, index) => {
+        const { customerData, getCheckedCustomer } = this.props;
         this.setState({ visible: true });
-        console.log(key);
-        console.log(index);
+        // console.log(customerData);
+        // console.log(id);
+        // console.log(index);
+        console.log(customerData.slice(index, index + 1)[0]); //对象
+        getCheckedCustomer(customerData.slice(index, index + 1)[0]);
     };
     onShareCustomer = (key, index) => {
         // const { deleteUser } = this.props;
@@ -56,7 +62,7 @@ class CustomerTable extends Component {
     createColumns = () => {
         return  [{
             title: '客户名称',
-            dataIndex: 'username',
+            dataIndex: 'name',
         }, {
             title: '创建时间',
             dataIndex: 'created_at',
@@ -69,15 +75,15 @@ class CustomerTable extends Component {
             render:(text, record) => (
                 <span>
                     <Popconfirm title="确认删除?" onConfirm={() => {
-                        this.onDeleteCustomer(record.key, record.index);
+                        this.onDeleteCustomer(record.id, record.index);
                     }}>
                         <a href="#">删除用户</a>
                     </Popconfirm>
                     <span style={{ paddingLeft: 10, paddingRight: 10, color: '#108ee9', cursor: 'pointer' }} onClick={() => {
-                        this.onUpdateCustomer(record.key, record.index);
+                        this.onUpdateCustomer(record.id, record.index);
                     }} >修改用户</span>
                     <Popconfirm title="确认共享?" onConfirm={() => {
-                        this.onShareCustomer(record.key, record.index);
+                        this.onShareCustomer(record.id, record.index);
                     }}>
                         <a href="#">共享用户</a>
                     </Popconfirm>
@@ -87,10 +93,20 @@ class CustomerTable extends Component {
     };
 
     render() {
-        const { customerData } = this.props;
+        const { customerData, checkedCustomer } = this.props;
+        {
+            customerData.forEach(function (item, index) {
+                item.index = index;
+            });
+        }
         return (
             <div>
-                <Table columns={this.createColumns()} dataSource={customerData} pagination={pagination} />
+                <Table
+                    rowKey="id"
+                    columns={this.createColumns()}
+                    dataSource={customerData}
+                    pagination={pagination}
+                />
                 <CreateCustomer
                     ref={this.saveFormRef}
                     visible={this.state.visible}
@@ -98,6 +114,7 @@ class CustomerTable extends Component {
                     onCreate={this.handleCreate}
                     title="修改用户"
                     okText="修改"
+                    checkedCustomer={checkedCustomer}
                 />
             </div>
         );
@@ -107,6 +124,7 @@ class CustomerTable extends Component {
 const mapStateToProps = (state) => {
     return {
         customerData: state.customerReducer.customerData,
+        checkedCustomer: state.customerReducer.checkedCustomer
     };
 };
 
@@ -117,6 +135,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         deleteCustomer: (key, index) => {
             dispatch(customerAjax.deleteCustomer(key, index));
+        },
+        getCheckedCustomer: (checkedCustomer) => {
+            dispatch(customerAction.getCheckedCustomer(checkedCustomer));
         }
     };
 };

@@ -6,12 +6,17 @@ import CreateCustomer from './CreateCustomer';
 import { Button } from 'antd';
 import CustomerRightTopContainer from "./CustomerRightTopContainer";
 import CustomerTable from "./CustomerTable";
+import cookieUtil from '../../../../lib/cookieUtil';
+
 class Customer extends Component {
     constructor() {
         super();
         this.state = {
             visible: false,
         };
+    }
+    componentWillMount() {
+        // console.log(cookieUtil.get('token'));
     }
     showModal = () => {
         this.setState({ visible: true });
@@ -27,6 +32,7 @@ class Customer extends Component {
                 return;
             }
             // console.log('Received values of form: ', values);
+            // console.log(moment(values.birthday).format('YYYY-MM-DD'));
             addCustomer(values);
             form.resetFields();
             this.setState({ visible: false });

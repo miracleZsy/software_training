@@ -7,17 +7,18 @@ export const fetchCustomer = (customerData) => {
     };
 };
 
-export const addCustomer = (customerCreated) => {
-    return {
-        type: customerTypes.ADD_CUSTOMER,
-        customerCreated: customerCreated
-    };
-};
-
 
 export const deleteCustomer = (deleteIndex) => {
     return {
         type: customerTypes.DELETE_CUSTOMER,
         deleteIndex: deleteIndex
+    };
+};
+
+
+export const getCheckedCustomer = (checkedCustomer) => {
+    return {
+        type: customerTypes.CHECKED_CUSTOMER,
+        checkedCustomer: checkedCustomer
     };
 };
