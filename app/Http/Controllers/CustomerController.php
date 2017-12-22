@@ -105,6 +105,12 @@ class CustomerController extends Controller
             Assert::numeric($_POST['id'], 'id must be int');
             $id = $_POST['id'];
             $customer = Customer::find($id);
+            $customer->sex = ($customer->sex===1)?'男':'女';
+            switch ($customer->type){
+                case 1:$customer->type = '一般客户';break;
+                case 2:$customer->type = '意向客户';break;
+                case 3:$customer->type = '已成交客户';
+            }
             if ($customer&&$customer->uuid === $request->get('user')->uuid) $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $customer]);
             else $this->json_die(['code' => 403, 'msg' => 'customer not found']);
         } catch (\InvalidArgumentException $e) {
@@ -113,5 +119,24 @@ class CustomerController extends Controller
             Log::error($e->getMessage());
             $this->json_die(['code' => 500, 'msg' => 'unknown error']);
         }
+    }
+    public function phaseFilter(Request $request){
+        try{
+            Assert::notEmpty($_POST['phase'], 'id can not be empty');
+            Assert::numeric($_POST['phase'], 'id must be int');
+            $phase = $_POST['phase'];
+            $customer = Customer::where('uuid',$request->get('user')->uuid)->where('phase',$phase)
+                ->select('id', 'name', 'created_at', 'tel', 'pic_url')->orderBy('created_at', 'desc')->get()->toArray();
+            $this->json_die(['code'=>200,'msg'=>'success','data'=>$customer]);
+        }catch (\InvalidArgumentException $e) {
+            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
+        }catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->json_die(['code' => 500, 'msg' => 'unknown error']);
+        }
+    }
+    public function typeFilter(){
+        Assert::notEmpty($_POST['type'], 'id can not be empty');
+        Assert::numeric($_POST['type'], 'id must be int');
     }
 }
