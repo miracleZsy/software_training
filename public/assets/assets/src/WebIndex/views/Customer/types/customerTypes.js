@@ -1,0 +1,7 @@
+
+export const FETCH_CUSTOMER = 'FETCH_CUSTOMER';
+
+export const DELETE_CUSTOMER = 'DELETE_CUSTOMER';
+
+export const CHECKED_CUSTOMER = 'CHECKED_CUSTOMER';
+

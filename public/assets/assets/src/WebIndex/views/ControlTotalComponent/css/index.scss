@@ -16,8 +16,10 @@
     .show-content{
         position: relative;
         padding-top: 50px;
+        max-width: 1000px;
         &.close{
             //left: 110px;
+            max-width: 1228px;
         }
     }
 }

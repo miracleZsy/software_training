@@ -15,7 +15,7 @@ const NavBarMap = {
         tag: <div>员工管理</div>,
     },
     3:{
-        url:'/aboutMe',
+        url:'/customerDetail',
         tag:<div>我</div>,
     },
 };
