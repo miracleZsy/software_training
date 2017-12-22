@@ -10,7 +10,9 @@ const CreateCustomer = Form.create()(
         const { visible, onCancel, onCreate, form, okText, title, checkedCustomer } = props;
         const { getFieldDecorator, setFieldsValue } = form;
         {
-            console.log(checkedCustomer);
+            if(checkedCustomer !== undefined) {
+                console.log(checkedCustomer['birthday']);
+            }
             // console.log(checkedCustomer);
         }
         return (
@@ -54,7 +56,7 @@ const CreateCustomer = Form.create()(
                         <Col span={12}>
                             <FormItem label="生日">
                                 {getFieldDecorator('birthday', {
-                                    initialValue:checkedCustomer !== undefined ? moment(checkedCustomer['birthday']) : '',
+                                    initialValue:checkedCustomer !== undefined ? moment(checkedCustomer['birthday']) : undefined,
                                 })(
                                     <DatePicker format="YYYY-MM-DD" style={{ width: 236 }} />
                                 )}

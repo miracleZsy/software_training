@@ -12,9 +12,15 @@ class CustomerController extends Controller
 {
     public function list(Request $request)
     {
+        Assert::numeric($_POST['type'],'type should be int');
+        Assert::numeric($_POST['phase'],'phase should be int');
+        Assert::numeric($_POST['time'],'time should be int');
+        $type = $_POST['type'];
+        $phase = $_POST['phase'];
+        $time = $_POST['time'];
         $page = (int)$_POST['page'] > 0 ? (int)$_POST['page'] : 1;
         $size = Config::get('sys_page_size');
-        $customers = Customer::where('uuid', $request->get('user')->uuid)->select('id', 'name', 'created_at', 'tel', 'pic_url')->orderBy('created_at', 'desc');
+        $customers = Customer::filter($type,$phase,$time,$request->get('user')->uuid);
         $this->json_die([
             'code' => 200,
             'msg' => 'success',
@@ -28,18 +34,20 @@ class CustomerController extends Controller
     public function insert(Request $request)
     {
         try {
-            Assert::notEmpty($_POST['name'], 'name can not be empty');
-            Assert::notEmpty($_POST['tel'], 'phone can not be empty');
+            Assert::notEmpty($_POST['sex'],'sex can not be empty');
+            Assert::notEmpty($_POST['birthday'],'birthday can not be empty');
+            Assert::notEmpty($_POST['name'],'name can not be empty');
+            Assert::notEmpty($_POST['tel'],'tel can not be empty');
+            $sex = $_POST['sex'];
+            $birthday = $_POST['birthday'];
             $name = $_POST['name'];
-            $tel = isset($_POST['tel']) ? $_POST['tel'] : '';
+            $tel = $_POST['tel'];
             $work = isset($_POST['work']) ? $_POST['work'] : '';
             $remark = isset($_POST['remark']) ? $_POST['remark'] : '';
             $email = isset($_POST['email']) ? $_POST['email'] : '';
             $address = isset($_POST['address']) ? $_POST['address'] : '';
             $origin = isset($_POST['origin']) ? $_POST['origin'] : '';
             $QQ = isset($_POST['QQ']) ? $_POST['QQ'] : '';
-            $birthday = isset($_POST['birthday']) ? $_POST['birthday'] : '';
-            $sex = isset($_POST['sex']) ? $_POST['sex'] : '';
             $type = isset($_POST['type']) ? $_POST['type'] : '';
             $uuid = $request->get('user')->uuid;
             $customer = Customer::createNewCustomer($name, $tel, $work, $remark, $email, $address, $origin, $QQ, $birthday, $sex, $type, $uuid);
@@ -58,17 +66,21 @@ class CustomerController extends Controller
         try {
             Assert::notEmpty($_POST['id'], 'id can not be empty');
             Assert::numeric($_POST['id'], 'id can should be int');
+            Assert::notEmpty($_POST['sex'],'sex can not be empty');
+            Assert::notEmpty($_POST['birthday'],'birthday can not be empty');
+            Assert::notEmpty($_POST['name'],'name can not be empty');
+            Assert::notEmpty($_POST['tel'],'tel can not be empty');
             $id = $_POST['id'];
-            $tel = isset($_POST['tel']) ? $_POST['tel'] : '';
-            $name = isset($_POST['name']) ? $_POST['name'] : '';
+            $sex = $_POST['sex'];
+            $birthday = $_POST['birthday'];
+            $name = $_POST['name'];
+            $tel = $_POST['tel'];
             $work = isset($_POST['work']) ? $_POST['work'] : '';
             $remark = isset($_POST['remark']) ? $_POST['remark'] : '';
             $email = isset($_POST['email']) ? $_POST['email'] : '';
             $address = isset($_POST['address']) ? $_POST['address'] : '';
             $origin = isset($_POST['origin']) ? $_POST['origin'] : '';
             $QQ = isset($_POST['QQ']) ? $_POST['QQ'] : '';
-            $birthday = isset($_POST['birthday']) ? $_POST['birthday'] : '';
-            $sex = isset($_POST['sex']) ? $_POST['sex'] : '';
             if (Customer::updateCustomer($id, $name, $tel, $work, $remark, $email, $address, $origin, $QQ, $birthday, $sex, $request->get('user')->uuid))
                 $this->json_die(['code' => 200, 'msg' => 'success']);
             else $this->json_die(['code' => 403, 'msg' => 'unauthorized']);
@@ -127,51 +139,4 @@ class CustomerController extends Controller
         }
     }
 
-    public function phaseFilter(Request $request)
-    {
-        try {
-            Assert::numeric($_POST['phase'], 'phase must be int');
-            $page = (int)$_POST['page'] > 0 ? (int)$_POST['page'] : 1;
-            $phase = $_POST['phase'];
-            $customer = Customer::phaseFilter($request->get('user')->uuid, $phase, $page);
-            $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $customer]);
-        } catch (\InvalidArgumentException $e) {
-            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            $this->json_die(['code' => 500, 'msg' => 'unknown error']);
-        }
-    }
-
-    public function typeFilter(Request $request)
-    {
-        try {
-            Assert::numeric($_POST['type'], 'type must be int');
-            $page = (int)$_POST['page'] > 0 ? (int)$_POST['page'] : 1;
-            $type = $_POST['type'];
-            $customer = Customer::typeFilter($request->get('user')->uuid, $type, $page);
-            $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $customer]);
-        } catch (\InvalidArgumentException $e) {
-            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            $this->json_die(['code' => 500, 'msg' => 'unknown error']);
-        }
-    }
-
-    public function timeFilter(Request $request)
-    {
-        try {
-            Assert::numeric($_POST['time'], 'time must be int');
-            $time = $_POST['time'];
-            $page = (int)$_POST['page'] > 0 ? (int)$_POST['page'] : 1;
-            $customer = Customer::timeFilter($request->get('user')->uuid, $time, $page);
-            $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $customer]);
-        } catch (\InvalidArgumentException $e) {
-            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            $this->json_die(['code' => 500, 'msg' => 'unknown error']);
-        }
-    }
 }

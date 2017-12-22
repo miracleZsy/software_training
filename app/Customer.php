@@ -51,30 +51,7 @@ class Customer extends Model
         } else return false;
     }
 
-    public static function phaseFilter($uuid, $phase, $page)
-    {
-        $customer = Customer::where('uuid', $uuid);
-        if ($phase) $customer = $customer->where('phase', $phase);
-        $customer = $customer->select('id', 'name', 'created_at', 'tel', 'pic_url')->orderBy('created_at', 'desc');
-        return [
-            'count' => $customer->count(),
-            'customer' => $customer->forPage($page, Config::get('sys_page_size'))->get()->toArray()
-        ];
-
-    }
-
-    public static function typeFilter($uuid, $type, $page)
-    {
-        $customer = Customer::where('uuid', $uuid);
-        if ($type) $customer = $customer->where('type', $type);
-        $customer = $customer->select('id', 'name', 'created_at', 'tel', 'pic_url')->orderBy('created_at', 'desc');
-        return [
-            'count' => $customer->count(),
-            'customer' => $customer->forPage($page, Config::get('sys_page_size'))->get()->toArray()
-        ];
-    }
-
-    public static function timeFilter($uuid, $time, $page)
+    public static function filter($type, $phase, $time, $uuid)
     {
         $start = 0;
         $end = Carbon::now();
@@ -91,11 +68,10 @@ class Customer extends Model
             case 4:
                 $start = Carbon::create()->subMonth();
         }
-        $customer = self::where('uuid', $uuid)->whereBetween('created_at', [$start, $end])
-            ->select('id', 'name', 'created_at', 'tel', 'pic_url')->orderBy('created_at', 'desc');
-        return [
-            'count' => $customer->count(),
-            'customer' => $customer->forPage($page, Config::get('sys_page_size'))->get()->toArray()
-        ];
+        $customer = self::where('uuid', $uuid);
+        if ($phase) $customer = $customer->where('phase', $phase);
+        if ($type) $customer = $customer->where('type', $type);
+        $customer = $customer->whereBetween('created_at', [$start, $end]);
+        return $customer;
     }
 }

@@ -21,7 +21,3 @@ Route::post('/customer/select','CustomerController@select');
 Route::post('/customer/phaseFilter','CustomerController@phaseFilter');
 Route::post('/customer/typeFilter','CustomerController@typeFilter');
 Route::post('/customer/timeFilter','CustomerController@timeFilter');
-
-Route::post('/test',function (){
-   echo '123';
-});
