@@ -92,9 +92,9 @@ class CustomerTable extends Component {
     };
 
     getCurrentPage = (page) => {
-        const { fetchCustomer, phaseType, time, setPage } = this.props;
-        setPage(page);
-        fetchCustomer(phaseType, time, page);
+        const { fetchCustomer, phaseType, time, setCurrentPage, customerType } = this.props;
+        setCurrentPage(page);
+        fetchCustomer(phaseType, time, page, customerType);
         console.log(page);
     };
 
@@ -141,14 +141,15 @@ const mapStateToProps = (state) => {
         customerTotalCount: state.customerReducer.customerTotalCount,
         phaseType: state.phaseAndTimeReducer.phaseType,
         time: state.phaseAndTimeReducer.time,
-        page:state.phaseAndTimeReducer.page
+        currentPage:state.phaseAndTimeReducer.currentPage,
+        customerType: state.phaseAndTimeReducer.customerType
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchCustomer: (type, time, page) => {
-            dispatch(customerAjax.fetchCustomer(type, time, page));
+        fetchCustomer: (phaseType, time, page, customerType) => {
+            dispatch(customerAjax.fetchCustomer(phaseType, time, page, customerType));
         },
         deleteCustomer: (key, index) => {
             dispatch(customerAjax.deleteCustomer(key, index));
@@ -159,8 +160,8 @@ const mapDispatchToProps = (dispatch) => {
         updateCustomer: (id, customerUpdated) => {
             dispatch(customerAjax.updateCustomer(id, customerUpdated));
         },
-        setPage: (page) => {
-            dispatch(phaseAndTimeAction.setPage(page));
+        setCurrentPage: (currentPage) => {
+            dispatch(phaseAndTimeAction.setCurrentPage(currentPage));
         }
     };
 };

@@ -16,10 +16,17 @@ export const setTime = (time) => {
 };
 
 
-export const setPage = (currentPage) => {
+export const setCurrentPage = (currentPage) => {
     return {
         type: phaseAndTimeTypes.SET_CURRENT_PAGE,
         currentPage: currentPage
+    };
+};
+
+export const setCustomerType = (customerType) => {
+    return {
+        type: phaseAndTimeTypes.SET_CUSTOMER_TYPE,
+        customerType: customerType
     };
 };
 

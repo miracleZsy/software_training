@@ -3,7 +3,8 @@ import * as phaseAndTimeTypes from '../types/phaseAndTimeTypes';
 const init = {
     phaseType: 0,
     time: 0,
-    currentPage: 0
+    currentPage: 0,
+    customerType: 0
 };
 
 const phaseAndTimeReducer = (state = init, action) => {
@@ -14,6 +15,8 @@ const phaseAndTimeReducer = (state = init, action) => {
         return { ...state, time: action.time };
     case phaseAndTimeTypes.SET_CURRENT_PAGE:
         return { ...state, currentPage: action.currentPage };
+    case phaseAndTimeTypes.SET_CUSTOMER_TYPE:
+        return { ...state, customerType: action.customerType };
     default:
         return state;
     }

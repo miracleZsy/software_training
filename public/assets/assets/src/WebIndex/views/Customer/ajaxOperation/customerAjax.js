@@ -9,8 +9,9 @@ const addCustomerAddress = '/software_training/public/customer/insert';
 const getCheckedCustomerAddress = '/software_training/public/customer/select';
 const updateCustomerAddress = '/software_training/public/customer/update';
 
-export const fetchCustomer = (type = 0, time = 0, page = 0) => (dispatch) => axiosUtil('post', fetchCustomerAddress, {
-    type: type,
+export const fetchCustomer = (phaseType = 0, time = 0, page = 0, customerType = 0) => (dispatch) => axiosUtil('post', fetchCustomerAddress, {
+    phase: phaseType,
+    type: customerType,
     time: time,
     page: page
 })

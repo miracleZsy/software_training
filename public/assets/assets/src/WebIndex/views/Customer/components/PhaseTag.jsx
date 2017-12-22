@@ -13,18 +13,19 @@ class PhaseTag extends Component {
         };
     }
     handleChange(index, checked) {
-        const { summarize, setPhaseType, setTime, fetchCustomer, phaseType, time, page } = this.props;
+        const { summarize, setPhaseType, setTime, fetchCustomer, phaseType, time, currentPage, customerType } = this.props;
         let nextSelectedTags ;
         nextSelectedTags = [index];
         this.setState({ selectedTags: nextSelectedTags });
         if(summarize  === '客户阶段') {
             // console.log('客户阶段');
-            setPhaseType(nextSelectedTags);
-            fetchCustomer(nextSelectedTags, time, page);
+            // console.log(nextSelectedTags[0]);
+            setPhaseType(nextSelectedTags[0]);
+            fetchCustomer(nextSelectedTags[0], time, currentPage, customerType);
         }else {
             // console.log('创建时间');
-            setTime(nextSelectedTags);
-            fetchCustomer(phaseType, nextSelectedTags, page);
+            setTime(nextSelectedTags[0]);
+            fetchCustomer(phaseType, nextSelectedTags[0], currentPage, customerType);
         }
     }
 
@@ -52,7 +53,8 @@ const mapStateToProps = (state) => {
     return {
         phaseType: state.phaseAndTimeReducer.phaseType,
         time: state.phaseAndTimeReducer.time,
-        page: state.phaseAndTimeReducer.page
+        currentPage: state.phaseAndTimeReducer.currentPage,
+        customerType: state.phaseAndTimeReducer.customerType
     };
 };
 
@@ -64,8 +66,8 @@ const mapDispatchToProps = (dispatch) => {
         setTime: (time) => {
             dispatch(phaseAndTimeAction.setTime(time));
         },
-        fetchCustomer: (type, time, page) => {
-            dispatch(customerAjax.fetchCustomer(type, time, page));
+        fetchCustomer: (phaseType, time, currentPage, customerType) => {
+            dispatch(customerAjax.fetchCustomer(phaseType, time, currentPage, customerType));
         },
     };
 };
