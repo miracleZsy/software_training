@@ -18,7 +18,6 @@ Route::post('/customer/update','CustomerController@update');
 Route::post('/customer/delete','CustomerController@delete');
 Route::post('/customer/list','CustomerController@list');
 Route::post('/customer/select','CustomerController@select');
-
-Route::post('/test',function (){
-   echo '123';
-});
+Route::post('/customer/phaseFilter','CustomerController@phaseFilter');
+Route::post('/customer/typeFilter','CustomerController@typeFilter');
+Route::post('/customer/timeFilter','CustomerController@timeFilter');

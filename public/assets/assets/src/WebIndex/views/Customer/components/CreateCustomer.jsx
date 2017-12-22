@@ -15,7 +15,6 @@ const CreateCustomer = Form.create()(
                 initialValue: checkedCustomer !== undefined ? moment(checkedCustomer['birthday']) : moment(),
             });
         }
-
         return (
             <Modal
                 visible={visible}
