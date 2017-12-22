@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as customerAjax from '../ajaxOperation/customerAjax';
-import * as customerAction from '../actions/customerAction';
+import * as phaseAndTimeAction from '../actions/phaseAndTimeAction';
 import { Table, Popconfirm } from 'antd';
 import CreateCustomer from "./CreateCustomer";
 
@@ -10,27 +10,26 @@ class CustomerTable extends Component {
     constructor() {
         super();
         this.state = {
-            visible: false
+            visible: false,
+            selectedKey: -1
         };
     }
 
     componentWillMount() {
-        const { fetchCustomer } = this.props;
-        fetchCustomer();
+        const { fetchCustomer, phaseType, time, page } = this.props;
+        fetchCustomer(phaseType, time, page);
     }
     onDeleteCustomer = (id, index) => {
         const { deleteCustomer } = this.props;
-        // console.log(id);
-        // console.log(index);id
         deleteCustomer(id, index);
     };
     onUpdateCustomer = (id, index) => {
         const { getCheckedCustomer } = this.props;
         this.setState({ visible: true });
-        // console.log(customerData);
-        // console.log(id);
-        // console.log(index);
         getCheckedCustomer(id);
+        this.setState({
+            selectedKey: id
+        });
         // console.log(customerData.slice(index, index + 1)[0]); //对象
     };
     onShareCustomer = (key, index) => {
@@ -44,10 +43,13 @@ class CustomerTable extends Component {
     };
     handleCreate = () => {
         const form = this.form;
+        const { updateCustomer } = this.props;
+        const { selectedKey } = this.state;
         form.validateFields((err, values) => {
             if (err) {
                 return;
             }
+            updateCustomer(selectedKey, values);
             console.log('Received values of form: ', values);
             form.resetFields();
             this.setState({ visible: false });
@@ -89,15 +91,25 @@ class CustomerTable extends Component {
         }];
     };
 
+    getCurrentPage = (page) => {
+        const { fetchCustomer, phaseType, time, setCurrentPage, customerType } = this.props;
+        setCurrentPage(page);
+        fetchCustomer(phaseType, time, page, customerType);
+        console.log(page);
+    };
+
     render() {
-        const { customerData, checkedCustomer } = this.props;
+        const { customerData, checkedCustomer, customerTotalCount } = this.props;
         {
             customerData.forEach(function (item, index) {
                 item.index = index;
             });
+            // console.log(customerTotalCount);
         }
         const pagination = {
             defaultPageSize: 6,
+            total: customerTotalCount,
+            onChange: (page) => this.getCurrentPage(page)
         };
 
         return (
@@ -125,20 +137,31 @@ class CustomerTable extends Component {
 const mapStateToProps = (state) => {
     return {
         customerData: state.customerReducer.customerData,
-        checkedCustomer: state.customerReducer.checkedCustomer
+        checkedCustomer: state.customerReducer.checkedCustomer,
+        customerTotalCount: state.customerReducer.customerTotalCount,
+        phaseType: state.phaseAndTimeReducer.phaseType,
+        time: state.phaseAndTimeReducer.time,
+        currentPage:state.phaseAndTimeReducer.currentPage,
+        customerType: state.phaseAndTimeReducer.customerType
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchCustomer: () => {
-            dispatch(customerAjax.fetchCustomer());
+        fetchCustomer: (phaseType, time, page, customerType) => {
+            dispatch(customerAjax.fetchCustomer(phaseType, time, page, customerType));
         },
         deleteCustomer: (key, index) => {
             dispatch(customerAjax.deleteCustomer(key, index));
         },
         getCheckedCustomer: (id) => {
             dispatch(customerAjax.getCheckedCustomer(id));
+        },
+        updateCustomer: (id, customerUpdated) => {
+            dispatch(customerAjax.updateCustomer(id, customerUpdated));
+        },
+        setCurrentPage: (currentPage) => {
+            dispatch(phaseAndTimeAction.setCurrentPage(currentPage));
         }
     };
 };

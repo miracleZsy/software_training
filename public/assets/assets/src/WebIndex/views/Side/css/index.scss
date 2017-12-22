@@ -22,6 +22,9 @@ body,html{
     position: absolute;
     top: 0;
     transition: all .3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     &.close{
       display: none;
     }
@@ -41,8 +44,7 @@ body,html{
         font-size: 15px;
         display: inline-block;
         margin: 0 auto;
-        padding-top: 10px;
-        padding-left: 15px;
+        padding-top: 6px;
         transition: all .3s ease-in-out;
         &.close{
           display: none;

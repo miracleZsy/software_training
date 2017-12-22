@@ -9,11 +9,11 @@ const CreateCustomer = Form.create()(
     (props) => {
         const { visible, onCancel, onCreate, form, okText, title, checkedCustomer } = props;
         const { getFieldDecorator, setFieldsValue } = form;
-        {
-            if(checkedCustomer !== undefined) {
-                console.log(checkedCustomer['birthday']);
-            }
-            // console.log(checkedCustomer);
+
+        if(title === '修改用户') {
+            getFieldDecorator('birthday', {
+                initialValue: checkedCustomer !== undefined ? moment(checkedCustomer['birthday']) : moment(),
+            });
         }
         return (
             <Modal
@@ -45,8 +45,8 @@ const CreateCustomer = Form.create()(
                                     <Select
                                         placeholder="选择性别"
                                     >
-                                        <Option value="1">男</Option>
-                                        <Option value="2">女</Option>
+                                        <Option value="男">男</Option>
+                                        <Option value="女">女</Option>
                                     </Select>
                                 )}
                             </FormItem>
@@ -56,9 +56,9 @@ const CreateCustomer = Form.create()(
                         <Col span={12}>
                             <FormItem label="生日">
                                 {getFieldDecorator('birthday', {
-                                    initialValue:checkedCustomer !== undefined ? moment(checkedCustomer['birthday']) : undefined,
+                                    rules: [{ required: true, message: '请选择生日!' }],
                                 })(
-                                    <DatePicker format="YYYY-MM-DD" style={{ width: 236 }} />
+                                    <DatePicker format="YYYY-MM-DD" style={{ width: 236 }} placeholder="请选择生日!" />
                                 )}
                             </FormItem>
                         </Col>
@@ -82,9 +82,9 @@ const CreateCustomer = Form.create()(
                                     <Select
                                         placeholder="选择客户类别"
                                     >
-                                        <Option value="1">一般客户</Option>
-                                        <Option value="2">意向客户</Option>
-                                        <Option value="3">已成交客户</Option>
+                                        <Option value="一般客户">一般客户</Option>
+                                        <Option value="意向客户">意向客户</Option>
+                                        <Option value="已成交客户">已成交客户</Option>
                                     </Select>
                                 )}
                             </FormItem>

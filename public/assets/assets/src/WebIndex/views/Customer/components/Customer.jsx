@@ -7,6 +7,7 @@ import { Button } from 'antd';
 import CustomerRightTopContainer from "./CustomerRightTopContainer";
 import CustomerTable from "./CustomerTable";
 import cookieUtil from '../../../../lib/cookieUtil';
+import jwt from 'jsonwebtoken';
 
 class Customer extends Component {
     constructor() {
@@ -17,6 +18,13 @@ class Customer extends Component {
     }
     componentWillMount() {
         // console.log(cookieUtil.get('token'));
+        // console.log(jwt.decode(cookieUtil.get('token')));
+        if(jwt.decode(cookieUtil.get('token')) === null) {
+            window.location.href = '/software_training/public/index#/login';
+        }
+
+        // console.log(jwt.decode(cookieUtil.get('token')));
+        // console.log(jwt.decode(cookieUtil.get('token')) === '');
     }
     showModal = () => {
         this.setState({ visible: true });
