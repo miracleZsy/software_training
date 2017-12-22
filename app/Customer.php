@@ -15,6 +15,18 @@ class Customer extends Model
 
     public static function createNewCustomer($name, $tel, $work, $remark, $email, $address, $origin, $QQ, $birthday, $sex, $type, $uuid)
     {
+        if ($sex === '男') $sex = 1;
+        else $sex = 2;
+        switch ($type) {
+            case '一般客户':
+                $type = 1;
+                break;
+            case '意向客户':
+                $type = 2;
+                break;
+            case '已成交客户':
+                $type = 3;
+        }
         return $customer = self::create([
             'name' => $name,
             'tel' => $tel,
@@ -25,15 +37,27 @@ class Customer extends Model
             'origin' => $origin,
             'QQ' => $QQ,
             'birthday' => $birthday,
-            'sex' => (int)$sex,
-            'type' => (int)$type,
+            'sex' => $sex,
+            'type' => $type,
             'uuid' => $uuid,
             'phase' => 1
         ]);
     }
 
-    public static function updateCustomer($id, $name, $tel, $work, $remark, $email, $address, $origin, $QQ, $birthday, $sex, $uuid)
+    public static function updateCustomer($id, $name, $tel, $work, $type, $remark, $email, $address, $origin, $QQ, $birthday, $sex, $uuid)
     {
+        if ($sex === '男') $sex = 1;
+        else $sex = 2;
+        switch ($type) {
+            case '一般客户':
+                $type = 1;
+                break;
+            case '意向客户':
+                $type = 2;
+                break;
+            case '已成交客户':
+                $type = 3;
+        }
         $customer = Customer::find($id);
         if ($customer->uuid === $uuid) {
             $customer->name = $name;
@@ -46,6 +70,7 @@ class Customer extends Model
             $customer->QQ = $QQ;
             $customer->birthday = $birthday;
             $customer->sex = $sex;
+            $customer->type = $type;
             $customer->save();
             return true;
         } else return false;
