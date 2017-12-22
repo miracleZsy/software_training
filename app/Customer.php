@@ -97,6 +97,6 @@ class Customer extends Model
         if ($phase) $customer = $customer->where('phase', $phase);
         if ($type) $customer = $customer->where('type', $type);
         $customer = $customer->whereBetween('created_at', [$start, $end]);
-        return $customer;
+        return $customer->orderBy('created_at','desc');
     }
 }

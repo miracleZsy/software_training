@@ -8,26 +8,39 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Webmozart\Assert\Assert;
 
+/**
+ * Class CustomerController
+ * @package App\Http\Controllers
+ * @auther zhouqianyu
+ */
 class CustomerController extends Controller
 {
     public function list(Request $request)
     {
-        Assert::numeric($_POST['type'], 'type should be int');
-        Assert::numeric($_POST['phase'], 'phase should be int');
-        Assert::numeric($_POST['time'], 'time should be int');
-        $type = $_POST['type'];
-        $phase = $_POST['phase'];
-        $time = $_POST['time'];
-        $page = (int)$_POST['page'] > 0 ? (int)$_POST['page'] : 1;
-        $size = Config::get('sys_page_size');
-        $customers = Customer::filter($type, $phase, $time, $request->get('user')->uuid);
-        $this->json_die([
-            'code' => 200,
-            'msg' => 'success',
-            'data' => [
-                'count' => $customers->count(),
-                'customer' => $customers->forPage($page, $size)->get()->toArray()]
-        ]);
+        try {
+            Assert::numeric($_POST['type'], 'type should be int');
+            Assert::numeric($_POST['phase'], 'phase should be int');
+            Assert::numeric($_POST['time'], 'time should be int');
+            $type = $_POST['type'];
+            $phase = $_POST['phase'];
+            $time = $_POST['time'];
+            $page = (int)$_POST['page'] > 0 ? (int)$_POST['page'] : 1;
+            $size = Config::get('sys_page_size');
+            $customers = Customer::filter($type, $phase, $time, $request->get('user')->uuid);
+            $this->json_die([
+                'code' => 200,
+                'msg' => 'success',
+                'data' => [
+                    'count' => $customers->count(),
+                    'customer' => $customers->forPage($page, $size)->get()->toArray()]
+            ]);
+        } catch (\InvalidArgumentException $e) {
+            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->json_die(['code' => 500, 'msg' => $e->getMessage()]);
+
+        }
 
     }
 
@@ -38,7 +51,7 @@ class CustomerController extends Controller
             Assert::notEmpty($_POST['birthday'], 'birthday can not be empty');
             Assert::notEmpty($_POST['name'], 'name can not be empty');
             Assert::notEmpty($_POST['tel'], 'tel can not be empty');
-            Assert::notEmpty($_POST['type'],'type can not be empty');
+            Assert::notEmpty($_POST['type'], 'type can not be empty');
             $sex = $_POST['sex'];
             $birthday = $_POST['birthday'];
             $name = $_POST['name'];
