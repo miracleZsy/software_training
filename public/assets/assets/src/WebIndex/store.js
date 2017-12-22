@@ -3,10 +3,12 @@ import thunk from 'redux-thunk';
 import { enableBatching } from 'redux-batched-actions';
 import hideSideReducer from './views/Side/reducers/hideSideReducer';
 import customerReducer from './views/Customer/reducers/customerReducer';
+import phaseAndTimeReducer from './views/Customer/reducers/phaseAndTimeReducer';
 
 const reducers = combineReducers({
     hideSideReducer,
-    customerReducer
+    customerReducer,
+    phaseAndTimeReducer
 });
 const store = createStore(
     enableBatching(reducers), /* preloadedState, */

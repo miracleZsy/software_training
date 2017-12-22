@@ -13,11 +13,7 @@ const NavBarMap = {
     2:{
         url: '/staff',
         tag: <div>员工管理</div>,
-    },
-    3:{
-        url:'/customerDetail',
-        tag:<div>我</div>,
-    },
+    }
 };
 
 const NavBar = ({ sidebarClosed }) => {
