@@ -13,7 +13,8 @@ class CustomerTable extends Component {
         this.state = {
             visible: false,
             selectedKey: -1,
-            showDetail: true
+            showDetail: false,
+            showDetailId: -1,
         };
     }
 
@@ -57,7 +58,8 @@ class CustomerTable extends Component {
     };
     showCustomerDetail = (id) => {
         this.setState({
-            showDetail: true
+            showDetail: true,
+            showDetailId: id
         });
         // console.log(id);
     };
@@ -128,27 +130,18 @@ class CustomerTable extends Component {
             current: currentPage,
         };
 
-        const dataSource = [{
-            key: '1',
-            name: '胡彦斌',
-            tel: 32,
-        }, {
-            key: '2',
-            name: '胡彦祖',
-            tel: 42,
-        }];
-
+        const { visible, showDetail, showDetailId } = this.state;
         return (
             <div>
                 <Table
                     rowKey="id"
                     columns={this.createColumns()}
-                    dataSource={dataSource}
+                    dataSource={customerData}
                     pagination={pagination}
                 />
                 <CreateCustomer
                     ref={this.saveFormRef}
-                    visible={this.state.visible}
+                    visible={visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
                     title="修改用户"
@@ -157,12 +150,12 @@ class CustomerTable extends Component {
                 />
                 <Modal
                     title="客户详情"
-                    visible={this.state.showDetail}
+                    visible={showDetail}
                     footer={null}
                     onCancel={this.cancelShowDetail}
                     style={{ top: 20 }}
                 >
-                    <CustomerDetail />
+                    <CustomerDetail showDetailId={showDetailId} />
                 </Modal>
             </div>
         );

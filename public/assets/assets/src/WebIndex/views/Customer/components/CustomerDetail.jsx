@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../css/index.scss';
-import { Slider } from 'antd';
+import { Slider, Card } from 'antd';
 
 const customerImg = 'assets/assets/public/img/logo.jpg';
 const marks = {
@@ -18,6 +18,24 @@ class CustomerDetail extends Component {
         console.log(value);
     };
     render() {
+        let roleChildren = [];
+        {
+            const roleData = [
+                {
+                    key:1,
+                    name: 'suxoao'
+                },
+                {
+                    key:2,
+                    name: 'ssss'
+                }
+            ];
+            roleData.forEach(function (item) {
+                roleChildren.push(<Card title={item.name} key={item.key} extra={<span>2017-02-01</span>} style={{ width: 410, marginBottom: 10 }}>
+                    <p>{item.name}</p>
+                </Card>);
+            });
+        }
         return(
             <div className="customerDetailContainer">
                 <div className="customerTopContainer">
@@ -26,6 +44,15 @@ class CustomerDetail extends Component {
                         <span className="customerName">刘小哈 主管</span>
                         <span>女</span>
                         <span className="followUpPerson">跟进人: zhouqianyu</span>
+                    </div>
+                    <div className="customerInfor">
+                        <span className="customerTel">电话: 18748844949</span>
+                        <span>生日: 2019-01-02</span>
+                        <span>qq: 2349759437</span>
+                        <span>邮件: 234975943@qq.com</span>
+                        <span>工作: 销售</span>
+                        <span>来源: 百度</span>
+                        <span>地址: 杭州西湖的西湖西湖</span>
                     </div>
                 </div>
                 <div className="phaseTypeContainer">
@@ -38,7 +65,7 @@ class CustomerDetail extends Component {
                     />
                 </div>
                 <div className="phaseDetail">
-
+                    {roleChildren}
                 </div>
             </div>
         );
