@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../css/index.scss';
 import { Slider } from 'antd';
 
-const userImg = 'assets/assets/public/img/logo.jpg';
+const customerImg = 'assets/assets/public/img/logo.jpg';
 const marks = {
     0: '新入库',
     20: '初步沟通',
@@ -17,8 +17,8 @@ class CustomerDetail extends Component {
     render() {
         return(
             <div>
-                <div>
-                    <img src={userImg} className="userImg" />
+                <div className="customerContainer">
+                    <img src={customerImg} className="customerImg" />
                     <span>刘小哈</span>
                 </div>
                 <div>

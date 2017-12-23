@@ -65,9 +65,13 @@
   }
 }
 
-.userImg{
-  width: 80px;
-  height: 80px;
-  border-radius: 40px;
+.customerContainer {
+  height: 84px;
+  .customerImg{
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+  }
 }
+
 
