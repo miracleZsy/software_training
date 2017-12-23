@@ -13,9 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 //session 部分 不需要token
-Route::get('/index',function (){
-    return view('index');
-});
+Route::get('/index','IndexController@index');
 Route::post('/login','SessionController@login');
 Route::post('/register','SessionController@register');
 Route::get('/captcha','SessionController@captcha');
