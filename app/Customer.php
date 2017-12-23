@@ -6,6 +6,7 @@ use App\sys\Config;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Customer extends Model
 {
@@ -98,5 +99,12 @@ class Customer extends Model
         if ($type) $customer = $customer->where('type', $type);
         $customer = $customer->whereBetween('created_at', [$start, $end]);
         return $customer->orderBy('created_at','desc');
+    }
+    public static function amountCount($uuid){
+        $count = self::select('type',DB::raw('count(*) as count'))->where('uuid',$uuid)->groupBy('type')->get()->toArray();
+        $amount = array_sum(array_column($count,'count'));
+        $amount = ['amount'=>$amount];
+        $count = array_column($count,'count','type');
+        return $amount+$count;
     }
 }
