@@ -59,7 +59,7 @@ class Customer extends Component {
         fetchCustomer(phaseType, time, 1, e.target.getAttribute('value'));
     };
     render() {
-        const { customerType, totalCustomerCount, simpleCustomerCount, purposeCustomerCount, finishCustomerCount } = this.props;
+        const { customerType, totalCustomerCount, simpleCustomerCount, purposeCustomerCount, finishCustomerCount, sidebarClosed } = this.props;
         return (
             <div className="customerContainer">
                 <div className="customerLeft">
@@ -84,7 +84,7 @@ class Customer extends Component {
                         <span value="3"  className={`${customerType == 3 ? 'current' : ''}`} onClick={this.changeCurrentCustomerType}>已成交客户 ({finishCustomerCount})</span>
                     </div>
                 </div>
-                <div className="customerRight">
+                <div className={`customerRight  ${sidebarClosed ? 'close' : ''}`}>
                     <CustomerRightTopContainer />
                     <div className="customerInforTable">
                         <CustomerTable />
@@ -104,7 +104,8 @@ const mapStateToProps = (state) => {
         totalCustomerCount: state.customerTypeCountReducer.totalCustomerCount,
         simpleCustomerCount:state.customerTypeCountReducer.simpleCustomerCount,
         purposeCustomerCount: state.customerTypeCountReducer.purposeCustomerCount,
-        finishCustomerCount: state.customerTypeCountReducer.finishCustomerCount
+        finishCustomerCount: state.customerTypeCountReducer.finishCustomerCount,
+        sidebarClosed: state.hideSideReducer.sidebarClosed
     };
 };
 
