@@ -82,10 +82,10 @@ class Customer extends Model
         $end = Carbon::now();
         switch ($time) {
             case 1:
-                $start = Carbon::create()->subDay();
+                $start = Carbon::create()->toDateString();
                 break;
             case 2:
-                $start = Carbon::create()->subDays(2);
+                $start = Carbon::create()->subDay()->toDateString();
                 break;
             case 3:
                 $start = Carbon::create()->subWeek();
