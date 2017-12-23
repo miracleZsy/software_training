@@ -14,6 +14,12 @@ const CreateCustomer = Form.create()(
             getFieldDecorator('birthday', {
                 initialValue: checkedCustomer !== undefined ? moment(checkedCustomer['birthday']) : moment(),
             });
+            getFieldDecorator('sex', {
+                initialValue:checkedCustomer !== undefined ? (checkedCustomer['sex']) : '请选择性别',
+            });
+            getFieldDecorator('type', {
+                initialValue:checkedCustomer !== undefined ? checkedCustomer['type'] : '请选择客户类型',
+            });
         }
         return (
             <Modal
@@ -39,11 +45,10 @@ const CreateCustomer = Form.create()(
                         <Col span={12}>
                             <FormItem label="性别">
                                 {getFieldDecorator('sex', {
-                                    initialValue:checkedCustomer !== undefined ? (checkedCustomer['sex']) : '请选择性别',
                                     rules: [{ required: true, message: '请选择性别!' }],
                                 })(
                                     <Select
-                                        placeholder="选择性别"
+                                        placeholder="请选择性别"
                                     >
                                         <Option value="男">男</Option>
                                         <Option value="女">女</Option>
@@ -58,7 +63,7 @@ const CreateCustomer = Form.create()(
                                 {getFieldDecorator('birthday', {
                                     rules: [{ required: true, message: '请选择生日!' }],
                                 })(
-                                    <DatePicker format="YYYY-MM-DD" style={{ width: 236 }} placeholder="请选择生日!" />
+                                    <DatePicker format="YYYY-MM-DD" style={{ width: 236 }} placeholder="请选择生日" />
                                 )}
                             </FormItem>
                         </Col>
@@ -76,7 +81,6 @@ const CreateCustomer = Form.create()(
                         <Col span={12}>
                             <FormItem label="客户类别">
                                 {getFieldDecorator('type', {
-                                    initialValue:checkedCustomer !== undefined ? checkedCustomer['type'] : '请选择客户类别',
                                     rules: [{ required: true, message: '请选择客户类别!' }],
                                 })(
                                     <Select
