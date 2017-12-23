@@ -11,8 +11,11 @@
 |
 */
 
-Route::post('/test',function (){
-   echo '123';
-});
 
-
+//customer部分
+Route::post('/customer/insert','CustomerController@insert');
+Route::post('/customer/update','CustomerController@update');
+Route::post('/customer/delete','CustomerController@delete');
+Route::post('/customer/list','CustomerController@list');
+Route::post('/customer/select','CustomerController@select');
+Route::post('/customer/count','CustomerController@amountCount');

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import '../css/login.scss';
 import * as loginAjax from '../ajaxOperation/loginAjax';
 import { message, Input, Button } from 'antd';
+import cookieUtil from '../../../../lib/cookieUtil';
+import jwt from 'jsonwebtoken';
 
 message.config({
     top: 210,
@@ -16,6 +18,11 @@ class Login extends Component {
             password: '',
             captcha: ''
         };
+    }
+    componentWillMount() {
+        if(jwt.decode(cookieUtil.get('token')) !== null) {
+            window.location.href = '/software_training/public/index#/customer';
+        }
     }
     changeUsernameValue = (event) => {
         this.setState({
