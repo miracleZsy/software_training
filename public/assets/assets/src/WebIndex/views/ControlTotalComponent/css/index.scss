@@ -25,12 +25,14 @@
     }
 }
 
-@media screen and (max-width: 1280px) and (min-width: 1680px) {
-    .show-content{
-        position: relative;
-        padding-top: 50px;
-        &.close{
-            //left: 110px;
+@media screen and (min-width: 1280px) and (max-width: 1680px) {
+    .main-content {
+        .show-content{
+            max-width: 1500px;
+            &.close{
+                max-width: 1638px;
+            }
         }
     }
+
 }

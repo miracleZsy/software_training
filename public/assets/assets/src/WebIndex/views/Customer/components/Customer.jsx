@@ -60,6 +60,7 @@ class Customer extends Component {
     };
     render() {
         const { customerType, totalCustomerCount, simpleCustomerCount, purposeCustomerCount, finishCustomerCount, sidebarClosed } = this.props;
+        {console.log(sidebarClosed);}
         return (
             <div className="customerContainer">
                 <div className="customerLeft">
@@ -84,7 +85,7 @@ class Customer extends Component {
                         <span value="3"  className={`${customerType == 3 ? 'current' : ''}`} onClick={this.changeCurrentCustomerType}>已成交客户 ({finishCustomerCount})</span>
                     </div>
                 </div>
-                <div className={`customerRight  ${sidebarClosed ? 'close' : ''}`}>
+                <div className={`customerRight ${sidebarClosed ? 'close' : ''}`}>
                     <CustomerRightTopContainer />
                     <div className="customerInforTable">
                         <CustomerTable />
