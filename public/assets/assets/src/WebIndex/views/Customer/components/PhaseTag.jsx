@@ -16,18 +16,11 @@ class PhaseTag extends Component {
         const { summarize, setPhaseType, setTime, fetchCustomer, phaseType, time, setCurrentPage, customerType } = this.props;
         let nextSelectedTags ;
         nextSelectedTags = [index];
-        // this.setState({ selectedTags: nextSelectedTags });
         if(summarize  === '客户阶段') {
-            // console.log('客户阶段');
-            // console.log(nextSelectedTags[0]);
             setPhaseType(nextSelectedTags[0]);
-            // console.log('jieduan');
-            // console.log(nextSelectedTags[0]);
-            // console.log(phaseType);
             setCurrentPage(1);
             fetchCustomer(nextSelectedTags[0], time, 1, customerType);
         }else {
-            // console.log('创建时间');
             setTime(nextSelectedTags[0]);
             setCurrentPage(1);
             fetchCustomer(phaseType, nextSelectedTags[0], 1, customerType);
@@ -35,7 +28,6 @@ class PhaseTag extends Component {
     }
 
     render() {
-        // const { selectedTags } = this.state;
         const { tagsFromServer, summarize, phaseType, time } = this.props;
         const phaseArr = [phaseType];
         const timeArr = [time];

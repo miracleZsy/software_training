@@ -21,11 +21,6 @@ class CustomerTable extends Component {
     }
     onDeleteCustomer = (id) => {
         const { deleteCustomer,  phaseType, time, currentPage, customerType } = this.props;
-        console.log('delete');
-        console.log(phaseType);
-        console.log(time);
-        console.log(currentPage);
-        console.log(customerType);
         deleteCustomer(id, phaseType, time, currentPage, customerType);
     };
     onUpdateCustomer = (id) => {
@@ -35,13 +30,9 @@ class CustomerTable extends Component {
         this.setState({
             selectedKey: id
         });
-        // console.log(customerData.slice(index, index + 1)[0]); //对象
     };
     onShareCustomer = (key, index) => {
-        // const { deleteUser } = this.props;
-        // console.log('delete');
-        // deleteUser(key, index);
-        // console.log(key);
+        //共享
     };
     handleCancel = () => {
         this.setState({ visible: false });
@@ -55,7 +46,6 @@ class CustomerTable extends Component {
                 return;
             }
             updateCustomer(selectedKey, values, phaseType, time, currentPage, customerType);
-            // console.log('Received values of form: ', values);
             form.resetFields();
             this.setState({ visible: false });
         });
@@ -109,7 +99,6 @@ class CustomerTable extends Component {
             customerData.forEach(function (item, index) {
                 item.index = index;
             });
-            // console.log(customerTotalCount);
         }
         const pagination = {
             defaultPageSize: 6,
@@ -168,7 +157,10 @@ const mapDispatchToProps = (dispatch) => {
         },
         setCurrentPage: (currentPage) => {
             dispatch(phaseAndTimeAction.setCurrentPage(currentPage));
-        }
+        },
+        fetchCustomerTypeCount:() => {
+            dispatch(customerAjax.fetchCustomerTypeCount());
+        },
     };
 };
 

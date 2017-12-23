@@ -42,7 +42,10 @@ export const addCustomer = (customerCreated, phaseType, time, currentPage, custo
     }else {
         fetchCustomer(0, 0, 1, 0)(dispatch)
             .then((value) => {
-                message.info('创建成功!');
+                fetchCustomerTypeCount()(dispatch)
+                    .then(() => {
+                        message.info('创建成功!');
+                    });
             });
     }
 });
@@ -56,9 +59,11 @@ export const deleteCustomer = (key, phaseType, time, currentPage, customerType) 
         }else {
             fetchCustomer(phaseType, time, currentPage, customerType)(dispatch)
                 .then((value) => {
-                    message.info('删除成功!');
+                    fetchCustomerTypeCount()(dispatch)
+                        .then(() => {
+                            message.info('删除成功!');
+                        });
                 });
-            //删除有问题
         }
     });
 
@@ -89,7 +94,10 @@ export const updateCustomer = (id, customerUpdated, phaseType, time, currentPage
     }else {
         fetchCustomer(phaseType, time, currentPage, customerType)(dispatch)
             .then((value) => {
-                message.info('修改成功!');
+                fetchCustomerTypeCount()(dispatch)
+                    .then(() => {
+                        message.info('修改成功!');
+                    });
             });
     }
 });

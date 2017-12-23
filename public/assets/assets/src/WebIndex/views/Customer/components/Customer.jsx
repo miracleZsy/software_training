@@ -19,15 +19,12 @@ class Customer extends Component {
         };
     }
     componentWillMount() {
-        // console.log(cookieUtil.get('token'));
-        // console.log(jwt.decode(cookieUtil.get('token')));
+        const { fetchCustomerTypeCount } = this.props;
         if(jwt.decode(cookieUtil.get('token')) === null) {
-            // window.location.href = '/software_training/public/index#/login';
+            window.location.href = '/software_training/public/index#/login';
         }else {
-
+            fetchCustomerTypeCount();
         }
-        // console.log(jwt.decode(cookieUtil.get('token')));
-        // console.log(jwt.decode(cookieUtil.get('token')) === '');
     }
     showModal = () => {
         this.setState({ visible: true });
@@ -42,8 +39,6 @@ class Customer extends Component {
             if (err) {
                 return;
             }
-            // console.log('Received values of form: ', values);
-            // console.log(moment(values.birthday).format('YYYY-MM-DD'));
             setPhaseType(0);
             setTime(0);
             setCustomerType(0);
@@ -57,8 +52,11 @@ class Customer extends Component {
         this.form = form;
     };
     changeCurrentCustomerType = (e) => {
-        const { setCustomerType } = this.prop;
+        const { setCustomerType, fetchCustomer, phaseType, time, currentPage, customerType, setCurrentPage } = this.props;
+        console.log(e.target.getAttribute('value'));
         setCustomerType(e.target.getAttribute('value'));
+        setCurrentPage(1);
+        fetchCustomer(phaseType, time, 1, e.target.getAttribute('value'));
     };
     render() {
         const { customerType, totalCustomerCount, simpleCustomerCount, purposeCustomerCount, finishCustomerCount } = this.props;
@@ -80,10 +78,10 @@ class Customer extends Component {
                         />
                     </div>
                     <div className="customerLeftBottom">
-                        <span value="0" className={`${customerType === 0 ? 'current' : ''}`} onClick={this.changeCurrentCustomerType}>全部 ({totalCustomerCount})</span>
-                        <span value="1" className={`${customerType === 1 ? 'current' : ''}`} onClick={this.changeCurrentCustomerType}>一般客户 ({simpleCustomerCount})</span>
-                        <span value="2" className={`${customerType === 2 ? 'current' : ''}`} onClick={this.changeCurrentCustomerType}>意向客户 ({purposeCustomerCount})</span>
-                        <span value="3"  className={`${customerType === 3 ? 'current' : ''}`} onClick={this.changeCurrentCustomerType}>已成交客户 ({finishCustomerCount})</span>
+                        <span value="0" className={`${customerType == 0 ? 'current' : ''}`} onClick={this.changeCurrentCustomerType}>全部 ({totalCustomerCount})</span>
+                        <span value="1" className={`${customerType == 1 ? 'current' : ''}`} onClick={this.changeCurrentCustomerType}>一般客户 ({simpleCustomerCount})</span>
+                        <span value="2" className={`${customerType == 2 ? 'current' : ''}`} onClick={this.changeCurrentCustomerType}>意向客户 ({purposeCustomerCount})</span>
+                        <span value="3"  className={`${customerType == 3 ? 'current' : ''}`} onClick={this.changeCurrentCustomerType}>已成交客户 ({finishCustomerCount})</span>
                     </div>
                 </div>
                 <div className="customerRight">
@@ -126,6 +124,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         setCustomerType: (customerType) => {
             dispatch(phaseAndTimeAction.setCustomerType(customerType));
+        },
+        fetchCustomerTypeCount:() => {
+            dispatch(customerAjax.fetchCustomerTypeCount());
+        },
+        fetchCustomer: (phaseType, time, page, customerType) => {
+            dispatch(customerAjax.fetchCustomer(phaseType, time, page, customerType));
         }
     };
 };

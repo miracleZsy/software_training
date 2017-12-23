@@ -21,7 +21,7 @@ class Login extends Component {
     }
     componentWillMount() {
         if(jwt.decode(cookieUtil.get('token')) !== null) {
-            // window.location.href = '/software_training/public/index#/customer';
+            window.location.href = '/software_training/public/index#/customer';
         }
     }
     changeUsernameValue = (event) => {
