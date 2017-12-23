@@ -2,15 +2,19 @@ const webpack = require('webpack');
 const path = require('path');
 const ROOT_PATH = path.resolve(__dirname);
 const APP_PATH = path.resolve(ROOT_PATH, 'assets/src/main/main.js');
+const LOGIN_PATH = path.resolve(ROOT_PATH, 'assets/src/main/login.js');
 const BUILD_PATH = path.resolve(ROOT_PATH, 'assets/public/dist');
 var AssetsPlugin = require('assets-webpack-plugin');
 var assetsPluginInstance = new AssetsPlugin();
 module.exports = {
     devtool: 'eval-source-map',
-    entry: APP_PATH, // 入口文件
+    entry: {
+        "main":APP_PATH,
+        "login":LOGIN_PATH
+    }, // 入口文件
     output: {
-        path: BUILD_PATH,
-        filename: "[name]-bundle-[hash].js"
+        path:BUILD_PATH,
+        filename: "[hash]/[name].js"
     },
     module: {
         rules: [

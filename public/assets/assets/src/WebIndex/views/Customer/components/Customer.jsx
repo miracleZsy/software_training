@@ -20,11 +20,7 @@ class Customer extends Component {
     }
     componentWillMount() {
         const { fetchCustomerTypeCount } = this.props;
-        if(jwt.decode(cookieUtil.get('token')) === null) {
-            window.location.href = '/software_training/public/index#/login';
-        }else {
-            fetchCustomerTypeCount();
-        }
+        fetchCustomerTypeCount();
     }
     showModal = () => {
         this.setState({ visible: true });

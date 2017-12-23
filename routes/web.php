@@ -11,6 +11,7 @@
 |
 */
 
+//index
 
 //customer部分
 Route::post('/customer/insert','CustomerController@insert');
