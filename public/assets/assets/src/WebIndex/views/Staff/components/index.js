@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Input, Menu, Modal } from 'antd';
 import StaffInfoCard from './StaffInfoCard';
+import StaffForm from './StaffForm';
 import '../css/index.scss';
 
 const Search = Input.Search;
@@ -10,6 +11,21 @@ const CardList = [1, 2, 3, 4, 5, 6, 7].map((ele) =>
 );
 
 class Staff extends Component {
+    state = { visible: false };
+    handleMenuClick = () => {
+
+    }
+    handleAddStaff = () => {
+        this.setState({
+            visible: true,
+        });
+    }
+    handleOk = () => {}
+    handleCancel = () => {
+        this.setState({
+            visible: false,
+        });
+    }
     render() {
         return (
             <div className="staffContainer">
@@ -18,7 +34,7 @@ class Staff extends Component {
                       员工管理
                     </div>
                     <Menu
-                        onClick={this.handleClick}
+                        onClick={this.handleMenuClick}
                         defaultSelectedKeys={['1']}
                         defaultOpenKeys={['sub1']}
                         mode="inline"    
@@ -31,7 +47,7 @@ class Staff extends Component {
                 <div className="staffContent">
                     <div className="contentTopPanel">
                         <div className="btn-group">
-                            <Button icon="plus" type="primary">添加员工</Button>
+                            <Button icon="plus" type="primary" onClick={this.handleAddStaff}>添加员工</Button>
                             <Button icon="plus" type="primary">批量导入员工</Button>
                         </div>
                         <div className="searchBar">
@@ -50,6 +66,14 @@ class Staff extends Component {
                         {CardList}
                     </div>
                 </div>
+                <Modal
+                    title="添加人员"
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}    
+                >
+                    <StaffForm />
+                </Modal>
             </div>
         );
     }
