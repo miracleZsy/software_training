@@ -19,11 +19,6 @@ class Login extends Component {
             captcha: ''
         };
     }
-    componentWillMount() {
-        if(jwt.decode(cookieUtil.get('token')) !== null) {
-            window.location.href = '/software_training/public/index#/customer';
-        }
-    }
     changeUsernameValue = (event) => {
         this.setState({
             username:event.target.value
@@ -58,7 +53,7 @@ class Login extends Component {
                     else {
                         message.info('登录成功!', 1);
                         setTimeout(function () {
-                            window.location.href = '/software_training/public/index#/customer';
+                            window.location.href = '/software_training/public/index';
                         }, 2000);
                     }
                 });
