@@ -154,5 +154,14 @@ class CustomerController extends Controller
             $this->json_die(['code' => 500, 'msg' => 'unknown error']);
         }
     }
+    public function amountCount(Request $request){
+        try {
+            $count = Customer::amountCount($request->get('user')->uuid);
+            $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $count]);
+        }catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->json_die(['code' => 500, 'msg' => 'unknown error']);
+        }
+    }
 
 }
