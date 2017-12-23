@@ -5,7 +5,7 @@
   position: fixed;
   z-index: 20;
   border-bottom: 1px solid #d4d1d1;
-  max-width: 1037px;
+  max-width: 1053px;
   &.close{
     left: 0;
     max-width: 1288px;
@@ -29,5 +29,15 @@
     position: absolute;
     right: 15px;
     top: 9px;
+  }
+}
+
+@media screen and (min-width: 1290px) and (max-width: 1680px) {
+  .header{
+    max-width: 1453px;
+    &.close{
+      left: 0;
+      max-width: 1675px;
+    }
   }
 }
