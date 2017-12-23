@@ -1,6 +1,7 @@
 import axiosUtil from '../../../../lib/axiosUtil';
 import { message } from 'antd';
 import * as customerAction from '../../Customer/actions/customerAction';
+import * as customerTypeCountAction from '../../Customer/actions/customerTypeCountAction';
 import moment from 'moment';
 
 const fetchCustomerAddress = '/software_training/public/customer/list';
@@ -8,19 +9,22 @@ const deleteCustomerAddress = '/software_training/public/customer/delete';
 const addCustomerAddress = '/software_training/public/customer/insert';
 const getCheckedCustomerAddress = '/software_training/public/customer/select';
 const updateCustomerAddress = '/software_training/public/customer/update';
+const fetchCustomerTypeCountAddress = '/software_training/public/customer/count';
 
-export const fetchCustomer = (phaseType = 0, time = 0, page = 0, customerType = 0) => (dispatch) => axiosUtil('post', fetchCustomerAddress, {
+export const fetchCustomer = (phaseType = 0, time = 0, page = 1, customerType = 0) => (dispatch) => axiosUtil('post', fetchCustomerAddress, {
     phase: phaseType,
     type: customerType,
     time: time,
     page: page
 })
     .then((value) => {
-        dispatch(customerAction.fetchCustomer(value.customer));
-        dispatch(customerAction.getCustomerTotalCount(value.count));
+        if(value !== undefined) {
+            dispatch(customerAction.fetchCustomer(value.customer));
+            dispatch(customerAction.getCustomerTotalCount(value.count));
+        }
     });
 
-export const addCustomer = (customerCreated) => (dispatch) => axiosUtil('post', addCustomerAddress, {
+export const addCustomer = (customerCreated, phaseType, time, currentPage, customerType ) => (dispatch) => axiosUtil('post', addCustomerAddress, {
     name: customerCreated.name,
     tel: customerCreated.tel,
     work: customerCreated.work,
@@ -36,26 +40,25 @@ export const addCustomer = (customerCreated) => (dispatch) => axiosUtil('post', 
     if(value === 500) {
         message.info('创建失败!');
     }else {
-        fetchCustomer()(dispatch)
+        fetchCustomer(0, 0, 1, 0)(dispatch)
             .then((value) => {
                 message.info('创建成功!');
             });
     }
 });
 
-export const deleteCustomer = (key, index) => (dispatch) => axiosUtil('post', deleteCustomerAddress, {
+export const deleteCustomer = (key, phaseType, time, currentPage, customerType) => (dispatch) => axiosUtil('post', deleteCustomerAddress, {
     id: key
 })
     .then((value) => {
         if(value === 403 || value === 500) {
             message.info('删除失败!');
         }else {
-            fetchCustomer()(dispatch)
+            fetchCustomer(phaseType, time, currentPage, customerType)(dispatch)
                 .then((value) => {
                     message.info('删除成功!');
                 });
-            // dispatch(customerAction.deleteCustomer(index));
-            // message.info('删除成功!');
+            //删除有问题
         }
     });
 
@@ -67,7 +70,7 @@ export const getCheckedCustomer = (id) => (dispatch) => axiosUtil('post', getChe
     });
 
 
-export const updateCustomer = (id, customerUpdated) => (dispatch) => axiosUtil('post', updateCustomerAddress, {
+export const updateCustomer = (id, customerUpdated, phaseType, time, currentPage, customerType) => (dispatch) => axiosUtil('post', updateCustomerAddress, {
     id: id,
     name: customerUpdated.name,
     tel: customerUpdated.tel,
@@ -84,9 +87,19 @@ export const updateCustomer = (id, customerUpdated) => (dispatch) => axiosUtil('
     if(value === 500 || value === 403) {
         message.info('修改失败!');
     }else {
-        fetchCustomer()(dispatch)
+        fetchCustomer(phaseType, time, currentPage, customerType)(dispatch)
             .then((value) => {
                 message.info('修改成功!');
             });
     }
 });
+
+export const fetchCustomerTypeCount = () => (dispatch) => axiosUtil('post', fetchCustomerTypeCountAddress, {})
+    .then((value) => {
+        if(value !== undefined) {
+            dispatch(customerTypeCountAction.setTotalCustomerCount(value.amount));
+            dispatch(customerTypeCountAction.setSimpleCustomerCount(value['1']));
+            dispatch(customerTypeCountAction.setPurposeCustomerCount(value['2']));
+            dispatch(customerTypeCountAction.setFinishCustomerCount(value['3']));
+        }
+    });

@@ -3,7 +3,7 @@ import * as phaseAndTimeTypes from '../types/phaseAndTimeTypes';
 const init = {
     phaseType: 0,
     time: 0,
-    currentPage: 0,
+    currentPage: 1,
     customerType: 0
 };
 

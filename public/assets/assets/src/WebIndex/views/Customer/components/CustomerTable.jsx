@@ -16,14 +16,19 @@ class CustomerTable extends Component {
     }
 
     componentWillMount() {
-        const { fetchCustomer, phaseType, time, page } = this.props;
-        fetchCustomer(phaseType, time, page);
+        const { fetchCustomer, phaseType, time, currentPage, customerType } = this.props;
+        fetchCustomer(phaseType, time, currentPage, customerType);
     }
-    onDeleteCustomer = (id, index) => {
-        const { deleteCustomer } = this.props;
-        deleteCustomer(id, index);
+    onDeleteCustomer = (id) => {
+        const { deleteCustomer,  phaseType, time, currentPage, customerType } = this.props;
+        console.log('delete');
+        console.log(phaseType);
+        console.log(time);
+        console.log(currentPage);
+        console.log(customerType);
+        deleteCustomer(id, phaseType, time, currentPage, customerType);
     };
-    onUpdateCustomer = (id, index) => {
+    onUpdateCustomer = (id) => {
         const { getCheckedCustomer } = this.props;
         this.setState({ visible: true });
         getCheckedCustomer(id);
@@ -43,14 +48,14 @@ class CustomerTable extends Component {
     };
     handleCreate = () => {
         const form = this.form;
-        const { updateCustomer } = this.props;
+        const { updateCustomer, phaseType, time, currentPage, customerType } = this.props;
         const { selectedKey } = this.state;
         form.validateFields((err, values) => {
             if (err) {
                 return;
             }
-            updateCustomer(selectedKey, values);
-            console.log('Received values of form: ', values);
+            updateCustomer(selectedKey, values, phaseType, time, currentPage, customerType);
+            // console.log('Received values of form: ', values);
             form.resetFields();
             this.setState({ visible: false });
         });
@@ -74,12 +79,12 @@ class CustomerTable extends Component {
             render:(text, record) => (
                 <span>
                     <Popconfirm title="确认删除?" onConfirm={() => {
-                        this.onDeleteCustomer(record.id, record.index);
+                        this.onDeleteCustomer(record.id);
                     }}>
                         <a href="#">删除用户</a>
                     </Popconfirm>
                     <span style={{ paddingLeft: 10, paddingRight: 10, color: '#108ee9', cursor: 'pointer' }} onClick={() => {
-                        this.onUpdateCustomer(record.id, record.index);
+                        this.onUpdateCustomer(record.id);
                     }} >修改用户</span>
                     <Popconfirm title="确认共享?" onConfirm={() => {
                         this.onShareCustomer(record.id, record.index);
@@ -99,7 +104,7 @@ class CustomerTable extends Component {
     };
 
     render() {
-        const { customerData, checkedCustomer, customerTotalCount } = this.props;
+        const { customerData, checkedCustomer, customerTotalCount, currentPage } = this.props;
         {
             customerData.forEach(function (item, index) {
                 item.index = index;
@@ -109,7 +114,8 @@ class CustomerTable extends Component {
         const pagination = {
             defaultPageSize: 6,
             total: customerTotalCount,
-            onChange: (page) => this.getCurrentPage(page)
+            onChange: (page) => this.getCurrentPage(page),
+            current: currentPage,
         };
 
         return (
@@ -151,14 +157,14 @@ const mapDispatchToProps = (dispatch) => {
         fetchCustomer: (phaseType, time, page, customerType) => {
             dispatch(customerAjax.fetchCustomer(phaseType, time, page, customerType));
         },
-        deleteCustomer: (key, index) => {
-            dispatch(customerAjax.deleteCustomer(key, index));
+        deleteCustomer: (key, phaseType, time, currentPage, customerType) => {
+            dispatch(customerAjax.deleteCustomer(key, phaseType, time, currentPage, customerType));
         },
         getCheckedCustomer: (id) => {
             dispatch(customerAjax.getCheckedCustomer(id));
         },
-        updateCustomer: (id, customerUpdated) => {
-            dispatch(customerAjax.updateCustomer(id, customerUpdated));
+        updateCustomer: (id, customerUpdated, phaseType, time, currentPage, customerType) => {
+            dispatch(customerAjax.updateCustomer(id, customerUpdated, phaseType, time, currentPage, customerType));
         },
         setCurrentPage: (currentPage) => {
             dispatch(phaseAndTimeAction.setCurrentPage(currentPage));

@@ -26,10 +26,23 @@
       display: flex;
       flex-direction: column;
       span{
-        display: block;
-        margin-left: 10px;
-        padding-top: 10px;
+        width: 80%;
+        height: 27px;
+        padding-left: 30px;
+        padding-top: 4px;
+        margin-left: 10%;
         padding-bottom: 10px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        &:hover {
+          background-color: #bae7ff4d;
+        }
+      }
+      .current {
+        background-color: #bae7ff4d;
+        &:hover {
+          background-color: #bae7ff4d;
+        }
       }
     }
   }
