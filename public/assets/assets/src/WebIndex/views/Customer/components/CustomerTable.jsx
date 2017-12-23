@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as customerAjax from '../ajaxOperation/customerAjax';
 import * as phaseAndTimeAction from '../actions/phaseAndTimeAction';
-import { Table, Popconfirm } from 'antd';
+import { Table, Popconfirm, Modal } from 'antd';
 import CreateCustomer from "./CreateCustomer";
+import CustomerDetail from "./CustomerDetail";
 
 
 class CustomerTable extends Component {
@@ -11,7 +12,8 @@ class CustomerTable extends Component {
         super();
         this.state = {
             visible: false,
-            selectedKey: -1
+            selectedKey: -1,
+            showDetail: true
         };
     }
 
@@ -53,10 +55,29 @@ class CustomerTable extends Component {
     saveFormRef = (form) => {
         this.form = form;
     };
+    showCustomerDetail = (id) => {
+        this.setState({
+            showDetail: true
+        });
+        // console.log(id);
+    };
+    cancelShowDetail = () => {
+        this.setState({
+            showDetail: false
+        });
+    };
     createColumns = () => {
         return  [{
             title: '客户名称',
             dataIndex: 'name',
+            render:(text, record) => (
+                <span
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                        this.showCustomerDetail(record.id);
+                    }}
+                >{record.name}</span>
+            )
         }, {
             title: '创建时间',
             dataIndex: 'created_at',
@@ -107,12 +128,22 @@ class CustomerTable extends Component {
             current: currentPage,
         };
 
+        const dataSource = [{
+            key: '1',
+            name: '胡彦斌',
+            tel: 32,
+        }, {
+            key: '2',
+            name: '胡彦祖',
+            tel: 42,
+        }];
+
         return (
             <div>
                 <Table
                     rowKey="id"
                     columns={this.createColumns()}
-                    dataSource={customerData}
+                    dataSource={dataSource}
                     pagination={pagination}
                 />
                 <CreateCustomer
@@ -124,6 +155,15 @@ class CustomerTable extends Component {
                     okText="修改"
                     checkedCustomer={checkedCustomer}
                 />
+                <Modal
+                    title="客户详情"
+                    visible={this.state.showDetail}
+                    footer={null}
+                    onCancel={this.cancelShowDetail}
+                    style={{ top: 20 }}
+                >
+                    <CustomerDetail />
+                </Modal>
             </div>
         );
     }

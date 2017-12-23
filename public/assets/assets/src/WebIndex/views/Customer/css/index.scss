@@ -69,13 +69,46 @@
   }
 }
 
-.customerContainer {
-  height: 84px;
-  .customerImg{
-    width: 80px;
-    height: 80px;
-    border-radius: 40px;
+.customerDetailContainer {
+  min-height: 400px;
+  margin-left: 26px;
+  margin-right: 20px;
+  .customerTopContainer {
+    margin: 18px 10px 38px 0;
+    height: 84px;
+    display: flex;
+    flex-direction: row;
+    .customerImg{
+      width: 80px;
+      height: 80px;
+      border-radius: 40px;
+      background-color: #f2dede;
+      margin-right: 27px;
+    }
+    .customerInfor {
+      display: flex;
+      flex-direction: column;
+      .customerName {
+        font-size: 18px;
+        padding-bottom: 10px;
+      }
+      .followUpPerson {
+        margin-top: 10px;
+        font-size: 14px;
+      }
+    }
   }
+
+  .phaseTypeContainer {
+
+  }
+  .phaseDetail {
+      max-height: 200px;
+      height: 200px;
+      background-color: #f2dede;
+      overflow-y: scroll;
+  }
+
 }
 
 @media (min-width: 1290px) and (max-width: 1690px) {

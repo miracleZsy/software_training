@@ -19,9 +19,8 @@ class RoutesComponent extends Component {
             <Switch>
                 <Route path="/login" component={Login} />
                 <Route path="/customer" exact component={ consoleWrap(Customer) } />
-                <Route path="/customer/detail" exact component={ consoleWrap(CustomerDetail) } />
                 <Route path="/staff" exact component={ consoleWrap(Staff) } />
-                <Redirect to={ '/customer/detail' } />
+                <Redirect to={ '/customer' } />
             </Switch>
         );
     }
