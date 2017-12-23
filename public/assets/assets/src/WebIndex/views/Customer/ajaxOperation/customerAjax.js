@@ -105,9 +105,14 @@ export const updateCustomer = (id, customerUpdated, phaseType, time, currentPage
 export const fetchCustomerTypeCount = () => (dispatch) => axiosUtil('post', fetchCustomerTypeCountAddress, {})
     .then((value) => {
         if(value !== undefined) {
+            console.log(value);
+            const simpleCustomerCount = value['1'] === undefined ? '0' : value['1'];
+            const purposeCustomerCount = value['2'] === undefined ? '0' : value['2'];
+            const finishCustomerCount = value['3'] === undefined ? '0' : value['3'];
+            console.log(value['1']);
             dispatch(customerTypeCountAction.setTotalCustomerCount(value.amount));
-            dispatch(customerTypeCountAction.setSimpleCustomerCount(value['1']));
-            dispatch(customerTypeCountAction.setPurposeCustomerCount(value['2']));
-            dispatch(customerTypeCountAction.setFinishCustomerCount(value['3']));
+            dispatch(customerTypeCountAction.setSimpleCustomerCount(simpleCustomerCount));
+            dispatch(customerTypeCountAction.setPurposeCustomerCount(purposeCustomerCount));
+            dispatch(customerTypeCountAction.setFinishCustomerCount(finishCustomerCount));
         }
     });
