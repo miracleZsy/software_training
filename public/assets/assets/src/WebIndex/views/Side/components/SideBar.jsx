@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from './Logo';
+import SideBarHeader from './SideBarHeader';
 import NavBar from "./NavBar";
 import "../css/index.scss";
 
@@ -8,7 +8,7 @@ const SideBar = (props) => {
     return (
         <div>
             <div className={`side  ${sidebarClosed ? 'close' : ''}`}>
-                <Logo sidebarClosed={sidebarClosed} />
+                <SideBarHeader sidebarClosed={sidebarClosed} />
                 <NavBar sidebarClosed={sidebarClosed} />
             </div>
         </div>

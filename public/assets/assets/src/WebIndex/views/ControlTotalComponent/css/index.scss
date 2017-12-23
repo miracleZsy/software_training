@@ -16,9 +16,23 @@
     .show-content{
         position: relative;
         padding-top: 50px;
+        max-width: 1022px;
+        height: 100%;
         &.close{
             //left: 110px;
+            max-width: 1228px;
         }
     }
 }
 
+@media screen and (min-width: 1290px) and (max-width: 1680px) {
+    .main-content {
+        .show-content{
+            max-width: 1500px;
+            &.close{
+                max-width: 1638px;
+            }
+        }
+    }
+
+}
