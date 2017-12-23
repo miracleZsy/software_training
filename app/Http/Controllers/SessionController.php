@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\sys\Config;
 use App\User;
 use Gregwar\Captcha\CaptchaBuilder;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Mockery\Exception;
 use Webmozart\Assert\Assert;
 use App\traits\Auth;
 
