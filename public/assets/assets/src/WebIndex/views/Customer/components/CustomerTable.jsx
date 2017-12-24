@@ -13,8 +13,8 @@ class CustomerTable extends Component {
         this.state = {
             visible: false,
             selectedKey: -1,
-            showDetail: false,
             showDetailId: -1,
+            showDetail: false,
         };
     }
 
@@ -66,7 +66,6 @@ class CustomerTable extends Component {
         });
         fetchCustomerDetail(id);
         getPhaseLog(id);
-        console.log(id);
     };
     cancelShowDetail = () => {
         this.setState({
@@ -153,15 +152,11 @@ class CustomerTable extends Component {
                     okText="修改"
                     checkedCustomer={checkedCustomer}
                 />
-                <Modal
-                    title="客户详情"
-                    visible={showDetail}
-                    footer={null}
-                    onCancel={this.cancelShowDetail}
-                    style={{ top: 40 }}
-                >
-                    <CustomerDetail showDetailId={showDetailId} />
-                </Modal>
+                <CustomerDetail
+                    showDetailId={showDetailId}
+                    showDetail={showDetail}
+                    cancelShowDetail={this.cancelShowDetail}
+                />
             </div>
         );
     }

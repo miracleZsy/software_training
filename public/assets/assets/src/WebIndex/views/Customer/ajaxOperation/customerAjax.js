@@ -126,6 +126,7 @@ export const fetchCustomerDetail = (id) => (dispatch) => axiosUtil('post', fetch
     .then((value) => {
         if(value !== undefined) {
             dispatch(customerDetailAction.fetchCustomerDetail(value));
+            dispatch(customerDetailAction.setSlideValue((value.phase - 1) * 25));
         }
     });
 
