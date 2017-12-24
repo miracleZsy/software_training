@@ -1,12 +1,10 @@
 import React from 'react';
 import './css/index.scss';
-import SearchInputComponent from '../../../publicComponent/searchInputComponent/SearchInputComponent';
 
 const MainContainer = (props) => {
     const { render, sidebarClosed = false, closeSideBar } = props;
     return(
         <div className={`main-content ${sidebarClosed ? 'close' : ''}`}>
-            <SearchInputComponent sidebarClosed={ sidebarClosed } closeSideBar={ closeSideBar } />
             <div className={`show-content ${sidebarClosed ? 'close' : ''}`}>
                 { render() }
             </div>

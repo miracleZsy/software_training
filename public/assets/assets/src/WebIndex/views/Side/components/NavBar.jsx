@@ -8,11 +8,11 @@ import '../css/index.scss';
 const NavBarMap = {
     1:{
         url:'/customer',
-        tag:<div>客户管理</div>,
+        tag:'客户管理',
     },
     2:{
         url: '/staff',
-        tag: <div>员工管理</div>,
+        tag: '员工管理',
     }
 };
 
