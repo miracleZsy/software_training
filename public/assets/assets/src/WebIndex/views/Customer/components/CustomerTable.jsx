@@ -25,11 +25,13 @@ class CustomerTable extends Component {
     };
     onUpdateCustomer = (id) => {
         const { getCheckedCustomer } = this.props;
+        const form = this.form;
         this.setState({ visible: true });
         getCheckedCustomer(id);
         this.setState({
             selectedKey: id
         });
+        form.resetFields();
     };
     onShareCustomer = (key, index) => {
         //共享
@@ -101,7 +103,7 @@ class CustomerTable extends Component {
             });
         }
         const pagination = {
-            defaultPageSize: 6,
+            defaultPageSize: 10,
             total: customerTotalCount,
             onChange: (page) => this.getCurrentPage(page),
             current: currentPage,
