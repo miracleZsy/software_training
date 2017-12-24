@@ -59,11 +59,14 @@ class CustomerTable extends Component {
         this.form = form;
     };
     showCustomerDetail = (id) => {
+        const { fetchCustomerDetail, getPhaseLog } = this.props;
         this.setState({
             showDetail: true,
             showDetailId: id
         });
-        // console.log(id);
+        fetchCustomerDetail(id);
+        getPhaseLog(id);
+        console.log(id);
     };
     cancelShowDetail = () => {
         this.setState({
@@ -155,7 +158,7 @@ class CustomerTable extends Component {
                     visible={showDetail}
                     footer={null}
                     onCancel={this.cancelShowDetail}
-                    style={{ top: 20 }}
+                    style={{ top: 40 }}
                 >
                     <CustomerDetail showDetailId={showDetailId} />
                 </Modal>
@@ -196,6 +199,12 @@ const mapDispatchToProps = (dispatch) => {
         fetchCustomerTypeCount:() => {
             dispatch(customerAjax.fetchCustomerTypeCount());
         },
+        fetchCustomerDetail: (id) => {
+            dispatch(customerAjax.fetchCustomerDetail(id));
+        },
+        getPhaseLog: (id) => {
+            dispatch(customerAjax.getPhaseLog(id));
+        }
     };
 };
 

@@ -6,8 +6,6 @@ import CreateCustomer from './CreateCustomer';
 import { Button } from 'antd';
 import CustomerRightTopContainer from "./CustomerRightTopContainer";
 import CustomerTable from "./CustomerTable";
-import cookieUtil from '../../../../lib/cookieUtil';
-import jwt from 'jsonwebtoken';
 import * as phaseAndTimeAction from '../actions/phaseAndTimeAction';
 
 

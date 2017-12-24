@@ -12,6 +12,8 @@ const getCheckedCustomerAddress = '/software_training/public/customer/select';
 const updateCustomerAddress = '/software_training/public/customer/update';
 const fetchCustomerTypeCountAddress = '/software_training/public/customer/count';
 const fetchCustomerDetailAddress = '/software_training/public/customer/select';
+const setCustomerPhaseAddress = '/software_training/public/customer/changePhase';
+const getPhaseLogAddress = '/software_training/public/customer/getPhaseLog';
 
 
 export const fetchCustomer = (phaseType = 0, time = 0, page = 1, customerType = 0) => (dispatch) => axiosUtil('post', fetchCustomerAddress, {
@@ -125,4 +127,27 @@ export const fetchCustomerDetail = (id) => (dispatch) => axiosUtil('post', fetch
         if(value !== undefined) {
             dispatch(customerDetailAction.fetchCustomerDetail(value));
         }
+    });
+
+
+export const setCustomerPhase = (id, phase) => (dispatch) => axiosUtil('post', setCustomerPhaseAddress, {
+    id: id,
+    phase: phase
+})
+    .then((value) => {
+        if(value === 500 || value === 403) {
+            message.info('修改阶段失败!');
+        }else {
+            getPhaseLog(id)(dispatch)
+                .then((value) => {
+                    message.info('修改阶段成功!');
+                });
+        }
+    });
+
+export const getPhaseLog = (id) => (dispatch) => axiosUtil('post', getPhaseLogAddress, {
+    customerId: id
+})
+    .then((value) => {
+        dispatch(customerDetailAction.fetchPhaseLog(value));
     });

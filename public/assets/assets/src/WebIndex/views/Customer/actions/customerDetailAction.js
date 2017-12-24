@@ -7,4 +7,10 @@ export const fetchCustomerDetail = (customerDetail) => {
     };
 };
 
+export const fetchPhaseLog = (phaseLog) => {
+    return {
+        type: customerDetailTypes.FETCH_PHASE_LOG,
+        phaseLog: phaseLog
+    };
+};
 
