@@ -10,14 +10,18 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/index',function (){
-   return view('index');
-});
-Route::post('/test',function (){
-   echo '123';
-});
+//share部分
 Route::post('/share/shareList','ShareController@shareList');
 Route::post('/share/sharedList','ShareController@sharedList');
 Route::post('/share/insert','ShareController@insert');
 Route::post('/share/delete','ShareController@delete');
 
+
+
+//customer部分
+Route::post('/customer/insert','CustomerController@insert');
+Route::post('/customer/update','CustomerController@update');
+Route::post('/customer/delete','CustomerController@delete');
+Route::post('/customer/list','CustomerController@list');
+Route::post('/customer/select','CustomerController@select');
+Route::post('/customer/count','CustomerController@amountCount');

@@ -2,19 +2,15 @@ const webpack = require('webpack');
 const path = require('path');
 const ROOT_PATH = path.resolve(__dirname);
 const APP_PATH = path.resolve(ROOT_PATH, 'assets/src/main/main.js');
-const LOGIN_PATH = path.resolve(ROOT_PATH, 'assets/src/main/login.js');
 const BUILD_PATH = path.resolve(ROOT_PATH, 'assets/public/dist');
 var AssetsPlugin = require('assets-webpack-plugin');
 var assetsPluginInstance = new AssetsPlugin();
 module.exports = {
     devtool: 'eval-source-map',
-    entry: {
-        "main":APP_PATH,
-        "login":LOGIN_PATH
-    }, // 入口文件
+    entry: APP_PATH, // 入口文件
     output: {
-        path:BUILD_PATH,
-        filename: "[hash]/[name].js"
+        path: BUILD_PATH,
+        filename: "dist.js"
     },
     module: {
         rules: [
@@ -47,6 +43,7 @@ module.exports = {
     },
     plugins: [assetsPluginInstance],
     devServer: {
+        contentBase: './assets/public/dist',
         port: 7070,
         host: 'localhost',
         historyApiFallback: true, // 不跳转 ，在开发单页应用时非常有用，它依赖于HTML5 history API，如果设置为true，所有的跳转将指向index.html

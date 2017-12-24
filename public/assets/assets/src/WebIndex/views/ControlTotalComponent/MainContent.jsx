@@ -1,6 +1,6 @@
 import React from 'react';
 import './css/index.scss';
-import SearchInputComponent from 'publicComponent/searchInputComponent/searchInputComponent';
+import SearchInputComponent from '../../../publicComponent/searchInputComponent/SearchInputComponent';
 
 const MainContainer = (props) => {
     const { render, sidebarClosed = false, closeSideBar } = props;

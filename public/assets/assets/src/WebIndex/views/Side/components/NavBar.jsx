@@ -11,9 +11,9 @@ const NavBarMap = {
         tag:<div>客户管理</div>,
     },
     2:{
-        url:'/aboutMe',
-        tag:<div>我</div>,
-    },
+        url: '/staff',
+        tag: <div>员工管理</div>,
+    }
 };
 
 const NavBar = ({ sidebarClosed }) => {
