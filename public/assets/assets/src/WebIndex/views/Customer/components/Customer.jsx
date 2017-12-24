@@ -56,7 +56,6 @@ class Customer extends Component {
     };
     render() {
         const { customerType, totalCustomerCount, simpleCustomerCount, purposeCustomerCount, finishCustomerCount, sidebarClosed } = this.props;
-        // {console.log(sidebarClosed);}
         return (
             <div className="customerContainer">
                 <div className="customerLeft">

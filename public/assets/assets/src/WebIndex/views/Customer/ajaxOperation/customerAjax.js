@@ -2,6 +2,7 @@ import axiosUtil from '../../../../lib/axiosUtil';
 import { message } from 'antd';
 import * as customerAction from '../../Customer/actions/customerAction';
 import * as customerTypeCountAction from '../../Customer/actions/customerTypeCountAction';
+import * as customerDetailAction from '../../Customer/actions/customerDetailAction';
 import moment from 'moment';
 
 const fetchCustomerAddress = '/software_training/public/customer/list';
@@ -10,6 +11,8 @@ const addCustomerAddress = '/software_training/public/customer/insert';
 const getCheckedCustomerAddress = '/software_training/public/customer/select';
 const updateCustomerAddress = '/software_training/public/customer/update';
 const fetchCustomerTypeCountAddress = '/software_training/public/customer/count';
+const fetchCustomerDetailAddress = '/software_training/public/customer/select';
+
 
 export const fetchCustomer = (phaseType = 0, time = 0, page = 1, customerType = 0) => (dispatch) => axiosUtil('post', fetchCustomerAddress, {
     phase: phaseType,
@@ -112,5 +115,14 @@ export const fetchCustomerTypeCount = () => (dispatch) => axiosUtil('post', fetc
             dispatch(customerTypeCountAction.setSimpleCustomerCount(simpleCustomerCount));
             dispatch(customerTypeCountAction.setPurposeCustomerCount(purposeCustomerCount));
             dispatch(customerTypeCountAction.setFinishCustomerCount(finishCustomerCount));
+        }
+    });
+
+export const fetchCustomerDetail = (id) => (dispatch) => axiosUtil('post', fetchCustomerDetailAddress, {
+    id: id,
+})
+    .then((value) => {
+        if(value !== undefined) {
+            dispatch(customerDetailAction.fetchCustomerDetail(value));
         }
     });
