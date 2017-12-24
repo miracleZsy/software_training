@@ -14,3 +14,9 @@ export const fetchPhaseLog = (phaseLog) => {
     };
 };
 
+export const setSlideValue = (sliderValue) => {
+    return {
+        type: customerDetailTypes.SET_SLIDER_VALUE,
+        sliderValue: sliderValue
+    };
+};

@@ -2,7 +2,8 @@ import * as customerDetailTypes from '../types/customerDetailTypes';
 
 const init = {
     customerDetail: {},
-    phaseLog: []
+    phaseLog: [],
+    sliderValue: 0
 };
 
 const customerDetailReducer = (state = init, action) => {
@@ -11,6 +12,8 @@ const customerDetailReducer = (state = init, action) => {
         return { ...state, customerDetail: action.customerDetail };
     case customerDetailTypes.FETCH_PHASE_LOG:
         return { ...state, phaseLog: action.phaseLog };
+    case customerDetailTypes.SET_SLIDER_VALUE:
+        return { ...state, sliderValue: action.sliderValue };
     default:
         return state;
     }

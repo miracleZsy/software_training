@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as customerAjax from '../ajaxOperation/customerAjax';
+import * as customerDetailAction from '../actions/customerDetailAction';
 import '../css/index.scss';
-import { Slider, Card } from 'antd';
+import { Slider, Card, Modal } from 'antd';
 
 const customerImg = 'assets/assets/public/img/logo.jpg';
 const marks = {
@@ -15,15 +16,12 @@ const marks = {
 class CustomerDetail extends Component {
     constructor() {
         super();
-        this.state = {
-            phaseValue : -1,
-        };
     }
     formatter = (value) => {
         return `${value}%`;
     };
     getCurrentValue = (value) => {
-        const { showDetailId, setCustomerPhase } = this.props;
+        const { showDetailId, setCustomerPhase, setSliderValue } = this.props;
         let phase;
         switch (value) {
         case 0:
@@ -42,43 +40,12 @@ class CustomerDetail extends Component {
             phase = 5;
             break;
         }
-        this.setState({
-            phaseValue: value
-        });
+        setSliderValue(value);
         setCustomerPhase(showDetailId, phase);
-    };
-    getDefaultValue = (phase) => {
-        switch (phase) {
-        case 1:
-            return 0;
-        case 2:
-            return 20;
-        case 3:
-            return 40;
-        case 4:
-            return 80;
-        case 5:
-            return 100;
-        }
     };
     render() {
         let phaseLogChildren = [];
-        const { customerDetail, phaseLog } = this.props;
-        const { phaseValue } = this.state;
-        const getDefaultValue = (phase) => {
-            switch (phase) {
-            case 1:
-                return 0;
-            case 2:
-                return 20;
-            case 3:
-                return 40;
-            case 4:
-                return 80;
-            case 5:
-                return 100;
-            }
-        };
+        const { customerDetail, phaseLog, showDetail, cancelShowDetail, sliderValue } = this.props;
         phaseLog.forEach(function (item, index) {
             let title = '';
             switch (item.phase) {
@@ -102,42 +69,46 @@ class CustomerDetail extends Component {
                 <p>{customerDetail.followName}将客户{customerDetail.name}标记为了{title}</p>
             </Card>);
         });
-        let phase;
-        if(customerDetail.phase !== undefined) {
-            phase = customerDetail.phase;
-        }
         return(
-            <div className="customerDetailContainer">
-                <div className="customerTopContainer">
-                    <img src={customerDetail.pic_url === null ? customerImg : customerDetail.pic_url } className="customerImg" />
-                    <div className="customerInfor">
-                        <span className="customerName">{customerDetail.name} {customerDetail.sex}</span>
-                        <span>工作：{customerDetail.work}</span>
-                        <span className="followUpPerson">跟进人: {customerDetail.followName}</span>
+            <Modal
+                title="客户详情"
+                visible={showDetail}
+                footer={null}
+                onCancel={cancelShowDetail}
+                style={{ top: 40 }}
+            >
+                <div className="customerDetailContainer">
+                    <div className="customerTopContainer">
+                        <img src={customerDetail.pic_url === null ? customerImg : customerDetail.pic_url } className="customerImg" />
+                        <div className="customerInfor">
+                            <span className="customerName">{customerDetail.name} {customerDetail.sex}</span>
+                            <span>工作：{customerDetail.work}</span>
+                            <span className="followUpPerson">跟进人: {customerDetail.followName}</span>
+                        </div>
+                        <div className="customerInforRight">
+                            <span>电话: {customerDetail.tel}</span>
+                            <span>生日: {customerDetail.birthday}</span>
+                            <span>qq: {customerDetail.QQ === '' ? '无' : customerDetail.QQ}</span>
+                            <span>邮件: {customerDetail.email === '' ? '无' : customerDetail.email}</span>
+                            <span>客户类型: {customerDetail.type}</span>
+                            <span>来源: {customerDetail.origin === '' ? '无' : customerDetail.origin}</span>
+                            <span>地址: {customerDetail.address === '' ? '无' : customerDetail.address}</span>
+                        </div>
                     </div>
-                    <div className="customerInforRight">
-                        <span>电话: {customerDetail.tel}</span>
-                        <span>生日: {customerDetail.birthday}</span>
-                        <span>qq: {customerDetail.QQ === '' ? '无' : customerDetail.QQ}</span>
-                        <span>邮件: {customerDetail.email === '' ? '无' : customerDetail.email}</span>
-                        <span>客户类型: {customerDetail.type}</span>
-                        <span>来源: {customerDetail.origin === '' ? '无' : customerDetail.origin}</span>
-                        <span>地址: {customerDetail.address === '' ? '无' : customerDetail.address}</span>
+                    <div className="phaseTypeContainer">
+                        <Slider
+                            marks={marks}
+                            step={null}
+                            value={sliderValue}
+                            tipFormatter={this.formatter}
+                            onChange={(value) => this.getCurrentValue(value)}
+                        />
+                    </div>
+                    <div className="phaseDetail">
+                        {phaseLogChildren}
                     </div>
                 </div>
-                <div className="phaseTypeContainer">
-                    <Slider
-                        marks={marks}
-                        step={null}
-                        value={phaseValue === -1 ? (customerDetail.phase - 1) * 25 : phaseValue }
-                        tipFormatter={this.formatter}
-                        onChange={(value) => this.getCurrentValue(value)}
-                    />
-                </div>
-                <div className="phaseDetail">
-                    {phaseLogChildren}
-                </div>
-            </div>
+            </Modal>
         );
     }
 }
@@ -145,20 +116,18 @@ class CustomerDetail extends Component {
 const mapStateToProps = (state) => {
     return {
         customerDetail: state.customerDetailReducer.customerDetail,
-        phaseLog: state.customerDetailReducer.phaseLog
+        phaseLog: state.customerDetailReducer.phaseLog,
+        sliderValue: state.customerDetailReducer.sliderValue
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchCustomerDetail: (id) => {
-            dispatch(customerAjax.fetchCustomerDetail(id));
-        },
         setCustomerPhase: (id, phase) => {
             dispatch(customerAjax.setCustomerPhase(id, phase));
         },
-        getPhaseLog: (id) => {
-            dispatch(customerAjax.getPhaseLog(id));
+        setSliderValue:(sliderValue) => {
+            dispatch(customerDetailAction.setSlideValue(sliderValue));
         }
     };
 };
