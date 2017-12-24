@@ -67,7 +67,7 @@
   }
   .customerInforTable {
     width: 100%;
-    max-height: 500px;
+    max-height: calc(100% - 171px);
     margin-top: 24px;
     padding-left: 35px;
     overflow-y: scroll;
