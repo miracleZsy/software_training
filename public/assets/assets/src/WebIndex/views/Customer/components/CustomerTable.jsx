@@ -103,7 +103,7 @@ class CustomerTable extends Component {
             });
         }
         const pagination = {
-            defaultPageSize: 6,
+            defaultPageSize: 10,
             total: customerTotalCount,
             onChange: (page) => this.getCurrentPage(page),
             current: currentPage,
