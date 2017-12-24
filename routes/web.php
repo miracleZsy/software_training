@@ -20,3 +20,5 @@ Route::post('/customer/delete','CustomerController@delete');
 Route::post('/customer/list','CustomerController@list');
 Route::post('/customer/select','CustomerController@select');
 Route::post('/customer/count','CustomerController@amountCount');
+Route::post('/customer/changePhase','CustomerController@changePhase');
+Route::post('/customer/getPhaseLog','CustomerController@getPhaseLog');

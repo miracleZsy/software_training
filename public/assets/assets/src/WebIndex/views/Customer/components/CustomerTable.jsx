@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as customerAjax from '../ajaxOperation/customerAjax';
 import * as phaseAndTimeAction from '../actions/phaseAndTimeAction';
-import { Table, Popconfirm } from 'antd';
+import { Table, Popconfirm, Modal } from 'antd';
 import CreateCustomer from "./CreateCustomer";
+import CustomerDetail from "./CustomerDetail";
 
 
 class CustomerTable extends Component {
@@ -11,7 +12,9 @@ class CustomerTable extends Component {
         super();
         this.state = {
             visible: false,
-            selectedKey: -1
+            selectedKey: -1,
+            showDetail: false,
+            showDetailId: -1,
         };
     }
 
@@ -55,10 +58,33 @@ class CustomerTable extends Component {
     saveFormRef = (form) => {
         this.form = form;
     };
+    showCustomerDetail = (id) => {
+        const { fetchCustomerDetail, getPhaseLog } = this.props;
+        this.setState({
+            showDetail: true,
+            showDetailId: id
+        });
+        fetchCustomerDetail(id);
+        getPhaseLog(id);
+        console.log(id);
+    };
+    cancelShowDetail = () => {
+        this.setState({
+            showDetail: false
+        });
+    };
     createColumns = () => {
         return  [{
             title: '客户名称',
             dataIndex: 'name',
+            render:(text, record) => (
+                <span
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                        this.showCustomerDetail(record.id);
+                    }}
+                >{record.name}</span>
+            )
         }, {
             title: '创建时间',
             dataIndex: 'created_at',
@@ -109,6 +135,7 @@ class CustomerTable extends Component {
             current: currentPage,
         };
 
+        const { visible, showDetail, showDetailId } = this.state;
         return (
             <div>
                 <Table
@@ -119,13 +146,22 @@ class CustomerTable extends Component {
                 />
                 <CreateCustomer
                     ref={this.saveFormRef}
-                    visible={this.state.visible}
+                    visible={visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
                     title="修改用户"
                     okText="修改"
                     checkedCustomer={checkedCustomer}
                 />
+                <Modal
+                    title="客户详情"
+                    visible={showDetail}
+                    footer={null}
+                    onCancel={this.cancelShowDetail}
+                    style={{ top: 40 }}
+                >
+                    <CustomerDetail showDetailId={showDetailId} />
+                </Modal>
             </div>
         );
     }
@@ -163,6 +199,12 @@ const mapDispatchToProps = (dispatch) => {
         fetchCustomerTypeCount:() => {
             dispatch(customerAjax.fetchCustomerTypeCount());
         },
+        fetchCustomerDetail: (id) => {
+            dispatch(customerAjax.fetchCustomerDetail(id));
+        },
+        getPhaseLog: (id) => {
+            dispatch(customerAjax.getPhaseLog(id));
+        }
     };
 };
 
