@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { HashRouter, Route, Redirect, Switch } from 'react-router-dom';
 import Customer from '../views/Customer/components/Customer';
+import CustomerDetail from '../views/Customer/components/CustomerDetail';
 import Staff from '../views/Staff/components';
 import Login from '../views/Login/components/Login';
 import ControlTotalComponent from '../views/ControlTotalComponent/ControlTotalComponent';
