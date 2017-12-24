@@ -32,7 +32,8 @@ class CustomerController extends Controller
                 'msg' => 'success',
                 'data' => [
                     'count' => $customers->count(),
-                    'customer' => $customers->forPage($page, $size)->get()->toArray()]
+                    'customer' => $customers->forPage($page, $size)->get()->toArray()
+                ]
             ]);
         } catch (\InvalidArgumentException $e) {
             $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
@@ -71,7 +72,6 @@ class CustomerController extends Controller
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             $this->json_die(['code' => 500, 'msg' => $e->getMessage()]);
-
         }
     }
 
