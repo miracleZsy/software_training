@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as saleManageAction from '../actions/saleManageAction';
-// import * as customerAjax from '../ajaxOperation/customerAjax';
 import { Tag } from 'antd';
 const { CheckableTag } = Tag;
 
@@ -12,12 +9,14 @@ class PhaseTag extends Component {
             selectedTags: [0],
         };
     }
+
     handleChange(index, checked) {
-        const { summarize, setSaleTimeType } = this.props;
-        let nextSelectedTags ;
+        const { summarize, setSaleTimeType, fetchSaleAnalyse } = this.props;
+        let nextSelectedTags;
         nextSelectedTags = [index];
-        if(summarize  === '时间') {
-            setSaleTimeType(nextSelectedTags[0] + 1);
+        if (summarize === '时间') {
+            setSaleTimeType(nextSelectedTags[0]);
+            fetchSaleAnalyse(nextSelectedTags[0] - 1);
         }
     }
 
@@ -42,18 +41,4 @@ class PhaseTag extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        saleTimeType: state.saleManageReducer.saleTimeType
-    };
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        setSaleTimeType: (saleTimeType) => {
-            dispatch(saleManageAction.setSaleTimeType(saleTimeType));
-        },
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PhaseTag);
+export default PhaseTag;

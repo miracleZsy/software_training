@@ -113,6 +113,7 @@ class SaleCustomerAnalyse extends Component {
                 data: [10, 20, 100, 50]
             }]
         };
+        this.createAmountArr(saleAnalyse);
         myChart.setOption(option);
     }
     createAnalyseColumns = () => {
@@ -132,6 +133,9 @@ class SaleCustomerAnalyse extends Component {
             title: '客户总数',
             dataIndex: 'amount',
         }];
+    };
+    createAmountArr = (saleAnalyse) => {
+        console.log(saleAnalyse);
     };
 
     render() {
