@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import * as phaseAndTimeAction from '../actions/phaseAndTimeAction';
+import * as saleManageAction from '../actions/saleManageAction';
 // import * as customerAjax from '../ajaxOperation/customerAjax';
 import { Tag } from 'antd';
 const { CheckableTag } = Tag;
@@ -13,18 +13,18 @@ class PhaseTag extends Component {
         };
     }
     handleChange(index, checked) {
-        const { summarize } = this.props;
+        const { summarize, setSaleTimeType } = this.props;
         let nextSelectedTags ;
         nextSelectedTags = [index];
         if(summarize  === '时间') {
-
+            setSaleTimeType(nextSelectedTags[0] + 1);
         }
     }
 
     render() {
-        const { tagsFromServer, summarize, timeType } = this.props;
+        const { tagsFromServer, summarize, saleTimeType } = this.props;
         // const staffArr = [staffType];
-        const timeArr = [timeType];
+        const timeArr = [saleTimeType];
         return (
             <div className="tagContainer">
                 <div style={{ marginRight: 23, display: 'inline', fontSize: 15 }}>{summarize}</div>
@@ -44,13 +44,15 @@ class PhaseTag extends Component {
 
 const mapStateToProps = (state) => {
     return {
-
+        saleTimeType: state.saleManageReducer.saleTimeType
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        setSaleTimeType: (saleTimeType) => {
+            dispatch(saleManageAction.setSaleTimeType(saleTimeType));
+        },
     };
 };
 

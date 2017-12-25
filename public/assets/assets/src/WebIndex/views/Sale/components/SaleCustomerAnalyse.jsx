@@ -6,11 +6,12 @@ require('echarts/lib/chart/line');
 require('echarts/lib/component/tooltip');
 require('echarts/lib/component/title');
 import '../css/index.scss';
+import { connect } from 'react-redux';
 
 class SaleCustomerAnalyse extends Component {
 
-
     componentDidMount() {
+        const { timeChart } = this.props;
         let myChart = echarts.init(document.getElementById('customerAnalyseEchart'));
         // 绘制图表
         const option = {
@@ -37,7 +38,7 @@ class SaleCustomerAnalyse extends Component {
                         color: '#57617B'
                     }
                 },
-                data: ['13:00', '13:05', '13:10', '13:15']
+                data: timeChart
             }, {
                 axisPointer: {
                     show: false
@@ -149,4 +150,11 @@ class SaleCustomerAnalyse extends Component {
     }
 }
 
-export default SaleCustomerAnalyse;
+const mapStateToProps = (state) => {
+    return {
+        timeChart: state.saleManageReducer.timeChart,
+        customerAmount: state.saleManageReducer.customerAmount
+    };
+};
+
+export default connect(mapStateToProps, null)(SaleCustomerAnalyse);

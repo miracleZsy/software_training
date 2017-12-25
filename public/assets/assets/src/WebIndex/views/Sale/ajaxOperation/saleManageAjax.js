@@ -6,11 +6,21 @@ const fetchSaleAnalyseAddress = '/software_training/public/sale/customerManage';
 
 
 export const fetchSaleAnalyse = (timeType) => (dispatch) => axiosUtil('post', fetchSaleAnalyseAddress, {
-    timeType: timeType
+    time: timeType
 })
     .then((value) => {
         if(value !== undefined) {
             dispatch(saleManageAction.fetchSaleAnalyse(value));
+            let timeChartArr = [];
+            value.forEach(function (item) {
+                timeChartArr.push(item.time);
+            });
+            dispatch(saleManageAction.setTimeChart(timeChartArr));
+            let customerAmount = [];
+            value.forEach(function (item) {
+                customerAmount.push(item.amount);
+            });
+            dispatch(saleManageAction.setCustomerAmount(customerAmount));
         }
     });
 

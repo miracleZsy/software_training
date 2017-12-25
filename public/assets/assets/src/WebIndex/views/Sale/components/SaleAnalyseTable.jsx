@@ -8,9 +8,10 @@ class SaleAnalyseTable extends Component {
         return(
             <div>
                 <Table
-                    rowKey="id"
+                    rowKey="time"
                     columns={columnsData}
                     dataSource={saleAnalyse}
+                    pagination={false}
                 />
             </div>
         );
