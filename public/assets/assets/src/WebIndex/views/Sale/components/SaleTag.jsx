@@ -16,7 +16,7 @@ class PhaseTag extends Component {
         nextSelectedTags = [index];
         if (summarize === '时间') {
             setSaleTimeType(nextSelectedTags[0]);
-            fetchSaleAnalyse(nextSelectedTags[0] - 1);
+            fetchSaleAnalyse(nextSelectedTags[0] + 1);
         }
     }
 
