@@ -6,7 +6,6 @@ require('echarts/lib/chart/line');
 require('echarts/lib/component/tooltip');
 require('echarts/lib/component/title');
 import '../css/index.scss';
-// const theme = 'public/global/theme.js';
 
 class SaleCustomerAnalyse extends Component {
 

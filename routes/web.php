@@ -20,5 +20,11 @@ Route::post('/customer/delete','CustomerController@delete');
 Route::post('/customer/list','CustomerController@list');
 Route::post('/customer/select','CustomerController@select');
 Route::post('/customer/count','CustomerController@amountCount');
+<<<<<<< HEAD
 Route::post('/customer/changePhase','CustomerController@changePhase');
 Route::post('/customer/getPhaseLog','CustomerController@getPhaseLog');
+=======
+
+//sale部分
+Route::post('/sale/customerManage','SaleController@customerManage');
+>>>>>>> f1fb3a51c321a27d07008bb18bd376177eb79b47
