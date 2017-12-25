@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Input, Menu, Modal } from 'antd';
 import StaffInfoCard from './StaffInfoCard';
-import StaffForm from './StaffForm';
+import CreateStaff from './CreateStaff';
 import '../css/index.scss';
 
 const Search = Input.Search;
@@ -20,7 +20,7 @@ class Staff extends Component {
             visible: true,
         });
     }
-    handleOk = () => {}
+    handleCreate = () => {}
     handleCancel = () => {
         this.setState({
             visible: false,
@@ -66,14 +66,13 @@ class Staff extends Component {
                         {CardList}
                     </div>
                 </div>
-                <Modal
-                    title="添加人员"
+                <CreateStaff
                     visible={this.state.visible}
-                    onOk={this.handleOk}
-                    onCancel={this.handleCancel}    
-                >
-                    <StaffForm />
-                </Modal>
+                    title="添加员工"
+                    okText="创建"
+                    onCreate={this.handleCreate}
+                    onCancel={this.handleCancel}
+                />
             </div>
         );
     }
