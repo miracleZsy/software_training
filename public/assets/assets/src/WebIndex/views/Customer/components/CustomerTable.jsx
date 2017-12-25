@@ -5,7 +5,7 @@ import * as phaseAndTimeAction from '../actions/phaseAndTimeAction';
 import { Table, Popconfirm, Modal } from 'antd';
 import CreateCustomer from "./CreateCustomer";
 import CustomerDetail from "./CustomerDetail";
-
+import ShareCustomerModal from './ShareCustomerModal';
 
 class CustomerTable extends Component {
     constructor() {
@@ -15,6 +15,8 @@ class CustomerTable extends Component {
             selectedKey: -1,
             showDetailId: -1,
             showDetail: false,
+            showSharing: false,
+            showSharingRecord: null,
         };
     }
 
@@ -36,8 +38,11 @@ class CustomerTable extends Component {
         });
         form.resetFields();
     };
-    onShareCustomer = (key, index) => {
-        //共享
+    onShareCustomer = (record) => {
+        this.setState({
+            showSharingRecord: record,
+            showSharing: true,
+        });
     };
     handleCancel = () => {
         this.setState({ visible: false });
@@ -55,6 +60,14 @@ class CustomerTable extends Component {
             this.setState({ visible: false });
         });
     };
+    handleSharing = () => {
+        const customer = this.state.showSharingRecord;
+        const sharingForm = this.sharingForm;
+        sharingForm.validateFields((err, value) => {
+            if(err) return;
+            console.log(value);
+        });
+    }
     saveFormRef = (form) => {
         this.form = form;
     };
@@ -72,6 +85,11 @@ class CustomerTable extends Component {
             showDetail: false
         });
     };
+    cancelShowSharing = () => {
+        this.setState({
+            showSharing: false
+        });
+    }
     createColumns = () => {
         return  [{
             title: '客户名称',
@@ -104,7 +122,7 @@ class CustomerTable extends Component {
                         this.onUpdateCustomer(record.id);
                     }} >修改用户</span>
                     <Popconfirm title="确认共享?" onConfirm={() => {
-                        this.onShareCustomer(record.id, record.index);
+                        this.onShareCustomer(record);
                     }}>
                         <a href="#">共享用户</a>
                     </Popconfirm>
@@ -134,7 +152,7 @@ class CustomerTable extends Component {
             current: currentPage,
         };
 
-        const { visible, showDetail, showDetailId } = this.state;
+        const { visible, showDetail, showDetailId, showSharing, showSharingRecord } = this.state;
         return (
             <div>
                 <Table
@@ -156,6 +174,15 @@ class CustomerTable extends Component {
                     showDetailId={showDetailId}
                     showDetail={showDetail}
                     cancelShowDetail={this.cancelShowDetail}
+                />
+                <ShareCustomerModal
+                    ref={(sharingForm) => { this.sharingForm = sharingForm; }}
+                    visible={showSharing}
+                    title="共享客户"
+                    okText="共享"
+                    record={showSharingRecord}
+                    onCancel={this.cancelShowSharing}
+                    onOk={this.handleSharing}
                 />
             </div>
         );
