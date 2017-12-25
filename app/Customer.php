@@ -102,6 +102,7 @@ class Customer extends Model
     {
         $start = 0;
         $end = Carbon::now();
+        $user = self::find($uuid);
         switch ($time) {
             case 1:
                 $start = Carbon::create()->toDateString();
@@ -115,7 +116,10 @@ class Customer extends Model
             case 4:
                 $start = Carbon::create()->subMonth();
         }
-        $customer = self::where('uuid', $uuid);
+        if ($user->authority>2) $customer = self::where('uuid', $uuid);
+        else {
+
+        }
         if ($phase) $customer = $customer->where('phase', $phase);
         if ($type) $customer = $customer->where('type', $type);
         $customer = $customer->whereBetween('created_at', [$start, $end]);
