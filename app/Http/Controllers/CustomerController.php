@@ -25,9 +25,10 @@ class CustomerController extends Controller
             $type = $_POST['type'];
             $phase = $_POST['phase'];
             $time = $_POST['time'];
+            $uuid = isset($_POST['uuid'])?$_POST['uuid']:'';
             $page = (int)$_POST['page'] > 0 ? (int)$_POST['page'] : 1;
             $size = Config::get('sys_page_size');
-            $customers = Customer::filter($type, $phase, $time, $request->get('user')->uuid);
+            $customers = Customer::filter($type, $phase, $time, $request->get('user')->uuid,$uuid);
             $this->json_die([
                 'code' => 200,
                 'msg' => 'success',
@@ -115,9 +116,7 @@ class CustomerController extends Controller
             Assert::notEmpty($_POST['id'], 'id can not be empty');
             Assert::integer((int)$_POST['id'], 'id can should be int');
             $id = $_POST['id'];
-            $customer = Customer::find($id);
-            if ($customer && $request->get('user')->uuid === $customer->uuid) {
-                $customer->delete();
+            if (Customer::deleteOne($id,$request->get('user')->uuid)) {
                 $this->json_die(['code' => 200, 'msg' => 'success']);
             } else $this->json_die(['code' => 403, 'msg' => 'customer not exist or it is not self']);
         } catch (\InvalidArgumentException $e) {
@@ -134,22 +133,8 @@ class CustomerController extends Controller
             Assert::notEmpty($_POST['id'], 'id can not be empty');
             Assert::integer((int)$_POST['id'], 'id must be int');
             $id = $_POST['id'];
-            $customer = Customer::find($id);
-            $username = $customer->user->name;
-            $customer->followName = $username;
-            unset($customer->user);
-            $customer->sex = ($customer->sex === 1) ? '男' : '女';
-            switch ($customer->type) {
-                case 1:
-                    $customer->type = '一般客户';
-                    break;
-                case 2:
-                    $customer->type = '意向客户';
-                    break;
-                case 3:
-                    $customer->type = '已成交客户';
-            }
-            if ($customer && $customer->uuid === $request->get('user')->uuid) $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $customer]);
+            $customer = Customer::selectOne($id,$request->get('user')->uuid);
+            if ($customer) $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $customer]);
             else $this->json_die(['code' => 403, 'msg' => 'customer not found']);
         } catch (\InvalidArgumentException $e) {
             $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
