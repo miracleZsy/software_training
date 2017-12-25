@@ -22,3 +22,11 @@ Route::post('/customer/select','CustomerController@select');
 Route::post('/customer/count','CustomerController@amountCount');
 Route::post('/customer/changePhase','CustomerController@changePhase');
 Route::post('/customer/getPhaseLog','CustomerController@getPhaseLog');
+Route::post('/customer/getMyCustomers','CustomerController@getMyCustomers');
+
+//sale 部分
+Route::post('/sale/plan/list','SaleController@list');
+Route::post('/sale/plan/select','SaleController@select');
+Route::post('/sale/plan/insert','SaleController@insert');
+Route::post('/sale/plan/update','SaleController@update');
+Route::post('/sale/plan/delete','SaleController@delete');

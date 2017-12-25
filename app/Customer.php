@@ -13,6 +13,9 @@ class Customer extends Model
     use SoftDeletes;
     protected $table = 'customer';
     protected $fillable = ['name', 'tel', 'work', 'remark', 'pic_url', 'email', 'address', 'origin', 'QQ', 'birthday', 'sex', 'type', 'uuid', 'phase'];
+    public function salePlans(){
+        return $this->belongsToMany('App\SalePlan','user_sale_plan','customer_id','sale_plan_id');
+    }
     public function user(){
         return $this->belongsTo('App\User','uuid','uuid');
     }

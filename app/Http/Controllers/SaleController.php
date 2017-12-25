@@ -1,0 +1,91 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\SalePlan;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Webmozart\Assert\Assert;
+
+class SaleController extends Controller
+{
+    public function list(Request $request)
+    {
+        $salePlans = SalePlan::saleList($request->get('user')->uuid);
+        $this->json_die([
+            'code' => 200,
+            'msg' => 'success',
+            'data' => $salePlans
+        ]);
+    }
+
+    public function select(Request $request)
+    {
+        try {
+            Assert::notEmpty($_POST['id'], 'id can not be empty');
+            Assert::integer((int)$_POST['id'], 'id must bu int');
+            $id = $_POST['id'];
+            $salePlan = SalePlan::selectDetail($request->get('user')->uuid, $id);
+            print_r($salePlan);
+            exit();
+        } catch (\InvalidArgumentException $e) {
+            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->json_die(['code' => 500, 'msg' => 'unknown error']);
+        }
+
+    }
+
+    public function insert(Request $request){
+        try{
+            $customerIds = self::isJson($_POST['customerIds'])?$_POST['customerIds']:$this->json_die(['code'=>407,'msg'=>'must be json']);
+            Assert::notEmpty($_POST['title'],'title can not bu empty');
+            $title = $_POST['title'];
+            $content = $_POST['content'];
+            $salePlan = SalePlan::insertNew($title,$content,$customerIds,$request->get('user')->uuid);
+            if ($salePlan) $this->json_die(['code'=>200,'msg'=>'success','data'=>$salePlan->id]);
+            else $this->json_die(['code' => 500, 'msg' => 'unknown error']);
+        }catch (\InvalidArgumentException $e) {
+            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->json_die(['code' => 500, 'msg' => 'unknown error']);
+        }
+    }
+    public function update(Request $request){
+        try{
+            Assert::notEmpty($_POST['title'],'title can not be empty');
+            Assert::notEmpty($_POST['id'],'id can not be empty');
+            Assert::integer((int)$_POST['id'],'id must be int');
+            $customerIds = self::isJson($_POST['customerIds'])?$_POST['customerIds']:$this->json_die(['code'=>407,'msg'=>'must be json']);
+            $id = $_POST['id'];
+            $title = $_POST['title'];
+            $content = $_POST['content'];
+            $res = SalePlan::updatePlan($id,$title,$content,$customerIds,$request->get('user')->uuid);
+            if ($res) $this->json_die(['code'=>200,'msg'=>'success']);
+            else $this->json_die(['code' => 403, 'msg' => 'not exist']);
+        }catch (\InvalidArgumentException $e) {
+            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->json_die(['code' => 500, 'msg' => 'unknown error']);
+        }
+    }
+    public function delete(Request $request){
+        try{
+            Assert::notEmpty($_POST['id'],'id can not be empty');
+            Assert::integer((int)$_POST['id'],'id must be int');
+            $id = $_POST['id'];
+            $res = SalePlan::deleteOne($id,$request->get('user')->uuid);
+            if ($res) $this->json_die(['code'=>200,'msg'=>'success']);
+            else $this->json_die(['code' => 403, 'msg' => 'not exist']);
+        }catch (\InvalidArgumentException $e) {
+            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->json_die(['code' => 500, 'msg' => 'unknown error']);
+        }
+    }
+
+}
