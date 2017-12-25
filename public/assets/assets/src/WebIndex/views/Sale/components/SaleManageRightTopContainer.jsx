@@ -3,7 +3,7 @@ import PhaseTag from "../../Customer/components/PhaseTag";
 import '../css/index.scss';
 
 const staffTags = ['不限', '筛选'];
-const timeTags = ['不限', '最近七天', '最近30天'];
+const timeTags = ['最近2天', '最近七天', '最近30天'];
 
 class CustomerRightTopContainer extends Component {
     render() {

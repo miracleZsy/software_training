@@ -2,6 +2,7 @@ import React,  { Component } from 'react';
 import { Button } from 'antd';
 import '../css/index.scss';
 import SaleManageRightTopContainer from './SaleManageRightTopContainer';
+import SaleCustomerAnalyse from "./SaleCustomerAnalyse";
 
 class SaleManage extends Component {
     render() {
@@ -27,6 +28,7 @@ class SaleManage extends Component {
                     <SaleManageRightTopContainer />
                     <div className="saleManageInfor">
                         {/*<CustomerTable />*/}
+                        <SaleCustomerAnalyse />
                     </div>
                 </div>
             </div>
