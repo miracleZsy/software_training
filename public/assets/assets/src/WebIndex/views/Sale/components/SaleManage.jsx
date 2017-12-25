@@ -1,11 +1,21 @@
 import React,  { Component } from 'react';
 import { Button } from 'antd';
+import { connect } from 'react-redux';
 import '../css/index.scss';
 import SaleManageRightTopContainer from './SaleManageRightTopContainer';
 import SaleCustomerAnalyse from "./SaleCustomerAnalyse";
+import SalePlan from "./SalePlan";
+import * as saleManageAction from '../actions/saleManageAction';
+
 
 class SaleManage extends Component {
+
+    changeTab = (e) => {
+        const　{ setSaleTab } = this.props;
+        setSaleTab(e.target.getAttribute('value'));
+    };
     render() {
+        const { saleTab } = this.props;
         return(
             <div className="saleManageContainer">
                 <div className="saleManageLeft">
@@ -16,19 +26,14 @@ class SaleManage extends Component {
                         <Button type="primary" onClick={this.showModal}>新增销售计划</Button>
                     </div>
                     <div className="saleManageLeftBottom">
-                        <span value="0">客户数量统计</span>
-                        <span value="1">客户活跃度统计</span>
-                        <span value="2">客户创建记录统计</span>
-                        {/*<span value="1" className={`${customerType == 1 ? 'current' : ''}`} onClick={this.changeCurrentCustomerType}>一般客户 ({simpleCustomerCount})</span>*/}
-                        {/*<span value="2" className={`${customerType == 2 ? 'current' : ''}`} onClick={this.changeCurrentCustomerType}>意向客户 ({purposeCustomerCount})</span>*/}
-                        {/*<span value="3"  className={`${customerType == 3 ? 'current' : ''}`} onClick={this.changeCurrentCustomerType}>已成交客户 ({finishCustomerCount})</span>*/}
+                        <span value="0" className={`${saleTab == 0 ? 'current' : ''}`} onClick={this.changeTab}>客户数量统计</span>
+                        <span value="1" className={`${saleTab == 1 ? 'current' : ''}`} onClick={this.changeTab}>销售计划</span>
                     </div>
                 </div>
                 <div className="saleManageRight">
                     <SaleManageRightTopContainer />
                     <div className="saleManageInfor">
-                        {/*<CustomerTable />*/}
-                        <SaleCustomerAnalyse />
+                        {saleTab == 0 ? <SaleCustomerAnalyse /> : <SalePlan />}
                     </div>
                 </div>
             </div>
@@ -37,4 +42,18 @@ class SaleManage extends Component {
 
 }
 
-export default SaleManage;
+const mapStateToProps = (state) => {
+    return {
+        saleTab: state.saleManageReducer.saleTab,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setSaleTab: (saleTab) => {
+            dispatch(saleManageAction.setSaleTab(saleTab));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SaleManage);
