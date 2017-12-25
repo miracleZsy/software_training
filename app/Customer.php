@@ -132,20 +132,24 @@ class Customer extends Model
     }
 
 
-    public static function customerManage($uuid,$start,$end)
+    public static function customerManage($uuid,$time)
     {
-        $start = Carbon::createFromFormat('Y-m-d', $start);
-        $end = Carbon::createFromFormat('Y-m-d', $end);
-        $newCountArr = self::where('uuid', $uuid)->whereBetween('created_at', [$start->copy()->toDateString(), $end->copy()->toDateString()])->withTrashed()
+        $end = Carbon::now()->addDay();
+        switch ($time){
+            case 2:$start = Carbon::now()->subWeek()->addDay();break;
+            case 3:$start = Carbon::now()->subMonth()->addDay();break;
+            default:$start = Carbon::now()->subDay();
+        }
+        $newCountArr = self::where('uuid', $uuid)->whereBetween('created_at', [$start->toDateString(), $end->toDateString()])->withTrashed()
             ->select(DB::raw("count(*) as new_count,date_format(created_at,'%Y-%m-%d') as date"))
             ->groupBy(DB::raw("date_format(created_at,'%Y-%m-%d')"))->get()->toArray();
-        $deleteCountArr = self::where('uuid', $uuid)->whereBetween('deleted_at', [$start->copy()->toDateString(), $end->copy()->toDateString()])->withTrashed()
+        $deleteCountArr = self::where('uuid', $uuid)->whereBetween('deleted_at', [$start->toDateString(), $end->toDateString()])->withTrashed()
             ->select(DB::raw("count(*) as delete_count,date_format(deleted_at,'%Y-%m-%d') as date"))
             ->groupBy(DB::raw("date_format(deleted_at,'%Y-%m-%d')"))->get()->toArray();
         $newCountArr = array_column($newCountArr, 'new_count', 'date');
         $deleteCountArr = array_column($deleteCountArr, 'delete_count', 'date');
-        $amount = self::withTrashed()->where('created_at', '<', $start->copy()->toDateString())->where(function ($query) use ($start, $end) {
-            $query->where('deleted_at', '>', $start->copy()->toDateString())->orWhere('deleted_at', NULL);
+        $amount = self::withTrashed()->where('created_at', '<', $start->toDateString())->where(function ($query) use ($start, $end) {
+            $query->where('deleted_at', '>', $start->toDateString())->orWhere('deleted_at', NULL);
         })->count();
         $countArr = [];
         while ($start->lte($end)) {
