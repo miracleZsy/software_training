@@ -43,7 +43,8 @@ class SaleController extends Controller
             Assert::notEmpty($_POST['title'],'title can not bu empty');
             $title = $_POST['title'];
             $content = $_POST['content'];
-            $salePlan = SalePlan::insertNew($title,$content,$customerIds,$request->get('user')->uuid);
+            $actTime = $_POST['actTime'];
+            $salePlan = SalePlan::insertNew($title,$content,$customerIds,$request->get('user')->uuid,$actTime);
             if ($salePlan) $this->json_die(['code'=>200,'msg'=>'success','data'=>$salePlan->id]);
             else $this->json_die(['code' => 500, 'msg' => 'unknown error']);
         }catch (\InvalidArgumentException $e) {
@@ -62,7 +63,8 @@ class SaleController extends Controller
             $id = $_POST['id'];
             $title = $_POST['title'];
             $content = $_POST['content'];
-            $res = SalePlan::updatePlan($id,$title,$content,$customerIds,$request->get('user')->uuid);
+            $actTime = $_POST['actTime'];
+            $res = SalePlan::updatePlan($id,$title,$content,$customerIds,$request->get('user')->uuid,$actTime);
             if ($res) $this->json_die(['code'=>200,'msg'=>'success']);
             else $this->json_die(['code' => 403, 'msg' => 'not exist']);
         }catch (\InvalidArgumentException $e) {

@@ -2,13 +2,14 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class SalePlan extends Model
 {
     protected $table = 'sale_plan';
-    protected $fillable = ['title', 'content', 'uuid'];
+    protected $fillable = ['title', 'content', 'uuid', 'act_time'];
     public $timestamps = true;
 
     public function customers()
@@ -40,14 +41,16 @@ class SalePlan extends Model
         return $salePlan;
     }
 
-    public static function insertNew($title, $content, $customerIds, $uuid)
+    public static function insertNew($title, $content, $customerIds, $uuid,$actTime)
     {
+        $actTime = Carbon::createFromFormat('Y-m-d',$actTime)->toDateString();
         DB::beginTransaction();
         try {
             $salePlan = self::create([
                 'title' => $title,
                 'content' => $content,
-                'uuid' => $uuid
+                'uuid' => $uuid,
+                'act_time'=>$actTime
             ]);
             $customerIds = json_decode($customerIds, true);
             $salePlan->customers()->attach($customerIds);
@@ -59,32 +62,39 @@ class SalePlan extends Model
         }
 
     }
-    public static function updatePlan($id,$title,$content,$customerIds,$uuid){
+
+    public static function updatePlan($id, $title, $content, $customerIds, $uuid,$actTime)
+    {
         $salePlan = self::find($id);
-        if (!$salePlan||$salePlan->uuid !== $uuid) return false;
+        $actTime = Carbon::createFromFormat('Y-m-d',$actTime)->toDateString();
+        if (!$salePlan || $salePlan->uuid !== $uuid) return false;
         $customerIds = json_decode($customerIds, true);
         DB::beginTransaction();
-        try{
+        try {
             $salePlan->title = $title;
             $salePlan->content = $content;
+            $salePlan->act_time = $actTime;
             $salePlan->save();
             $salePlan->customers()->sync($customerIds);
             DB::commit();
             return true;
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
             return false;
         }
     }
-    public static function deleteOne($id,$uuid){
+
+    public static function deleteOne($id, $uuid)
+    {
         $salePlan = self::find($id);
-        if (!$salePlan||$salePlan->uuid !== $uuid) return false;
-        try{
-            $salePlan->detach();
+        if (!$salePlan || $salePlan->uuid !== $uuid) return false;
+        try {
+            $salePlan->customers()->detach();
             $salePlan->delete();
             DB::commit();
             return true;
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
+            print_r($e->getMessage());
             DB::rollBack();
             return false;
         }

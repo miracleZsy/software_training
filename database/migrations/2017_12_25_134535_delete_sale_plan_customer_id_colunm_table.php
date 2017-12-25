@@ -15,6 +15,7 @@ class DeleteSalePlanCustomerIdColunmTable extends Migration
     {
         Schema::table('sale_plan', function (Blueprint $table) {
             $table->dropColumn('customer_id');
+            $table->date('act_time')->nullable();
             $table->softDeletes();
         });
     }
@@ -28,6 +29,7 @@ class DeleteSalePlanCustomerIdColunmTable extends Migration
     {
         Schema::table('sale_plan', function (Blueprint $table) {
             $table->string('customer_id');
+            $table->dropColumn('act_time');
             $table->dropSoftDeletes();
         });
     }
