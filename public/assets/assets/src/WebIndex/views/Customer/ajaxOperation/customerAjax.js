@@ -2,6 +2,7 @@ import axiosUtil from '../../../../lib/axiosUtil';
 import { message } from 'antd';
 import * as customerAction from '../../Customer/actions/customerAction';
 import * as customerTypeCountAction from '../../Customer/actions/customerTypeCountAction';
+import * as customerDetailAction from '../../Customer/actions/customerDetailAction';
 import moment from 'moment';
 
 const fetchCustomerAddress = '/software_training/public/customer/list';
@@ -10,6 +11,10 @@ const addCustomerAddress = '/software_training/public/customer/insert';
 const getCheckedCustomerAddress = '/software_training/public/customer/select';
 const updateCustomerAddress = '/software_training/public/customer/update';
 const fetchCustomerTypeCountAddress = '/software_training/public/customer/count';
+const fetchCustomerDetailAddress = '/software_training/public/customer/select';
+const setCustomerPhaseAddress = '/software_training/public/customer/changePhase';
+const getPhaseLogAddress = '/software_training/public/customer/getPhaseLog';
+
 
 export const fetchCustomer = (phaseType = 0, time = 0, page = 1, customerType = 0) => (dispatch) => axiosUtil('post', fetchCustomerAddress, {
     phase: phaseType,
@@ -105,14 +110,45 @@ export const updateCustomer = (id, customerUpdated, phaseType, time, currentPage
 export const fetchCustomerTypeCount = () => (dispatch) => axiosUtil('post', fetchCustomerTypeCountAddress, {})
     .then((value) => {
         if(value !== undefined) {
-            console.log(value);
             const simpleCustomerCount = value['1'] === undefined ? '0' : value['1'];
             const purposeCustomerCount = value['2'] === undefined ? '0' : value['2'];
             const finishCustomerCount = value['3'] === undefined ? '0' : value['3'];
-            console.log(value['1']);
             dispatch(customerTypeCountAction.setTotalCustomerCount(value.amount));
             dispatch(customerTypeCountAction.setSimpleCustomerCount(simpleCustomerCount));
             dispatch(customerTypeCountAction.setPurposeCustomerCount(purposeCustomerCount));
             dispatch(customerTypeCountAction.setFinishCustomerCount(finishCustomerCount));
         }
+    });
+
+export const fetchCustomerDetail = (id) => (dispatch) => axiosUtil('post', fetchCustomerDetailAddress, {
+    id: id,
+})
+    .then((value) => {
+        if(value !== undefined) {
+            dispatch(customerDetailAction.fetchCustomerDetail(value));
+            dispatch(customerDetailAction.setSlideValue((value.phase - 1) * 25));
+        }
+    });
+
+
+export const setCustomerPhase = (id, phase) => (dispatch) => axiosUtil('post', setCustomerPhaseAddress, {
+    id: id,
+    phase: phase
+})
+    .then((value) => {
+        if(value === 500 || value === 403) {
+            message.info('修改阶段失败!');
+        }else {
+            getPhaseLog(id)(dispatch)
+                .then((value) => {
+                    message.info('修改阶段成功!');
+                });
+        }
+    });
+
+export const getPhaseLog = (id) => (dispatch) => axiosUtil('post', getPhaseLogAddress, {
+    customerId: id
+})
+    .then((value) => {
+        dispatch(customerDetailAction.fetchPhaseLog(value));
     });

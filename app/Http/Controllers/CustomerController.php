@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
+use App\CustomerPhaseLog;
 use App\sys\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -18,9 +19,9 @@ class CustomerController extends Controller
     public function list(Request $request)
     {
         try {
-            Assert::numeric($_POST['type'], 'type should be int');
-            Assert::numeric($_POST['phase'], 'phase should be int');
-            Assert::numeric($_POST['time'], 'time should be int');
+            Assert::integer((int)$_POST['type'], 'type should be int');
+            Assert::integer((int)$_POST['phase'], 'phase should be int');
+            Assert::integer((int)$_POST['time'], 'time should be int');
             $type = $_POST['type'];
             $phase = $_POST['phase'];
             $time = $_POST['time'];
@@ -79,7 +80,7 @@ class CustomerController extends Controller
     {
         try {
             Assert::notEmpty($_POST['id'], 'id can not be empty');
-            Assert::numeric($_POST['id'], 'id can should be int');
+            Assert::integer((int)$_POST['id'], 'id can should be int');
             Assert::notEmpty($_POST['sex'], 'sex can not be empty');
             Assert::notEmpty($_POST['birthday'], 'birthday can not be empty');
             Assert::notEmpty($_POST['name'], 'name can not be empty');
@@ -112,7 +113,7 @@ class CustomerController extends Controller
     {
         try {
             Assert::notEmpty($_POST['id'], 'id can not be empty');
-            Assert::numeric($_POST['id'], 'id can should be int');
+            Assert::integer((int)$_POST['id'], 'id can should be int');
             $id = $_POST['id'];
             $customer = Customer::find($id);
             if ($customer && $request->get('user')->uuid === $customer->uuid) {
@@ -131,9 +132,12 @@ class CustomerController extends Controller
     {
         try {
             Assert::notEmpty($_POST['id'], 'id can not be empty');
-            Assert::numeric($_POST['id'], 'id must be int');
+            Assert::integer((int)$_POST['id'], 'id must be int');
             $id = $_POST['id'];
             $customer = Customer::find($id);
+            $username = $customer->user->name;
+            $customer->followName = $username;
+            unset($customer->user);
             $customer->sex = ($customer->sex === 1) ? '男' : '女';
             switch ($customer->type) {
                 case 1:
@@ -154,11 +158,51 @@ class CustomerController extends Controller
             $this->json_die(['code' => 500, 'msg' => 'unknown error']);
         }
     }
-    public function amountCount(Request $request){
+
+    public function amountCount(Request $request)
+    {
         try {
             $count = Customer::amountCount($request->get('user')->uuid);
             $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $count]);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->json_die(['code' => 500, 'msg' => 'unknown error']);
+        }
+    }
+
+    public function getPhaseLog(Request $request)
+    {
+        try {
+            Assert::notEmpty($_POST['customerId'], 'id can not be null');
+            Assert::integer((int)$_POST['customerId'], 'id must be int');
+            $customerId = $_POST['customerId'];
+            $uuid = $request->get('user')->uuid;
+            $phaseLog = CustomerPhaseLog::getPhaseLog($customerId, $uuid);
+            $this->json_die([
+                'code' => 200,
+                'msg' => 'success',
+                'data' => $phaseLog
+            ]);
+        } catch (\InvalidArgumentException $e) {
+            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->json_die(['code' => 500, 'msg' => 'unknown error']);
+        }
+    }
+    public function changePhase(Request $request){
+        try{
+            Assert::notEmpty($_POST['id'], 'id can not be null');
+            Assert::integer((int)$_POST['id'],'id must be int');
+            Assert::integer((int)$_POST['phase'],'phase must be int');
+            $id = $_POST['id'];
+            $phase = $_POST['phase'];
+            $res = Customer::phaseChange($id,$request->get('user')->uuid,$phase);
+            if ($res) $this->json_die(['code'=>200, 'msg'=>'success']);
+            else $this->json_die(['code'=>403,'msg'=>'customer is not exist']);
+        }catch (\InvalidArgumentException $e) {
+            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
+        } catch (\Exception $e) {
             Log::error($e->getMessage());
             $this->json_die(['code' => 500, 'msg' => 'unknown error']);
         }

@@ -23,3 +23,5 @@ Route::post('/customer/count','CustomerController@amountCount');
 
 //sale部分
 Route::post('/sale/customerManage','SaleController@customerManage');
+Route::post('/customer/changePhase','CustomerController@changePhase');
+Route::post('/customer/getPhaseLog','CustomerController@getPhaseLog');
