@@ -11,11 +11,9 @@ class SaleController extends Controller
 {
     public function customerManage(Request $request){
         try{
-            Assert::notEmpty($_POST['start'],'start can not be empty');
-            Assert::notEmpty($_POST['end'],'end can not be empty');
-            $start = $_POST['start'];
-            $end = $_POST['end'];
-            $numStatistic = Customer::customerManage($request->get('user')->uuid,$start,$end);
+            Assert::oneOf((int)$_POST['time'],[1,2,3],'time must be 1 or 2');
+            $time = $_POST['time'];
+            $numStatistic = Customer::customerManage($request->get('user')->uuid,$time);
             $this->json_die([
                 'code'=>200,
                 'msg'=>'success',
