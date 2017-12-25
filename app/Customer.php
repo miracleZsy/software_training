@@ -152,7 +152,8 @@ class Customer extends Model
             $newCount = key_exists($start->toDateString(), $newCountArr) ? $newCountArr[$start->toDateString()] : 0;
             $deleteCount = key_exists($start->toDateString(), $deleteCountArr) ? $deleteCountArr[$start->toDateString()] : 0;
             $amount = $amount + $newCount - $deleteCount;
-            $countArr[$start->toDateString()] = [
+            $countArr[] = [
+                'time'=>$start->toDateString(),
                 'increase' => $newCount,
                 'decrease' => $deleteCount,
                 'netIncrease' => $newCount - $deleteCount,
