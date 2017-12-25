@@ -9,6 +9,7 @@ import '../css/index.scss';
 
 class SaleCustomerAnalyse extends Component {
 
+
     componentDidMount() {
         let myChart = echarts.init(document.getElementById('customerAnalyseEchart'));
         // 绘制图表
@@ -116,28 +117,32 @@ class SaleCustomerAnalyse extends Component {
     createAnalyseColumns = () => {
         return  [{
             title: '日期',
-            dataIndex: 'name',
+            dataIndex: 'time',
         }, {
             title: '新增客户数',
-            dataIndex: 'created_at',
+            dataIndex: 'increase',
         }, {
             title: '流失客户数',
-            dataIndex: 'tel',
+            dataIndex: 'decrease',
         }, {
             title: '净增客户数',
-            dataIndex: 'oper',
+            dataIndex: 'netIncrease',
         }, {
             title: '客户总数',
-            dataIndex: 'oper',
+            dataIndex: 'amount',
         }];
     };
 
     render() {
+        const { saleAnalyse } = this.props;
         return(
             <div>
                 <div id="customerAnalyseEchart" style={{ width: '100%', height: 430 }}></div>
                 <div className="customerAnalyseTable">
-                    <SaleAnalyseTable columnsData={this.createAnalyseColumns()} />
+                    <SaleAnalyseTable
+                        columnsData={this.createAnalyseColumns()}
+                        saleAnalyse={saleAnalyse}
+                    />
                 </div>
             </div>
         );

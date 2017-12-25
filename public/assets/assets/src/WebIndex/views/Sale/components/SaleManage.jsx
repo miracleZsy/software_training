@@ -6,16 +6,22 @@ import SaleManageRightTopContainer from './SaleManageRightTopContainer';
 import SaleCustomerAnalyse from "./SaleCustomerAnalyse";
 import SalePlan from "./SalePlan";
 import * as saleManageAction from '../actions/saleManageAction';
+import * as saleManageAjax from '../ajaxOperation/saleManageAjax';
 
 
 class SaleManage extends Component {
+
+    componentWillMount() {
+        const { fetchSaleAnalyse } = this.props;
+        fetchSaleAnalyse(1);
+    }
 
     changeTab = (e) => {
         const　{ setSaleTab } = this.props;
         setSaleTab(e.target.getAttribute('value'));
     };
     render() {
-        const { saleTab } = this.props;
+        const { saleTab, saleAnalyse } = this.props;
         return(
             <div className="saleManageContainer">
                 <div className="saleManageLeft">
@@ -33,7 +39,7 @@ class SaleManage extends Component {
                 <div className="saleManageRight">
                     <SaleManageRightTopContainer />
                     <div className="saleManageInfor">
-                        {saleTab == 0 ? <SaleCustomerAnalyse /> : <SalePlan />}
+                        {saleTab == 0 ? <SaleCustomerAnalyse saleAnalyse={saleAnalyse} /> : <SalePlan />}
                     </div>
                 </div>
             </div>
@@ -45,6 +51,7 @@ class SaleManage extends Component {
 const mapStateToProps = (state) => {
     return {
         saleTab: state.saleManageReducer.saleTab,
+        saleAnalyse: state.saleManageReducer.saleAnalyse
     };
 };
 
@@ -52,6 +59,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setSaleTab: (saleTab) => {
             dispatch(saleManageAction.setSaleTab(saleTab));
+        },
+        fetchSaleAnalyse: (timeType) => {
+            dispatch(saleManageAjax.fetchSaleAnalyse(timeType));
         }
     };
 };
