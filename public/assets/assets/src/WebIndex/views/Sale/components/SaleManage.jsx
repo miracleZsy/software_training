@@ -12,8 +12,8 @@ import * as saleManageAjax from '../ajaxOperation/saleManageAjax';
 class SaleManage extends Component {
 
     componentWillMount() {
-        const { fetchSaleAnalyse } = this.props;
-        fetchSaleAnalyse(1);
+        const { setSaleTimeType } = this.props;
+        setSaleTimeType(0);
     }
 
     changeTab = (e) => {
@@ -39,7 +39,7 @@ class SaleManage extends Component {
                 <div className="saleManageRight">
                     <SaleManageRightTopContainer setSaleTimeType={setSaleTimeType} saleTimeType={saleTimeType} fetchSaleAnalyse={fetchSaleAnalyse} />
                     <div className="saleManageInfor">
-                        {saleTab == 0 ? <SaleCustomerAnalyse saleAnalyse={saleAnalyse} /> : <SalePlan />}
+                        {saleTab == 0 ? <SaleCustomerAnalyse saleAnalyse={saleAnalyse} fetchSaleAnalyse={fetchSaleAnalyse} setSaleTimeType={setSaleTimeType} /> : <SalePlan />}
                     </div>
                 </div>
             </div>

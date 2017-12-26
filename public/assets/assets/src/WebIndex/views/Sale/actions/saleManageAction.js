@@ -14,19 +14,6 @@ export const fetchSaleAnalyse = (saleAnalyse) => {
     };
 };
 
-export const setTimeChart = (timeChart) => {
-    return {
-        type: saleManageTypes.SET_TIME_CHART,
-        timeChart: timeChart
-    };
-};
-
-export const setCustomerAmount = (customerAmount) => {
-    return {
-        type: saleManageTypes.SET_CUSTOMER_AMOUNT,
-        customerAmount: customerAmount
-    };
-};
 export const setSaleTimeType = (saleTimeType) => {
     return{
         type: saleManageTypes.SET_SALE_TIME_TYPE,

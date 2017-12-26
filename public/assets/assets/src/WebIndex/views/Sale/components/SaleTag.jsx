@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Tag } from 'antd';
 const { CheckableTag } = Tag;
 
-class PhaseTag extends Component {
+class SaleTag extends Component {
     constructor() {
         super();
         this.state = {
@@ -41,4 +41,4 @@ class PhaseTag extends Component {
     }
 }
 
-export default PhaseTag;
+export default SaleTag;
