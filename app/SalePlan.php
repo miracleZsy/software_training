@@ -41,7 +41,7 @@ class SalePlan extends Model
                 break;
             default:break;
         }
-        $salePlans = self::getSalePlans($uuid)->whereBetween('created_at',[$start,$end])->get()->toArray();
+        $salePlans = self::getSalePlans($uuid)->whereBetween('created_at',[$start,$end])->orderBy('created_at','desc')->get()->toArray();
         foreach ($salePlans as $k => $v) {
             $salePlans[$k]['customers'] = array_column($v['customers'], 'name');
         }
