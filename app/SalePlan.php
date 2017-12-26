@@ -38,6 +38,8 @@ class SalePlan extends Model
                 break;
             case 3:
                 $start = Carbon::create()->subMonth()->addDay()->toDateString();
+                break;
+            default:break;
         }
         $salePlans = self::getSalePlans($uuid)->whereBetween('created_at',[$start,$end])->get()->toArray();
         foreach ($salePlans as $k => $v) {
