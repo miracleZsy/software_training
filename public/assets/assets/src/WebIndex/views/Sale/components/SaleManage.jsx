@@ -80,7 +80,13 @@ class SaleManage extends Component {
                     </div>
                 </div>
                 <div className="saleManageRight">
-                    <SaleManageRightTopContainer setSaleTimeType={setSaleTimeType} saleTimeType={saleTimeType} fetchSaleAnalyse={fetchSaleAnalyse} />
+                    <SaleManageRightTopContainer
+                        setSaleTimeType={setSaleTimeType}
+                        saleTimeType={saleTimeType}
+                        fetchSaleAnalyse={fetchSaleAnalyse}
+                        saleTab={saleTab}
+                        fetchSalePlan={fetchSalePlan}
+                    />
                     <div className="saleManageInfor">
                         {saleTab == 0 ?
                             <SaleCustomerAnalyse

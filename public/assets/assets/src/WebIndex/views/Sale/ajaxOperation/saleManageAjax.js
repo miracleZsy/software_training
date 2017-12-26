@@ -16,7 +16,7 @@ export const fetchSaleAnalyse = (timeType) => (dispatch) => axiosUtil('post', fe
 
 
 export const fetchSalePlan = (timeType) => (dispatch) => axiosUtil('post', fetchSalePlanAddress, {
-    timeType: timeType
+    time: timeType
 })
     .then((value) => {
         if(value !== undefined) {

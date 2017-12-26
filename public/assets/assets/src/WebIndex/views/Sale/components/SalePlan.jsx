@@ -10,6 +10,7 @@ class SalePlan extends Component {
         setSaleTimeType(0);
     }
 
+
     createAnalyseColumns = () => {
         return  [{
             title: '标题',
@@ -20,10 +21,21 @@ class SalePlan extends Component {
         }, {
             title: '客户名称',
             dataIndex: 'customers',
+            render:(text, record) => this.getCustomerShow(record.customers)
         }, {
             title: '执行时间',
             dataIndex: 'act_time',
         }];
+    };
+
+    getCustomerShow = (customers) => {
+        let res = '';
+        customers.forEach((item) => {
+            res += item + ' ';
+        });
+        return(
+            <span>{res}</span>
+        );
     };
     render() {
         const { salePlan } = this.props;
