@@ -1,0 +1,10 @@
+
+export const SET_SALE_TAB = 'SET_SALE_TAB';
+
+export const SET_SALE_ANALYSE = 'SET_SALE_ANALYSE';
+
+export const SET_SALE_TIME_TYPE = 'SET_SALE_TIME_TYPE';
+
+export const SET_TIME_CHART = 'SET_TIME_CHART';
+
+export const SET_CUSTOMER_AMOUNT = 'SET_CUSTOMER_AMOUNT';
