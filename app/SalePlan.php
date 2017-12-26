@@ -21,7 +21,7 @@ class SalePlan extends Model
     {
         return self::where('uuid', $uuid)->with(['customers' => function ($query) {
             $query->select('name');
-        }])->select('id', 'title', 'created_at');
+        }])->select('id', 'title', 'created_at', 'act_time');
 
     }
 
@@ -36,21 +36,21 @@ class SalePlan extends Model
 
     public static function selectDetail($uuid, $id)
     {
-        $salePlan = self::getSalePlans($uuid)->select('id', 'title', 'created_at', 'content')->where('id', $id)->first()->toArray();
+        $salePlan = self::getSalePlans($uuid)->select('id', 'title', 'created_at', 'content', 'act_time')->where('id', $id)->first()->toArray();
         $salePlan['customers'] = array_column($salePlan['customers'], 'name');
         return $salePlan;
     }
 
-    public static function insertNew($title, $content, $customerIds, $uuid,$actTime)
+    public static function insertNew($title, $content, $customerIds, $uuid, $actTime)
     {
-        $actTime = Carbon::createFromFormat('Y-m-d',$actTime)->toDateString();
+        $actTime = Carbon::createFromFormat('Y-m-d', $actTime)->toDateString();
         DB::beginTransaction();
         try {
             $salePlan = self::create([
                 'title' => $title,
                 'content' => $content,
                 'uuid' => $uuid,
-                'act_time'=>$actTime
+                'act_time' => $actTime
             ]);
             $customerIds = json_decode($customerIds, true);
             $salePlan->customers()->attach($customerIds);
@@ -63,10 +63,10 @@ class SalePlan extends Model
 
     }
 
-    public static function updatePlan($id, $title, $content, $customerIds, $uuid,$actTime)
+    public static function updatePlan($id, $title, $content, $customerIds, $uuid, $actTime)
     {
         $salePlan = self::find($id);
-        $actTime = Carbon::createFromFormat('Y-m-d',$actTime)->toDateString();
+        $actTime = Carbon::createFromFormat('Y-m-d', $actTime)->toDateString();
         if (!$salePlan || $salePlan->uuid !== $uuid) return false;
         $customerIds = json_decode($customerIds, true);
         DB::beginTransaction();
