@@ -148,7 +148,7 @@ class Customer extends Model
             ->groupBy(DB::raw("date_format(deleted_at,'%Y-%m-%d')"))->get()->toArray();
         $newCountArr = array_column($newCountArr, 'new_count', 'date');
         $deleteCountArr = array_column($deleteCountArr, 'delete_count', 'date');
-        $amount = self::withTrashed()->where('created_at', '<', $start->toDateString())->where(function ($query) use ($start, $end) {
+        $amount = self::withTrashed()->where('uuid',$uuid)->where('created_at', '<', $start->toDateString())->where(function ($query) use ($start, $end) {
             $query->where('deleted_at', '>', $start->toDateString())->orWhere('deleted_at', NULL);
         })->count();
         $countArr = [];
