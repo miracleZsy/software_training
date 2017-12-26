@@ -12,7 +12,7 @@ class SaleController extends Controller
 {
     public function list(Request $request)
     {
-        Assert::oneOf((int)$_POST['time'],[1,2,3],'time must be 1 2 or 3');
+        Assert::oneOf((int)$_POST['time'],[0,1,2,3],'time must be 1 2 or 3');
         $time = $_POST['time'];
         $salePlans = SalePlan::saleList($request->get('user')->uuid,$time);
         $this->json_die([
