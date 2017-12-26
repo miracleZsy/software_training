@@ -7,7 +7,7 @@ class SalePlan extends Component {
     createAnalyseColumns = () => {
         return  [{
             title: '标题',
-            dataIndex: 'name',
+            dataIndex: 'title',
         }, {
             title: '创建时间',
             dataIndex: 'created_at',

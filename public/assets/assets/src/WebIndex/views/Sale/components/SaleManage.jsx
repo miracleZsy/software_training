@@ -7,9 +7,16 @@ import SaleCustomerAnalyse from "./SaleCustomerAnalyse";
 import SalePlan from "./SalePlan";
 import * as saleManageAction from '../actions/saleManageAction';
 import * as saleManageAjax from '../ajaxOperation/saleManageAjax';
+import CreateSalePlan from './CreateSalePlan';
 
 
 class SaleManage extends Component {
+    constructor() {
+        super();
+        this.state = {
+            showCreateSalePlan: true
+        };
+    }
 
     componentWillMount() {
         const { setSaleTimeType } = this.props;
@@ -20,6 +27,34 @@ class SaleManage extends Component {
         const　{ setSaleTab } = this.props;
         setSaleTab(e.target.getAttribute('value'));
     };
+
+    showSalePlan = () => {
+        this.setState({ showCreateSalePlan: true });
+    };
+
+    handleCancel = () => {
+        this.setState({ showCreateSalePlan: false });
+    };
+    handleCreate = () => {
+        const form = this.form;
+        // const {  } = this.props;
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+            // setPhaseType(0);
+            // setTime(0);
+            // setCustomerType(0);
+            // setCurrentPage(1);
+            // addCustomer(values, phaseType, time, currentPage, customerType);
+            form.resetFields();
+            this.setState({ showCreateSalePlan: false });
+        });
+    };
+    saveFormRef = (form) => {
+        this.form = form;
+    };
+
     render() {
         const { saleTab, saleAnalyse, setSaleTimeType, saleTimeType, fetchSaleAnalyse } = this.props;
         return(
@@ -29,7 +64,15 @@ class SaleManage extends Component {
                         销售管理
                     </div>
                     <div className="addSalePlan">
-                        <Button type="primary" onClick={this.showModal}>新增销售计划</Button>
+                        <Button type="primary" onClick={this.showSalePlan}>新增销售计划</Button>
+                        <CreateSalePlan
+                            ref={this.saveFormRef}
+                            visible={this.state.showCreateSalePlan}
+                            onCancel={this.handleCancel}
+                            onCreate={this.handleCreate}
+                            title="新增计划"
+                            okText="创建"
+                        />
                     </div>
                     <div className="saleManageLeftBottom">
                         <span value="0" className={`${saleTab == 0 ? 'current' : ''}`} onClick={this.changeTab}>客户数量统计</span>
