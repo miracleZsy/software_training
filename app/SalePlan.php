@@ -25,9 +25,21 @@ class SalePlan extends Model
 
     }
 
-    public static function saleList($uuid)
+    public static function saleList($uuid,$time)
     {
-        $salePlans = self::getSalePlans($uuid)->get()->toArray();
+        $start = 0;
+        $end = Carbon::now();
+        switch ($time) {
+            case 1:
+                $start = Carbon::create()->subDay()->toDateString();
+                break;
+            case 2:
+                $start = Carbon::create()->subWeek()->addDay()->toDateString();
+                break;
+            case 3:
+                $start = Carbon::create()->subMonth()->addDay()->toDateString();
+        }
+        $salePlans = self::getSalePlans($uuid)->whereBetween('created_at',[$start,$end])->get()->toArray();
         foreach ($salePlans as $k => $v) {
             $salePlans[$k]['customers'] = array_column($v['customers'], 'name');
         }
