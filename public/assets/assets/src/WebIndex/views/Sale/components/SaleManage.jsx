@@ -21,7 +21,7 @@ class SaleManage extends Component {
         setSaleTab(e.target.getAttribute('value'));
     };
     render() {
-        const { saleTab, saleAnalyse } = this.props;
+        const { saleTab, saleAnalyse, setSaleTimeType, saleTimeType, fetchSaleAnalyse } = this.props;
         return(
             <div className="saleManageContainer">
                 <div className="saleManageLeft">
@@ -37,7 +37,7 @@ class SaleManage extends Component {
                     </div>
                 </div>
                 <div className="saleManageRight">
-                    <SaleManageRightTopContainer />
+                    <SaleManageRightTopContainer setSaleTimeType={setSaleTimeType} saleTimeType={saleTimeType} fetchSaleAnalyse={fetchSaleAnalyse} />
                     <div className="saleManageInfor">
                         {saleTab == 0 ? <SaleCustomerAnalyse saleAnalyse={saleAnalyse} /> : <SalePlan />}
                     </div>
@@ -51,7 +51,8 @@ class SaleManage extends Component {
 const mapStateToProps = (state) => {
     return {
         saleTab: state.saleManageReducer.saleTab,
-        saleAnalyse: state.saleManageReducer.saleAnalyse
+        saleAnalyse: state.saleManageReducer.saleAnalyse,
+        saleTimeType: state.saleManageReducer.saleTimeType
     };
 };
 
@@ -62,6 +63,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         fetchSaleAnalyse: (timeType) => {
             dispatch(saleManageAjax.fetchSaleAnalyse(timeType));
+        },
+        setSaleTimeType: (saleTimeType) => {
+            dispatch(saleManageAction.setSaleTimeType(saleTimeType));
         }
     };
 };

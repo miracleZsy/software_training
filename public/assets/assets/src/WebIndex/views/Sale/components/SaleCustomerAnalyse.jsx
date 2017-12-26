@@ -10,8 +10,8 @@ import { connect } from 'react-redux';
 
 class SaleCustomerAnalyse extends Component {
 
-    componentDidMount() {
-        const { timeChart } = this.props;
+    componentDidUpdate() {
+        const { timeChart, saleAnalyse } = this.props;
         let myChart = echarts.init(document.getElementById('customerAnalyseEchart'));
         // 绘制图表
         const option = {
@@ -110,7 +110,7 @@ class SaleCustomerAnalyse extends Component {
 
                     }
                 },
-                data: [10, 20, 100, 50]
+                data: this.createAmountArr(saleAnalyse)
             }]
         };
         myChart.setOption(option);
@@ -132,6 +132,13 @@ class SaleCustomerAnalyse extends Component {
             title: '客户总数',
             dataIndex: 'amount',
         }];
+    };
+    createAmountArr = (saleAnalyse) => {
+        let data = [];
+        saleAnalyse.forEach(item => {
+            data.push(item.amount);
+        });
+        return data;
     };
 
     render() {

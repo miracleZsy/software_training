@@ -27,3 +27,9 @@ export const setCustomerAmount = (customerAmount) => {
         customerAmount: customerAmount
     };
 };
+export const setSaleTimeType = (saleTimeType) => {
+    return{
+        type: saleManageTypes.SET_SALE_TIME_TYPE,
+        saleTimeType: saleTimeType
+    };
+};
