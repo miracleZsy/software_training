@@ -20,3 +20,10 @@ export const setSaleTimeType = (saleTimeType) => {
         saleTimeType: saleTimeType
     };
 };
+
+export const setSalePlan = (salePlan) => {
+    return{
+        type: saleManageTypes.SET_SALE_PLAN,
+        salePlan: salePlan
+    };
+};

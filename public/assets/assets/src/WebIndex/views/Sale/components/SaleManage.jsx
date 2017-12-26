@@ -14,7 +14,7 @@ class SaleManage extends Component {
     constructor() {
         super();
         this.state = {
-            showCreateSalePlan: true
+            showCreateSalePlan: false
         };
     }
 
@@ -56,7 +56,7 @@ class SaleManage extends Component {
     };
 
     render() {
-        const { saleTab, saleAnalyse, setSaleTimeType, saleTimeType, fetchSaleAnalyse } = this.props;
+        const { saleTab, saleAnalyse, setSaleTimeType, saleTimeType, fetchSaleAnalyse, salePlan, fetchSalePlan } = this.props;
         return(
             <div className="saleManageContainer">
                 <div className="saleManageLeft">
@@ -82,7 +82,17 @@ class SaleManage extends Component {
                 <div className="saleManageRight">
                     <SaleManageRightTopContainer setSaleTimeType={setSaleTimeType} saleTimeType={saleTimeType} fetchSaleAnalyse={fetchSaleAnalyse} />
                     <div className="saleManageInfor">
-                        {saleTab == 0 ? <SaleCustomerAnalyse saleAnalyse={saleAnalyse} fetchSaleAnalyse={fetchSaleAnalyse} setSaleTimeType={setSaleTimeType} /> : <SalePlan />}
+                        {saleTab == 0 ?
+                            <SaleCustomerAnalyse
+                                saleAnalyse={saleAnalyse}
+                                fetchSaleAnalyse={fetchSaleAnalyse}
+                                setSaleTimeType={setSaleTimeType}
+                            /> :
+                            <SalePlan
+                                salePlan={salePlan}
+                                fetchSalePlan={fetchSalePlan}
+                                setSaleTimeType={setSaleTimeType}
+                            />}
                     </div>
                 </div>
             </div>
@@ -95,7 +105,8 @@ const mapStateToProps = (state) => {
     return {
         saleTab: state.saleManageReducer.saleTab,
         saleAnalyse: state.saleManageReducer.saleAnalyse,
-        saleTimeType: state.saleManageReducer.saleTimeType
+        saleTimeType: state.saleManageReducer.saleTimeType,
+        salePlan: state.saleManageReducer.salePlan
     };
 };
 
@@ -109,6 +120,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         setSaleTimeType: (saleTimeType) => {
             dispatch(saleManageAction.setSaleTimeType(saleTimeType));
+        },
+        fetchSalePlan: (timeType) => {
+            dispatch(saleManageAjax.fetchSalePlan(timeType));
         }
     };
 };
