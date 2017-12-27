@@ -28,7 +28,7 @@ const CreateCustomer = Form.create()(
                 okText={okText}
                 onCancel={onCancel}
                 onOk={onCreate}
-                style={{ top: 0 }}
+                style={{ top: 15 }}
             >
                 <Form layout="vertical">
                     <Row gutter={16}>

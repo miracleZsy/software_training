@@ -1,21 +1,47 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Modal, Form, Input, Row, Col, DatePicker, Select } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
+import * as saleManageAjax from '../ajaxOperation/saleManageAjax';
+import debounce from 'lodash.debounce';
 
-const CreateCustomer = Form.create()(
-    (props) => {
-        const { visible, onCancel, onCreate, form, okText, title } = props;
+
+
+class FormCustomer extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            children: []
+        };
+    }
+    searchCustomer = (value) => {
+        const { customerList } = this.props;
+        if (value !== '') {
+            saleManageAjax.fetchCustomerList(value)
+                .then((res) => {
+                    if (res !== 500 && res !== undefined) {
+                        let children = [];
+                        res.forEach((item) => {
+                            children.push(<Option key={item.id}>{item.name}</Option>);
+                        });
+                        this.setState({
+                            children: children
+                        });
+                        console.log(res);
+                        console.log(this.state.children);
+                    }
+                });
+        }
+    };
+
+    handleChange = (value) => {
+        console.log(`Selected: ${value}`);
+    };
+    render() {
+        const { visible, onCancel, onCreate, form, okText, title } = this.props;
         const { getFieldDecorator } = form;
-
-        const children = [];
-        for (let i = 10; i < 36; i++) {
-            children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-        }
-        function handleChange(value) {
-            console.log(`Selected: ${value}`);
-        }
-
+        const { children } = this.state;
         return (
             <Modal
                 visible={visible}
@@ -23,7 +49,7 @@ const CreateCustomer = Form.create()(
                 okText={okText}
                 onCancel={onCancel}
                 onOk={onCreate}
-                style={{ top: 30 }}
+                style={{ top: 50 }}
             >
                 <Form layout="vertical">
                     <FormItem label="标题">
@@ -36,21 +62,22 @@ const CreateCustomer = Form.create()(
                     </FormItem>
 
                     <FormItem label="执行日期">
-                        {getFieldDecorator('executeDate', {
+                        {getFieldDecorator('executeTime', {
                             rules: [{ required: true, message: '请选择执行日期!' }],
                         })(
                             <DatePicker format="YYYY-MM-DD" style={{ width: 236 }} placeholder="请选择执行日期" />
                         )}
                     </FormItem>
                     <FormItem label="客户">
-                        {getFieldDecorator('customer', {
+                        {getFieldDecorator('customers', {
                             rules: [{ required: true, message: '请选择客户!' }],
                         })(
                             <Select
                                 mode="tags"
                                 size="large"
                                 placeholder="请选择客户"
-                                onChange={handleChange}
+                                onChange={this.handleChange}
+                                onSearch={debounce(this.searchCustomer, 800)}
                                 style={{ width: '100%' }}
                             >
                                 {children}
@@ -69,6 +96,8 @@ const CreateCustomer = Form.create()(
             </Modal>
         );
     }
-);
+}
 
+
+const CreateCustomer = Form.create()(FormCustomer);
 export default CreateCustomer;

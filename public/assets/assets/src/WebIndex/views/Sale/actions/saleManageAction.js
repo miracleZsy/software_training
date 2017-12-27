@@ -27,3 +27,10 @@ export const setSalePlan = (salePlan) => {
         salePlan: salePlan
     };
 };
+
+export const setCustomerList = (customerList) => {
+    return{
+        type: saleManageTypes.SET_CUSTOMER_LIST,
+        customerList: customerList
+    };
+};

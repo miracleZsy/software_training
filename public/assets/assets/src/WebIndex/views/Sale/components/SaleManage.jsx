@@ -37,7 +37,7 @@ class SaleManage extends Component {
     };
     handleCreate = () => {
         const form = this.form;
-        // const {  } = this.props;
+        const { addSalePlan } = this.props;
         form.validateFields((err, values) => {
             if (err) {
                 return;
@@ -47,6 +47,7 @@ class SaleManage extends Component {
             // setCustomerType(0);
             // setCurrentPage(1);
             // addCustomer(values, phaseType, time, currentPage, customerType);
+            addSalePlan(values);
             form.resetFields();
             this.setState({ showCreateSalePlan: false });
         });
@@ -70,7 +71,7 @@ class SaleManage extends Component {
                             visible={this.state.showCreateSalePlan}
                             onCancel={this.handleCancel}
                             onCreate={this.handleCreate}
-                            title="新增计划"
+                            title="新建计划"
                             okText="创建"
                         />
                     </div>
@@ -129,6 +130,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         fetchSalePlan: (timeType) => {
             dispatch(saleManageAjax.fetchSalePlan(timeType));
+        },
+        addSalePlan: (salePlanAdded) => {
+            dispatch(saleManageAjax.addSalePlan(salePlanAdded));
         }
     };
 };
