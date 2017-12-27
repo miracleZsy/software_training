@@ -26,10 +26,8 @@ class FormCustomer extends Component {
                             children.push(<Option key={item.id}>{item.name}</Option>);
                         });
                         this.setState({
-                            children: children
+                            children: res
                         });
-                        console.log(res);
-                        console.log(this.state.children);
                     }
                 });
         }
@@ -79,8 +77,10 @@ class FormCustomer extends Component {
                                 onChange={this.handleChange}
                                 onSearch={debounce(this.searchCustomer, 800)}
                                 style={{ width: '100%' }}
+                                filterOption={false}
+                                labelInValue
                             >
-                                {children}
+                                {children.map(d => <Option key={d.id}>{d.name}</Option>)}
                             </Select>
                         )}
                     </FormItem>

@@ -6,7 +6,7 @@ class SalePlan extends Component {
 
     componentWillMount() {
         const { fetchSalePlan, setSaleTimeType } = this.props;
-        fetchSalePlan(1);
+        fetchSalePlan(0);
         setSaleTimeType(0);
     }
 
