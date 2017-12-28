@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\sys\Config;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +26,7 @@ class SalePlan extends Model
 
     }
 
-    public static function saleList($uuid,$time)
+    public static function saleList($uuid,$time,$page)
     {
         $start = 0;
         $end = Carbon::now();
@@ -41,11 +42,17 @@ class SalePlan extends Model
                 break;
             default:break;
         }
-        $salePlans = self::getSalePlans($uuid)->whereBetween('created_at',[$start,$end])->orderBy('created_at','desc')->get()->toArray();
+        $size = Config::get('sys_page_size');
+        $salePlans = self::getSalePlans($uuid)->whereBetween('created_at',[$start,$end])->orderBy('created_at','desc');
+        $count = $salePlans->count();
         foreach ($salePlans as $k => $v) {
             $salePlans[$k]['customers'] = array_column($v['customers'], 'name');
         }
-        return $salePlans;
+        return [
+            'count'=>$count,
+            'data' =>$salePlans->forPage($page,$size)->get()->toArray()
+            ];
+
     }
 
     public static function selectDetail($uuid, $id)
