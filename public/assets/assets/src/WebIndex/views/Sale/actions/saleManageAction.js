@@ -34,3 +34,16 @@ export const setCustomerList = (customerList) => {
         customerList: customerList
     };
 };
+
+export const setSaleDetail = (saleDetail) => {
+    return{
+        type:saleManageTypes.SET_SALE_DETAIL,
+        saleDetail:saleDetail
+    };
+};
+
+export const cleanSaleDetail = () => {
+    return{
+        type:saleManageTypes.CLEAN_SALE_DETAIL
+    };
+};

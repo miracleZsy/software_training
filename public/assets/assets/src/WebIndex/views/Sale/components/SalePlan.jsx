@@ -12,9 +12,17 @@ class SalePlan extends Component {
 
 
     createAnalyseColumns = () => {
+        const { showPlanDetail } = this.props;
         return  [{
             title: '标题',
             dataIndex: 'title',
+            render:(text, record) => (
+                <span
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                        showPlanDetail(record.id);
+                    }}
+                >{record.title}</span>)
         }, {
             title: '创建时间',
             dataIndex: 'created_at',
@@ -27,7 +35,6 @@ class SalePlan extends Component {
             dataIndex: 'act_time',
         }];
     };
-
     getCustomerShow = (customers) => {
         let res = '';
         customers.forEach((item) => {

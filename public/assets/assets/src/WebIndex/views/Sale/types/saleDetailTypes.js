@@ -1,0 +1,4 @@
+export const SET_SALE_TITLE = 'SET_SALE_TITLE';
+export const SET_SALE_CUSTOMER = 'SET_SALE_CUSTOMER';
+export const SET_SALE_CONTENT = 'SET_SALE_CONTENT';
+export const SET_SALE_ACT_TIME = 'SET_SALE_ACT_TIME';
