@@ -3,12 +3,16 @@
   background-color: #f3f3f4;
   height: 50px;
   position: fixed;
-  z-index: 20;
+  z-index: 1;
   border-bottom: 1px solid #d4d1d1;
-  max-width: 1053px;
+  //left: 220px;
+  padding-left: 220px;
+  transition: all .3s ease-in-out;
+  //max-width: 1053px;
   &.close{
-    left: 0;
-    max-width: 1288px;
+    //left: 0;
+    padding-left: 0;
+    //max-width: 1288px;
   }
   .sideButton{
     background-color: #529bcf;
@@ -27,17 +31,7 @@
   .searchInput {
     width: 200px;
     position: absolute;
-    right: 15px;
+    right: 23px;
     top: 9px;
-  }
-}
-
-@media screen and (min-width: 1290px) and (max-width: 1680px) {
-  .header{
-    max-width: 1453px;
-    &.close{
-      left: 0;
-      max-width: 1675px;
-    }
   }
 }

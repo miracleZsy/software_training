@@ -6,8 +6,6 @@ import CreateCustomer from './CreateCustomer';
 import { Button } from 'antd';
 import CustomerRightTopContainer from "./CustomerRightTopContainer";
 import CustomerTable from "./CustomerTable";
-import cookieUtil from '../../../../lib/cookieUtil';
-import jwt from 'jsonwebtoken';
 import * as phaseAndTimeAction from '../actions/phaseAndTimeAction';
 
 
@@ -56,7 +54,6 @@ class Customer extends Component {
     };
     render() {
         const { customerType, totalCustomerCount, simpleCustomerCount, purposeCustomerCount, finishCustomerCount, sidebarClosed } = this.props;
-        {console.log(sidebarClosed);}
         return (
             <div className="customerContainer">
                 <div className="customerLeft">
@@ -81,7 +78,7 @@ class Customer extends Component {
                         <span value="3"  className={`${customerType == 3 ? 'current' : ''}`} onClick={this.changeCurrentCustomerType}>已成交客户 ({finishCustomerCount})</span>
                     </div>
                 </div>
-                <div className={`customerRight ${sidebarClosed ? 'close' : ''}`}>
+                <div className="customerRight">
                     <CustomerRightTopContainer />
                     <div className="customerInforTable">
                         <CustomerTable />
