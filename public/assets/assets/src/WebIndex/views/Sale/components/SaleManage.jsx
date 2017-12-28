@@ -29,18 +29,7 @@ class SaleManage extends Component {
     };
 
     showSalePlan = () => {
-        const form = this.form;
-        // cleanSaleDetail();
         this.setState({ showCreateSalePlan: true });
-        form.resetFields();
-        const { cleanSaleDetail } = this.props;
-        form.validateFields((err, values) => {
-            if (err) {
-                return;
-            }
-            form.resetFields();
-            this.setState({ showCreateSalePlan: true });
-        });
     };
 
     handleCancel = () => {
@@ -84,17 +73,10 @@ class SaleManage extends Component {
     saveFormRef = (form) => {
         this.form = form;
     };
-    showSaleDetail = (id) => {
-        const { fetchSaleDetail } = this.props;
-        this.setState({
-            showCreateSalePlan:true
-        });
-        fetchSaleDetail(id);
 
-    };
 
     render() {
-        const { saleTab, saleAnalyse, setSaleTimeType, saleTimeType, fetchSaleAnalyse, salePlan, fetchSalePlan, saleDetail } = this.props;
+        const { saleTab, saleAnalyse, setSaleTimeType, saleTimeType, fetchSaleAnalyse, salePlan, fetchSalePlan } = this.props;
         return(
             <div className="saleManageContainer">
                 <div className="saleManageLeft">
@@ -108,9 +90,8 @@ class SaleManage extends Component {
                             visible={this.state.showCreateSalePlan}
                             onCancel={this.handleCancel}
                             onCreate={this.handleCreate}
-                            saleDetail={ saleDetail }
                             title="新建计划"
-                            okText={saleDetail === undefined ? '创建' : '更新'}
+                            okText="创建"
                         />
                     </div>
                     <div className="saleManageLeftBottom">
@@ -137,7 +118,6 @@ class SaleManage extends Component {
                                 salePlan={salePlan}
                                 fetchSalePlan={fetchSalePlan}
                                 setSaleTimeType={setSaleTimeType}
-                                showPlanDetail={this.showSaleDetail}
                             />}
                     </div>
                 </div>
@@ -176,9 +156,6 @@ const mapDispatchToProps = (dispatch) => {
         },
         fetchSaleDetail: (id) => {
             dispatch(saleManageAjax.fetchSaleDetail(id));
-        },
-        cleanSaleDetail:() => {
-            dispatch(saleManageAction.cleanSaleDetail());
         }
     };
 };

@@ -10,8 +10,8 @@ import debounce from 'lodash.debounce';
 
 class FormCustomer extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             children: [],
             ids:[]
@@ -46,13 +46,25 @@ class FormCustomer extends Component {
         }
         return customer;
     };
-    componentsWillUpdate = () => {
-
-    };
     render() {
         const { visible, onCancel, onCreate, form, okText, title, saleDetail } = this.props;
         const { getFieldDecorator } = form;
         const { children } = this.state;
+
+        if(title == '修改计划') {
+            getFieldDecorator('title', {
+                initialValue:saleDetail !== undefined ? saleDetail['title'] : undefined,
+            });
+            getFieldDecorator('executeTime', {
+                initialValue:saleDetail !== undefined ? moment(saleDetail['act_time']) : undefined,
+            });
+            getFieldDecorator('customers', {
+                initialValue:saleDetail !== undefined ? this.fetchCustomer(saleDetail.customers) : undefined,
+            });
+            getFieldDecorator('content', {
+                initialValue:saleDetail !== undefined ? saleDetail['content'] : '',
+            });
+        }
         return (
             <Modal
                 visible={visible}
@@ -66,7 +78,6 @@ class FormCustomer extends Component {
                 <Form layout="vertical">
                     <FormItem label="标题">
                         {getFieldDecorator('title', {
-                            initialValue:saleDetail !== undefined ? saleDetail['title'] : undefined,
                             rules: [{ required: true, message: '请输入标题!' }],
                         })(
                             <Input />
@@ -76,7 +87,6 @@ class FormCustomer extends Component {
 
                     <FormItem label="执行日期">
                         {getFieldDecorator('executeTime', {
-                            initialValue:saleDetail !== undefined ? moment(saleDetail['act_time']) : undefined,
                             rules: [{ required: true, message: '请选择执行日期!' }],
                         })(
                             <DatePicker format="YYYY-MM-DD" style={{ width: 236 }} placeholder="请选择执行日期" />
@@ -84,7 +94,6 @@ class FormCustomer extends Component {
                     </FormItem>
                     <FormItem label="客户">
                         {getFieldDecorator('customers', {
-                            initialValue:saleDetail !== undefined ? this.fetchCustomer(saleDetail.customers) : undefined,
                             rules: [{ required: true, message: '请选择客户!', type: 'array' }],
                         })(
                             <Select
@@ -97,22 +106,14 @@ class FormCustomer extends Component {
                                 filterOption={false}
                                 labelInValue
                             >
-                                {saleDetail !== undefined ? this.fetchCustomer(saleDetail.customers)
+                                {JSON.stringify(saleDetail) !== {} && saleDetail !== undefined ? this.fetchCustomer(saleDetail.customers)
                                     .map((item) => <Option key={item.key} selected >{item.label}</Option> ) : undefined}
                                 {children.map(d => <Option key={d.id}>{d.name}</Option>)}
-                                {JSON.stringify(saleDetail) !== {} && saleDetail['customers'] !== undefined ?
-                                    this.fetchCustomer(saleDetail['customers'])
-                                    : undefined };
-                                {/*{*/}
-                                {/*JSON.stringify(saleDetail) !== {} ? console.log(saleDetail) : console.log('--detail')*/}
-                                {/*}*/}
                             </Select>
                         )}
                     </FormItem>
                     <FormItem label="内容">
-                        {getFieldDecorator('content', {
-                            initialValue:saleDetail !== undefined ? saleDetail['content'] : '',
-                        })(
+                        {getFieldDecorator('content')(
                             <Input type="textarea" />
                         )}
                     </FormItem>

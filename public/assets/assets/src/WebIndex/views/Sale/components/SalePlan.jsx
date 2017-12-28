@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
 import '../css/index.scss';
 import SaleAnalyseTable from '../components/SaleAnalyseTable';
+import * as saleManageAjax from '../ajaxOperation/saleManageAjax';
+import { connect } from 'react-redux';
+import CreateSalePlan from './CreateSalePlan';
 
 class SalePlan extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            showUpdateSalePlan: false
+        };
+    }
 
     componentWillMount() {
         const { fetchSalePlan, setSaleTimeType } = this.props;
@@ -10,6 +20,43 @@ class SalePlan extends Component {
         setSaleTimeType(0);
     }
 
+    handleCancel = () => {
+        this.setState({ showUpdateSalePlan: false });
+    };
+
+    handleCreate = () => {
+        const form = this.form;
+        // const { addSalePlan } = this.props;
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+            // setPhaseType(0);
+            // setTime(0);
+            // setCustomerType(0);
+            // setCurrentPage(1);
+            // console.log(values.customers);
+            // console.log(JSON.stringify(values.customers));
+            // let customersArr = this.getCustomerArr(values.customers);
+            // values.customers = customersArr;
+            // console.log(values);
+            // console.log(JSON.stringify(values));
+            // addSalePlan(values);
+            form.resetFields();
+            this.setState({ showUpdateSalePlan: false });
+        });
+    };
+    saveFormRef = (form) => {
+        this.form = form;
+    };
+
+    showSalePlanDetail = (id) => {
+        const { fetchSaleDetail } = this.props;
+        this.setState({
+            showUpdateSalePlan:true
+        });
+        fetchSaleDetail(id);
+    };
 
     createAnalyseColumns = () => {
         const { showPlanDetail } = this.props;
@@ -20,7 +67,7 @@ class SalePlan extends Component {
                 <span
                     style={{ cursor: 'pointer' }}
                     onClick={() => {
-                        showPlanDetail(record.id);
+                        this.showSalePlanDetail(record.id);
                     }}
                 >{record.title}</span>)
         }, {
@@ -45,7 +92,7 @@ class SalePlan extends Component {
         );
     };
     render() {
-        const { salePlan } = this.props;
+        const { salePlan, saleDetail } = this.props;
         return(
             <div className="customerAnalyseTable">
                 <SaleAnalyseTable
@@ -53,9 +100,33 @@ class SalePlan extends Component {
                     salePlan={salePlan}
                     isPagination={true}
                 />
+                <CreateSalePlan
+                    ref={this.saveFormRef}
+                    visible={this.state.showUpdateSalePlan}
+                    onCancel={this.handleCancel}
+                    onCreate={this.handleCreate}
+                    title="修改计划"
+                    okText="修改"
+                    saleDetail={saleDetail}
+                />
             </div>
         );
     }
 }
 
-export default SalePlan;
+
+const mapStateToProps = (state) => {
+    return {
+        saleDetail:state.saleManageReducer.saleDetail
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchSaleDetail: (id) => {
+            dispatch(saleManageAjax.fetchSaleDetail(id));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SalePlan);
