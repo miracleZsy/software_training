@@ -32,8 +32,6 @@ class FormCustomer extends Component {
     };
 
     handleChange = (value) => {
-        const { ids } = this.state;
-
         console.log(value);
     };
     fetchCustomer = (customers) => {
@@ -41,7 +39,7 @@ class FormCustomer extends Component {
         if (customers !== undefined) {
             customers.forEach((item) => {
                 customer.push({
-                    key:item.id,
+                    key:item.id + "",
                     label:item.name
                 });
             });
@@ -85,11 +83,11 @@ class FormCustomer extends Component {
                     </FormItem>
                     <FormItem label="客户">
                         {getFieldDecorator('customers', {
-                            initialValue:[{ key:0, label:'123' }],
+                            initialValue:saleDetail !== undefined ? this.fetchCustomer(saleDetail.customers) : undefined,
                             rules: [{ required: true, message: '请选择客户!', type: 'array' }],
                         })(
                             <Select
-                                mode="tags"
+                                mode="multiple"
                                 size="large"
                                 placeholder="请选择客户"
                                 onChange={this.handleChange}
@@ -98,6 +96,8 @@ class FormCustomer extends Component {
                                 filterOption={false}
                                 labelInValue
                             >
+                                {saleDetail !== undefined ? this.fetchCustomer(saleDetail.customers)
+                                    .map((item) => <Option key={item.key} selected >{item.label}</Option> ) : undefined}
                                 {children.map(d => <Option key={d.id}>{d.name}</Option>)}
                             </Select>
                         )}

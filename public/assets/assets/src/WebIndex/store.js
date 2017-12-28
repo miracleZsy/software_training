@@ -7,7 +7,6 @@ import phaseAndTimeReducer from './views/Customer/reducers/phaseAndTimeReducer';
 import customerTypeCountReducer from './views/Customer/reducers/customerTypeCountReducer';
 import customerDetailReducer from './views/Customer/reducers/customerDetailReducer';
 import saleManageReducer from './views/Sale/reducers/saleManageReducer';
-import saleDetailReducer from './views/Sale/reducers/saleDetailReducer';
 
 const reducers = combineReducers({
     hideSideReducer,
@@ -16,7 +15,6 @@ const reducers = combineReducers({
     customerTypeCountReducer,
     customerDetailReducer,
     saleManageReducer,
-    saleDetailReducer
 });
 const store = createStore(
     enableBatching(reducers), /* preloadedState, */

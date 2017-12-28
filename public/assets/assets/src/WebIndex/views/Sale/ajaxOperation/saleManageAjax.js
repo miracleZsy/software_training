@@ -1,6 +1,5 @@
 import axiosUtil from '../../../../lib/axiosUtil';
 import * as saleManageAction from '../../Sale/actions/saleManageAction';
-import * as saleDetailAction from '../../Sale/actions/saleDetailAction';
 import { message } from 'antd';
 import moment from 'moment';
 
