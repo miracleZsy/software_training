@@ -106,8 +106,8 @@ class FormCustomer extends Component {
                                 filterOption={false}
                                 labelInValue
                             >
-                                {JSON.stringify(saleDetail) !== {} && saleDetail !== undefined ? this.fetchCustomer(saleDetail.customers)
-                                    .map((item) => <Option key={item.key} selected >{item.label}</Option> ) : undefined}
+                                {this.fetchCustomer(saleDetail !== undefined ? saleDetail.customers : undefined)
+                                    .map((item) => <Option key={item.key} selected >{item.label}</Option> ) }
                                 {children.map(d => <Option key={d.id}>{d.name}</Option>)}
                             </Select>
                         )}
