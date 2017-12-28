@@ -21,3 +21,10 @@ export const setSharingType = (sharingType) => {
         sharingType: sharingType,
     };
 };
+
+export const fetchSharedCustomer = (sharedData) =>  {
+    return {
+        type: types.FETCH_SHARED_CUSTOMER,
+        sharedData,
+    };
+};

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Menu } from 'antd';
+import { Button, Menu, Tag } from 'antd';
 import SharingTable from './components/SharingTable';
+import TimeTags from './components/TimeTags';
 import { setSharingTime, setCurrentPage, setSharingType } from './actions';
 import './style.scss';
+
+const { CheckableTag } = Tag;
 
 class SharingManagement extends Component {
     handleSideBarClick = ({ key }) => {
@@ -10,6 +13,7 @@ class SharingManagement extends Component {
         // fetch
     }
     render() {
+        const { setSharingTime, sharingTime } = this.props;
         return (
             <div className="sharingContainer">
                 <div className="innerSideBar">
@@ -29,6 +33,7 @@ class SharingManagement extends Component {
                 </div>
                 <div className="sharingContent">
                     <div className="contentTopPanel">
+                        <TimeTags setSharingTime={setSharingTime} sharingTime={sharingTime} />
                     </div>
                     <div className="contentTable">
                         <SharingTable />

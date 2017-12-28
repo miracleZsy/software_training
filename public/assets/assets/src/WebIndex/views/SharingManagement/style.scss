@@ -20,11 +20,11 @@
     flex: 7;
     padding: 20px;
     display: flex;
+    flex-direction: column;
     .contentTable {
       width: 100%;
       max-height: calc(100% - 171px);
       margin-top: 24px;
-      padding-left: 35px;
       overflow-y: scroll;
       height: calc(100% - 171px);
     }
