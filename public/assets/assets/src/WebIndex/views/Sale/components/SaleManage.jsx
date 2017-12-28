@@ -29,9 +29,11 @@ class SaleManage extends Component {
     };
 
     showSalePlan = () => {
-        const { cleanSaleDetail } = this.props;
-        cleanSaleDetail();
+        // const { cleanSaleDetail } = this.props;
+        const form = this.form;
+        // cleanSaleDetail();
         this.setState({ showCreateSalePlan: true });
+        form.resetFields();
     };
 
     handleCancel = () => {

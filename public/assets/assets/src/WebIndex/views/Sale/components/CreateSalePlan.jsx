@@ -50,7 +50,7 @@ class FormCustomer extends Component {
     };
     componentsWillUpdate = () => {
 
-    }
+    };
     render() {
         const { visible, onCancel, onCreate, form, okText, title, saleDetail } = this.props;
         const { getFieldDecorator } = form;
@@ -86,7 +86,7 @@ class FormCustomer extends Component {
                     </FormItem>
                     <FormItem label="客户">
                         {getFieldDecorator('customers', {
-                            initialValue:[{ key:0, label:'123' }],
+                            initialValue:saleDetail !== undefined ? this.fetchCustomer(saleDetail['customers']) : undefined,
                             rules: [{ required: true, message: '请选择客户!', type: 'array' }],
                         })(
                             <Select
@@ -100,6 +100,12 @@ class FormCustomer extends Component {
                                 labelInValue
                             >
                                 {children.map(d => <Option key={d.id}>{d.name}</Option>)}
+                                {JSON.stringify(saleDetail) !== {} && saleDetail['customers'] !== undefined ?
+                                    this.fetchCustomer(saleDetail['customers'])
+                                    : undefined };
+                                {/*{*/}
+                                {/*JSON.stringify(saleDetail) !== {} ? console.log(saleDetail) : console.log('--detail')*/}
+                                {/*}*/}
                             </Select>
                         )}
                     </FormItem>

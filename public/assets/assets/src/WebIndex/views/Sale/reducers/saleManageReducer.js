@@ -23,8 +23,8 @@ const saleManageReducer = (state = init, action) => {
         return { ...state, customerList: action.customerList };
     case saleManageTypes.SET_SALE_DETAIL:
         return { ...state, saleDetail:action.saleDetail };
-    case saleManageTypes.CLEAN_SALE_DETAIL:
-        return { ...state, saleDetail:undefined };
+    // case saleManageTypes.CLEAN_SALE_DETAIL:
+    //     return { ...state, saleDetail:action };
     default:
         return state;
     }
