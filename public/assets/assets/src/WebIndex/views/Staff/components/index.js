@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Input, Menu, Modal } from 'antd';
+import { Button, Input, Menu, Modal, Pagination } from 'antd';
 import StaffInfoCard from './StaffInfoCard';
 import CreateStaff from './CreateStaff';
 import '../css/index.scss';
@@ -64,6 +64,9 @@ class Staff extends Component {
                     </span>
                     <div className="cardList">
                         {CardList}
+                    </div>
+                    <div className="staffFooter" style={{ marginTop: "1rem" }}>
+                        <Pagination style={{ float: "right" }} defaultCurrent={1} total={50} />
                     </div>
                 </div>
                 <CreateStaff
