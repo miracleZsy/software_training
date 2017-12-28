@@ -35,6 +35,19 @@ class SaleManage extends Component {
     handleCancel = () => {
         this.setState({ showCreateSalePlan: false });
     };
+    getCustomerArr = (customers) => {
+        // console.log(customers);
+        let customerArr = '[';
+        customers.forEach((item, index) => {
+            customerArr += item.key;
+            if(index != customers.length - 1) {
+                customerArr += ',';
+            }
+        });
+        customerArr += ']';
+        return customerArr;
+
+    };
     handleCreate = () => {
         const form = this.form;
         const { addSalePlan } = this.props;
@@ -46,7 +59,12 @@ class SaleManage extends Component {
             // setTime(0);
             // setCustomerType(0);
             // setCurrentPage(1);
-            // addCustomer(values, phaseType, time, currentPage, customerType);
+            // console.log(values.customers);
+            // console.log(JSON.stringify(values.customers));
+            let customersArr = this.getCustomerArr(values.customers);
+            values.customers = customersArr;
+            // console.log(values);
+            // console.log(JSON.stringify(values));
             addSalePlan(values);
             form.resetFields();
             this.setState({ showCreateSalePlan: false });

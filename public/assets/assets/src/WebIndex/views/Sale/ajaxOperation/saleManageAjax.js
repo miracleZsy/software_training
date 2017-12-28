@@ -29,7 +29,7 @@ export const fetchSalePlan = (timeType) => (dispatch) => axiosUtil('post', fetch
 
 export const addSalePlan = (salePlanAdded) => (dispatch) => axiosUtil('post', addSalePlanAddress, {
     title: salePlanAdded.title,
-    customerIds: salePlanAdded.customers[0],
+    customerIds: salePlanAdded.customers,
     content: salePlanAdded.content,
     actTime: moment(salePlanAdded.executeTime).format('YYYY-MM-DD')
 })

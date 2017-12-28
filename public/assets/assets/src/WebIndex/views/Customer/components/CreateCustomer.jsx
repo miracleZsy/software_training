@@ -28,6 +28,7 @@ const CreateCustomer = Form.create()(
                 okText={okText}
                 onCancel={onCancel}
                 onOk={onCreate}
+                cancelText="取消"
                 style={{ top: 15 }}
             >
                 <Form layout="vertical">

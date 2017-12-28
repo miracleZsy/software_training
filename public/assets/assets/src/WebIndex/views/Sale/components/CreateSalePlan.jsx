@@ -47,6 +47,7 @@ class FormCustomer extends Component {
                 okText={okText}
                 onCancel={onCancel}
                 onOk={onCreate}
+                cancelText="取消"
                 style={{ top: 50 }}
             >
                 <Form layout="vertical">
