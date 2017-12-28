@@ -11,29 +11,47 @@ class ShareController extends Controller
 {
     public function shareList(Request $request)
     {
-        $uuid = $request->get('user')->uuid;
-        $shares = Share::where('uuid_send', $uuid)
-            ->join('customer', 'share.customer_id', '=', 'customer.id')
-            ->select('customer.id', 'customer.name', 'share.created_at as share_time', 'customer.tel', 'customer.pic_url')
-            ->get()->toArray();
-        $this->json_die([
-            'code' => 200,
-            'msg' => 'success',
-            'data' => $shares
-        ]);
+        try {
+            Assert::oneOf((int)$_POST['time'], [0, 1, 2, 3, 4], 'time must be 0 1 2 3 4');
+            $time = $_POST['time'];
+            $uuid = $request->get('user')->uuid;
+            $shares = Share::filter($time)->where('uuid_send', $uuid)
+                ->join('customer', 'share.customer_id', '=', 'customer.id')
+                ->select('customer.id', 'customer.name', 'share.created_at as share_time', 'customer.tel', 'customer.pic_url')
+                ->get()->toArray();;
+            $this->json_die([
+                'code' => 200,
+                'msg' => 'success',
+                'data' => $shares
+            ]);
+        } catch (\InvalidArgumentException $e) {
+            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->json_die(['code' => 500, 'msg' => $e->getMessage()]);
+        }
     }
 
     public function sharedList(Request $request)
     {
-        $uuid = $request->get('user')->uuid;
-        $shares = Share::where('uuid_received', $uuid)->join('customer', 'share.customer_id', '=', 'customer.id')
-            ->select('customer.id', 'customer.name', 'share.created_at as share_time', 'customer.tel', 'customer.pic_url')
-            ->get()->toArray();
-        $this->json_die([
-            'code' => 200,
-            'msg' => 'success',
-            'data' => $shares
-        ]);
+        try {
+            Assert::oneOf((int)$_POST['time'], [0, 1, 2, 3, 4], 'time must be 0 1 2 3 4');
+            $time = $_POST['time'];
+            $uuid = $request->get('user')->uuid;
+            $shares = Share::filter($time)->where('uuid_received', $uuid)->join('customer', 'share.customer_id', '=', 'customer.id')
+                ->select('customer.id', 'customer.name', 'share.created_at as share_time', 'customer.tel', 'customer.pic_url')
+                ->get()->toArray();
+            $this->json_die([
+                'code' => 200,
+                'msg' => 'success',
+                'data' => $shares
+            ]);
+        }catch (\InvalidArgumentException $e) {
+            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->json_die(['code' => 500, 'msg' => $e->getMessage()]);
+        }
     }
 
     public function insert(Request $request)
@@ -51,7 +69,7 @@ class ShareController extends Controller
                 'data' => $id
             ]);
             else $this->json_die(['code' => 403, 'msg' => 'unauthorized']);
-        }catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
         } catch (\Exception $e) {
             Log::error($e->getMessage());

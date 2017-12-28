@@ -2,8 +2,8 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Share extends Model
 {
@@ -23,5 +23,23 @@ class Share extends Model
            'customer_id'=>$customer_id
         ]);
         return $share->id;
+    }
+    public static function filter($time){
+        $start = 0;
+        $end = Carbon::now();
+        switch ($time) {
+            case 1:
+                $start = Carbon::create()->toDateString();
+                break;
+            case 2:
+                $start = Carbon::create()->subDay()->toDateString();
+                break;
+            case 3:
+                $start = Carbon::create()->subWeek();
+                break;
+            case 4:
+                $start = Carbon::create()->subMonth();
+        }
+       return self::whereBetween('share.created_at',[$start,$end])->orderBy('share.created_at','desc');
     }
 }
