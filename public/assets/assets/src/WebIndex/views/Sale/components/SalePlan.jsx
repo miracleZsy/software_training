@@ -4,13 +4,15 @@ import SaleAnalyseTable from '../components/SaleAnalyseTable';
 import * as saleManageAjax from '../ajaxOperation/saleManageAjax';
 import { connect } from 'react-redux';
 import CreateSalePlan from './CreateSalePlan';
+import { Popconfirm } from 'antd';
 
 class SalePlan extends Component {
 
     constructor() {
         super();
         this.state = {
-            showUpdateSalePlan: false
+            showUpdateSalePlan: false,
+            selectedKey: -1
         };
     }
 
@@ -23,10 +25,24 @@ class SalePlan extends Component {
     handleCancel = () => {
         this.setState({ showUpdateSalePlan: false });
     };
+    getCustomerArr = (customers) => {
+        // console.log(customers);
+        let customerArr = '[';
+        customers.forEach((item, index) => {
+            customerArr += item.key;
+            if(index != customers.length - 1) {
+                customerArr += ',';
+            }
+        });
+        customerArr += ']';
+        return customerArr;
+
+    };
 
     handleCreate = () => {
         const form = this.form;
-        // const { addSalePlan } = this.props;
+        const { updateSalePlan } = this.props;
+        const { selectedKey } = this.state;
         form.validateFields((err, values) => {
             if (err) {
                 return;
@@ -41,7 +57,9 @@ class SalePlan extends Component {
             // values.customers = customersArr;
             // console.log(values);
             // console.log(JSON.stringify(values));
-            // addSalePlan(values);
+            let customersArr = this.getCustomerArr(values.customers);
+            values.customers = customersArr;
+            updateSalePlan(selectedKey, values);
             form.resetFields();
             this.setState({ showUpdateSalePlan: false });
         });
@@ -53,9 +71,14 @@ class SalePlan extends Component {
     showSalePlanDetail = (id) => {
         const { fetchSaleDetail } = this.props;
         this.setState({
-            showUpdateSalePlan:true
+            showUpdateSalePlan:true,
+            selectedKey: id
         });
         fetchSaleDetail(id);
+    };
+    onDeleteSalePlan = (id) => {
+        const { deleteSalePlan } = this.props;
+        deleteSalePlan(id);
     };
 
     createAnalyseColumns = () => {
@@ -80,6 +103,18 @@ class SalePlan extends Component {
         }, {
             title: '执行时间',
             dataIndex: 'act_time',
+        }, {
+            title: '操作',
+            dataIndex: 'oper',
+            render:(text, record) => (
+                <span>
+                    <Popconfirm title="确认删除?" cancelText="取消" okText="确定" onConfirm={() => {
+                        this.onDeleteSalePlan(record.id);
+                    }}>
+                        <a href="#">删除计划</a>
+                    </Popconfirm>
+                </span>
+            )
         }];
     };
     getCustomerShow = (customers) => {
@@ -125,6 +160,12 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchSaleDetail: (id) => {
             dispatch(saleManageAjax.fetchSaleDetail(id));
+        },
+        updateSalePlan: (id, salePlanUpdated) => {
+            dispatch(saleManageAjax.updateSalePlan(id, salePlanUpdated));
+        },
+        deleteSalePlan: (id) => {
+            dispatch(saleManageAjax.deleteSalePlan(id));
         }
     };
 };
