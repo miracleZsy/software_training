@@ -5,7 +5,8 @@ const init = {
     saleAnalyse: [],
     saleTimeType: 0,
     salePlan: [],
-    customerList: []
+    customerList: [],
+    saleDetail:{}
 };
 
 const saleManageReducer = (state = init, action) => {
@@ -20,6 +21,10 @@ const saleManageReducer = (state = init, action) => {
         return { ...state, salePlan: action.salePlan };
     case saleManageTypes.SET_CUSTOMER_LIST:
         return { ...state, customerList: action.customerList };
+    case saleManageTypes.SET_SALE_DETAIL:
+        return { ...state, saleDetail:action.saleDetail };
+    case saleManageTypes.CLEAN_SALE_DETAIL:
+        return { ...state, saleDetail:undefined };
     default:
         return state;
     }

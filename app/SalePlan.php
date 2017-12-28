@@ -20,8 +20,8 @@ class SalePlan extends Model
     public static function getSalePlans($uuid)
     {
         return self::where('uuid', $uuid)->with(['customers' => function ($query) {
-            $query->select('name');
-        }])->select('id', 'title', 'created_at', 'act_time');
+            $query->select('customer.id','name');
+        }])->select('sale_plan.id', 'title', 'created_at', 'act_time');
 
     }
 
@@ -51,7 +51,6 @@ class SalePlan extends Model
     public static function selectDetail($uuid, $id)
     {
         $salePlan = self::getSalePlans($uuid)->select('id', 'title', 'created_at', 'content', 'act_time')->where('id', $id)->first()->toArray();
-        $salePlan['customers'] = array_column($salePlan['customers'], 'name');
         return $salePlan;
     }
 

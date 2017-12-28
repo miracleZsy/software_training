@@ -8,3 +8,7 @@ export const SET_SALE_TIME_TYPE = 'SET_SALE_TIME_TYPE';
 export const SET_SALE_PLAN = 'SET_SALE_PLAN';
 
 export const SET_CUSTOMER_LIST = 'SET_CUSTOMER_LIST';
+
+export const SET_SALE_DETAIL = 'SET_SALE_DETAIL';
+
+export const CLEAN_SALE_DETAIL = 'CLEAN_SALE_DETAIL';

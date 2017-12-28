@@ -29,8 +29,11 @@ class SaleController extends Controller
             Assert::integer((int)$_POST['id'], 'id must bu int');
             $id = $_POST['id'];
             $salePlan = SalePlan::selectDetail($request->get('user')->uuid, $id);
-            print_r($salePlan);
-            exit();
+            $this->json_die([
+                'code' => 200,
+                'msg' => 'success',
+                'data' => $salePlan
+            ]);
         } catch (\InvalidArgumentException $e) {
             $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
         } catch (\Exception $e) {

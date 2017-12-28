@@ -29,6 +29,8 @@ class SaleManage extends Component {
     };
 
     showSalePlan = () => {
+        const { cleanSaleDetail } = this.props;
+        cleanSaleDetail();
         this.setState({ showCreateSalePlan: true });
     };
 
@@ -73,9 +75,17 @@ class SaleManage extends Component {
     saveFormRef = (form) => {
         this.form = form;
     };
+    showSaleDetail = (id) => {
+        const { fetchSaleDetail } = this.props;
+        this.setState({
+            showCreateSalePlan:true
+        });
+        fetchSaleDetail(id);
+
+    };
 
     render() {
-        const { saleTab, saleAnalyse, setSaleTimeType, saleTimeType, fetchSaleAnalyse, salePlan, fetchSalePlan } = this.props;
+        const { saleTab, saleAnalyse, setSaleTimeType, saleTimeType, fetchSaleAnalyse, salePlan, fetchSalePlan, saleDetail } = this.props;
         return(
             <div className="saleManageContainer">
                 <div className="saleManageLeft">
@@ -89,8 +99,9 @@ class SaleManage extends Component {
                             visible={this.state.showCreateSalePlan}
                             onCancel={this.handleCancel}
                             onCreate={this.handleCreate}
+                            saleDetail={ saleDetail }
                             title="新建计划"
-                            okText="创建"
+                            okText={saleDetail === undefined ? '创建' : '更新'}
                         />
                     </div>
                     <div className="saleManageLeftBottom">
@@ -117,6 +128,7 @@ class SaleManage extends Component {
                                 salePlan={salePlan}
                                 fetchSalePlan={fetchSalePlan}
                                 setSaleTimeType={setSaleTimeType}
+                                showPlanDetail={this.showSaleDetail}
                             />}
                     </div>
                 </div>
@@ -131,7 +143,8 @@ const mapStateToProps = (state) => {
         saleTab: state.saleManageReducer.saleTab,
         saleAnalyse: state.saleManageReducer.saleAnalyse,
         saleTimeType: state.saleManageReducer.saleTimeType,
-        salePlan: state.saleManageReducer.salePlan
+        salePlan: state.saleManageReducer.salePlan,
+        saleDetail:state.saleManageReducer.saleDetail
     };
 };
 
@@ -151,6 +164,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         addSalePlan: (salePlanAdded) => {
             dispatch(saleManageAjax.addSalePlan(salePlanAdded));
+        },
+        fetchSaleDetail: (id) => {
+            dispatch(saleManageAjax.fetchSaleDetail(id));
+        },
+        cleanSaleDetail:() => {
+            dispatch(saleManageAction.cleanSaleDetail());
         }
     };
 };
