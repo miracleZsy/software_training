@@ -6,7 +6,9 @@ const init = {
     saleTimeType: 0,
     salePlan: [],
     customerList: [],
-    saleDetail:{}
+    saleDetail:{},
+    saleCount: 0,
+    saleCurrentPage: 1
 };
 
 const saleManageReducer = (state = init, action) => {
@@ -23,8 +25,10 @@ const saleManageReducer = (state = init, action) => {
         return { ...state, customerList: action.customerList };
     case saleManageTypes.SET_SALE_DETAIL:
         return { ...state, saleDetail:action.saleDetail };
-    // case saleManageTypes.CLEAN_SALE_DETAIL:
-    //     return { ...state, saleDetail:action };
+    case saleManageTypes.SET_SALE_COUNT:
+        return { ...state, saleCount:action.saleCount };
+    case saleManageTypes.SET_SALE_CURRENT_PAGE:
+        return { ...state, saleCurrentPage:action.saleCurrentPage };
     default:
         return state;
     }

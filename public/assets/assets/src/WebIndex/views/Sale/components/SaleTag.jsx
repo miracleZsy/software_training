@@ -11,7 +11,7 @@ class SaleTag extends Component {
     }
 
     handleChange(index, checked) {
-        const { summarize, setSaleTimeType, fetchSaleAnalyse, saleTab, fetchSalePlan } = this.props;
+        const { summarize, setSaleTimeType, fetchSaleAnalyse, saleTab, fetchSalePlan, saleCurrentPage } = this.props;
         let nextSelectedTags;
         nextSelectedTags = [index];
         if (summarize === '时间') {
@@ -20,7 +20,7 @@ class SaleTag extends Component {
                 fetchSaleAnalyse(nextSelectedTags[0] + 1);
             }else {
                 setSaleTimeType(nextSelectedTags[0]);
-                fetchSalePlan(nextSelectedTags[0]);
+                fetchSalePlan(nextSelectedTags[0], 0);
             }
         }
     }

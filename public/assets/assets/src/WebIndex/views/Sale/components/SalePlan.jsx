@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../css/index.scss';
 import SaleAnalyseTable from '../components/SaleAnalyseTable';
 import * as saleManageAjax from '../ajaxOperation/saleManageAjax';
+import * as saleManageAction from '../actions/saleManageAction';
 import { connect } from 'react-redux';
 import CreateSalePlan from './CreateSalePlan';
 import { Popconfirm } from 'antd';
@@ -18,7 +19,7 @@ class SalePlan extends Component {
 
     componentWillMount() {
         const { fetchSalePlan, setSaleTimeType } = this.props;
-        fetchSalePlan(0);
+        fetchSalePlan(0, 1);
         setSaleTimeType(0);
     }
 
@@ -41,7 +42,7 @@ class SalePlan extends Component {
 
     handleCreate = () => {
         const form = this.form;
-        const { updateSalePlan } = this.props;
+        const { updateSalePlan, saleTimeType, saleCurrentPage } = this.props;
         const { selectedKey } = this.state;
         form.validateFields((err, values) => {
             if (err) {
@@ -59,7 +60,7 @@ class SalePlan extends Component {
             // console.log(JSON.stringify(values));
             let customersArr = this.getCustomerArr(values.customers);
             values.customers = customersArr;
-            updateSalePlan(selectedKey, values);
+            updateSalePlan(selectedKey, values, saleTimeType, saleCurrentPage);
             form.resetFields();
             this.setState({ showUpdateSalePlan: false });
         });
@@ -77,8 +78,8 @@ class SalePlan extends Component {
         fetchSaleDetail(id);
     };
     onDeleteSalePlan = (id) => {
-        const { deleteSalePlan } = this.props;
-        deleteSalePlan(id);
+        const { deleteSalePlan, saleTimeType, saleCurrentPage } = this.props;
+        deleteSalePlan(id, saleTimeType, saleCurrentPage);
     };
 
     createAnalyseColumns = () => {
@@ -120,34 +121,35 @@ class SalePlan extends Component {
     getCustomerShow = (customers) => {
         let res = '';
         customers.forEach((item) => {
-            res += item + ' ';
+            res += item.name + ' ';
         });
         return(
             <span>{res}</span>
         );
     };
-    // getCurrentPage = (page) => {
-    //     const { fetchCustomer, phaseType, time, setCurrentPage, customerType } = this.props;
-    //     setCurrentPage(page);
-    //     fetchCustomer(phaseType, time, page, customerType);
-    //     console.log(page);
-    // };
+    getCurrentPage = (page) => {
+        const { fetchSalePlan, setSaleCurrentPage, saleTimeType, saleCurrentPage } = this.props;
+        setSaleCurrentPage(page);
+        fetchSalePlan(saleTimeType, page);
+        console.log(page);
+    };
 
 
     render() {
-        const { salePlan, saleDetail } = this.props;
-        // const pagination = {
-        //     defaultPageSize: 10,
-        //     total: customerTotalCount,
-        //     onChange: (page) => this.getCurrentPage(page),
-        //     current: currentPage,
-        // };
+        const { salePlan, saleDetail, saleCount, saleCurrentPage } = this.props;
+        const pagination = {
+            defaultPageSize: 10,
+            total: saleCount,
+            onChange: (page) => this.getCurrentPage(page),
+            current: saleCurrentPage,
+        };
         return(
             <div className="customerAnalyseTable">
                 <SaleAnalyseTable
                     columnsData={this.createAnalyseColumns()}
                     salePlan={salePlan}
                     isPagination={true}
+                    pagination={pagination}
                 />
                 <CreateSalePlan
                     ref={this.saveFormRef}
@@ -166,7 +168,10 @@ class SalePlan extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        saleDetail:state.saleManageReducer.saleDetail
+        saleDetail:state.saleManageReducer.saleDetail,
+        saleCount: state.saleManageReducer.saleCount,
+        saleCurrentPage:state.saleManageReducer.saleCurrentPage,
+        saleTimeType:state.saleManageReducer.saleTimeType
     };
 };
 
@@ -175,11 +180,17 @@ const mapDispatchToProps = (dispatch) => {
         fetchSaleDetail: (id) => {
             dispatch(saleManageAjax.fetchSaleDetail(id));
         },
-        updateSalePlan: (id, salePlanUpdated) => {
-            dispatch(saleManageAjax.updateSalePlan(id, salePlanUpdated));
+        updateSalePlan: (id, salePlanUpdated, saleTimeType, saleCurrentPage) => {
+            dispatch(saleManageAjax.updateSalePlan(id, salePlanUpdated, saleTimeType, saleCurrentPage));
         },
-        deleteSalePlan: (id) => {
-            dispatch(saleManageAjax.deleteSalePlan(id));
+        deleteSalePlan: (id, saleTimeType, saleCurrentPage) => {
+            dispatch(saleManageAjax.deleteSalePlan(id, saleTimeType, saleCurrentPage));
+        },
+        setSaleCurrentPage: (saleCurrentPage) => {
+            dispatch(saleManageAction.setSaleCurrentPage(saleCurrentPage));
+        },
+        fetchSalePlan: (timeType, page) => {
+            dispatch(saleManageAjax.fetchSalePlan(timeType, page));
         }
     };
 };

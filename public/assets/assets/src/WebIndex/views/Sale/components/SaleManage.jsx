@@ -75,7 +75,7 @@ class SaleManage extends Component {
 
 
     render() {
-        const { saleTab, saleAnalyse, setSaleTimeType, saleTimeType, fetchSaleAnalyse, salePlan, fetchSalePlan } = this.props;
+        const { saleTab, saleAnalyse, setSaleTimeType, saleTimeType, fetchSaleAnalyse, salePlan, fetchSalePlan, saleCurrentPage } = this.props;
         return(
             <div className="saleManageContainer">
                 <div className="saleManageLeft">
@@ -105,6 +105,7 @@ class SaleManage extends Component {
                         fetchSaleAnalyse={fetchSaleAnalyse}
                         saleTab={saleTab}
                         fetchSalePlan={fetchSalePlan}
+                        saleCurrentPage={saleCurrentPage}
                     />
                     <div className="saleManageInfor">
                         {saleTab == 0 ?
@@ -132,7 +133,8 @@ const mapStateToProps = (state) => {
         saleAnalyse: state.saleManageReducer.saleAnalyse,
         saleTimeType: state.saleManageReducer.saleTimeType,
         salePlan: state.saleManageReducer.salePlan,
-        saleDetail:state.saleManageReducer.saleDetail
+        saleDetail:state.saleManageReducer.saleDetail,
+        saleCurrentPage:state.saleManageReducer.saleCurrentPage
     };
 };
 

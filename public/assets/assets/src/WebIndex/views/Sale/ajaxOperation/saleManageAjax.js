@@ -21,12 +21,14 @@ export const fetchSaleAnalyse = (timeType) => (dispatch) => axiosUtil('post', fe
     });
 
 
-export const fetchSalePlan = (timeType) => (dispatch) => axiosUtil('post', fetchSalePlanAddress, {
-    time: timeType
+export const fetchSalePlan = (timeType, page ) => (dispatch) => axiosUtil('post', fetchSalePlanAddress, {
+    time: timeType,
+    page: page
 })
     .then((value) => {
         if(value !== undefined) {
-            dispatch(saleManageAction.setSalePlan(value));
+            dispatch(saleManageAction.setSalePlan(value.data));
+            dispatch(saleManageAction.setSaleCount(value.count));
         }
     });
 
@@ -38,8 +40,10 @@ export const addSalePlan = (salePlanAdded) => (dispatch) => axiosUtil('post', ad
 })
     .then((value) => {
         if(value !== 500) {
-            fetchSalePlan(0)(dispatch)
+            fetchSalePlan(0, 1)(dispatch)
                 .then(() => {
+                    dispatch(saleManageAction.setSaleTimeType(0));
+                    dispatch(saleManageAction.setSaleCurrentPage(0));
                     message.info('添加成功!');
                 });
         }else {
@@ -61,7 +65,7 @@ export const fetchSaleDetail = (id) => (dispatch) => axiosUtil('post', fetchPlan
         }
     });
 
-export const updateSalePlan = (id, salePlanCreated) => (dispatch) => axiosUtil('post', updateSalePlanAddress, {
+export const updateSalePlan = (id, salePlanCreated, saleTimeType, saleCurrentPage) => (dispatch) => axiosUtil('post', updateSalePlanAddress, {
     title: salePlanCreated.title,
     customerIds: salePlanCreated.customers,
     content: salePlanCreated.content,
@@ -70,7 +74,7 @@ export const updateSalePlan = (id, salePlanCreated) => (dispatch) => axiosUtil('
 })
     .then((value) => {
         if(value !== 500) {
-            fetchSalePlan(0)(dispatch)
+            fetchSalePlan(saleTimeType, saleCurrentPage)(dispatch)
                 .then(() => {
                     message.info('修改成功!');
                 });
@@ -79,12 +83,12 @@ export const updateSalePlan = (id, salePlanCreated) => (dispatch) => axiosUtil('
         }
     });
 
-export const deleteSalePlan = (id) => (dispatch) => axiosUtil('post', deleteSalePlanAddress, {
+export const deleteSalePlan = (id, saleTimeType, saleCurrentPage) => (dispatch) => axiosUtil('post', deleteSalePlanAddress, {
     id:id
 })
     .then((value) => {
         if(value !== 500) {
-            fetchSalePlan(0)(dispatch)  //加分页后要动
+            fetchSalePlan(saleTimeType, saleCurrentPage)(dispatch)  //加分页后要动
                 .then(() => {
                     message.info('删除成功!');
                 });

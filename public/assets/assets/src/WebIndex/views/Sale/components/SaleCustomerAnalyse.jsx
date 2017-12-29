@@ -164,6 +164,7 @@ class SaleCustomerAnalyse extends Component {
                         columnsData={this.createAnalyseColumns()}
                         saleAnalyse={saleAnalyse}
                         isPagination={false}
+                        pagination={false}
                     />
                 </div>
             </div>

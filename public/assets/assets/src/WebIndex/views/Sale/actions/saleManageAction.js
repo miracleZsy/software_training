@@ -42,8 +42,16 @@ export const setSaleDetail = (saleDetail) => {
     };
 };
 
-export const cleanSaleDetail = () => {
+export const setSaleCount = (saleCount) => {
     return{
-        type:saleManageTypes.CLEAN_SALE_DETAIL
+        type:saleManageTypes.SET_SALE_COUNT,
+        saleCount:saleCount
+    };
+};
+
+export const setSaleCurrentPage = (saleCurrentPage) => {
+    return{
+        type:saleManageTypes.SET_SALE_CURRENT_PAGE,
+        saleCurrentPage:saleCurrentPage
     };
 };

@@ -114,7 +114,7 @@ class FormCustomer extends Component {
                     </FormItem>
                     <FormItem label="内容">
                         {getFieldDecorator('content')(
-                            <Input type="textarea" />
+                            <Input type="textarea" rows="5" />
                         )}
                     </FormItem>
 
