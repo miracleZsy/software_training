@@ -12,15 +12,22 @@ class SaleController extends Controller
 {
     public function list(Request $request)
     {
-        Assert::oneOf((int)$_POST['time'],[0,1,2,3],'time must be 1 2 or 3');
-        $time = $_POST['time'];
-        $page = (int)$_POST['page'] > 0 ? (int)$_POST['page'] : 1;
-        $salePlans = SalePlan::saleList($request->get('user')->uuid,$time,$page);
-        $this->json_die([
-            'code' => 200,
-            'msg' => 'success',
-            'data' => $salePlans
-        ]);
+        try {
+            Assert::oneOf((int)$_POST['time'], [0, 1, 2, 3], 'time must be 1 2 or 3');
+            $time = $_POST['time'];
+            $page = (int)$_POST['page'] > 0 ? (int)$_POST['page'] : 1;
+            $salePlans = SalePlan::saleList($request->get('user')->uuid, $time, $page);
+            $this->json_die([
+                'code' => 200,
+                'msg' => 'success',
+                'data' => $salePlans
+            ]);
+        }catch (\InvalidArgumentException $e) {
+            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->json_die(['code' => 500, 'msg' => 'unknown error']);
+        }
     }
 
     public function select(Request $request)
