@@ -21,7 +21,7 @@ export const fetchSaleAnalyse = (timeType) => (dispatch) => axiosUtil('post', fe
     });
 
 
-export const fetchSalePlan = (timeType, page ) => (dispatch) => axiosUtil('post', fetchSalePlanAddress, {
+export const fetchSalePlan = (timeType, page) => (dispatch) => axiosUtil('post', fetchSalePlanAddress, {
     time: timeType,
     page: page
 })

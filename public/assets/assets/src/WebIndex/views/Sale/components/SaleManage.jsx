@@ -149,8 +149,8 @@ const mapDispatchToProps = (dispatch) => {
         setSaleTimeType: (saleTimeType) => {
             dispatch(saleManageAction.setSaleTimeType(saleTimeType));
         },
-        fetchSalePlan: (timeType) => {
-            dispatch(saleManageAjax.fetchSalePlan(timeType));
+        fetchSalePlan: (timeType, page) => {
+            dispatch(saleManageAjax.fetchSalePlan(timeType, page));
         },
         addSalePlan: (salePlanAdded) => {
             dispatch(saleManageAjax.addSalePlan(salePlanAdded));

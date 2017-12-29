@@ -18,7 +18,7 @@ class SaleTag extends Component {
             if(saleTab == 0) {
                 setSaleTimeType(nextSelectedTags[0]);
                 fetchSaleAnalyse(nextSelectedTags[0] + 1);
-            }else {
+            }else if(saleTab == 1) {
                 setSaleTimeType(nextSelectedTags[0]);
                 fetchSalePlan(nextSelectedTags[0], 0);
             }
