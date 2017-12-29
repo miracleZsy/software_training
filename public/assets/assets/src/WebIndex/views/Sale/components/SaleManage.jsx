@@ -69,7 +69,7 @@ class SaleManage extends Component {
 
 
     render() {
-        const { saleTab, saleAnalyse, setSaleTimeType, saleTimeType, fetchSaleAnalyse, salePlan, fetchSalePlan, saleCurrentPage } = this.props;
+        const { saleTab, saleAnalyse, setSaleTimeType, saleTimeType, fetchSaleAnalyse, salePlan, fetchSalePlan, saleCurrentPage, setSaleCurrentPage } = this.props;
         return(
             <div className="saleManageContainer">
                 <div className="saleManageLeft">
@@ -100,6 +100,7 @@ class SaleManage extends Component {
                         saleTab={saleTab}
                         fetchSalePlan={fetchSalePlan}
                         saleCurrentPage={saleCurrentPage}
+                        setSaleCurrentPage={setSaleCurrentPage}
                     />
                     <div className="saleManageInfor">
                         {saleTab == 0 ?
@@ -142,6 +143,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         setSaleTimeType: (saleTimeType) => {
             dispatch(saleManageAction.setSaleTimeType(saleTimeType));
+        },
+        setSaleCurrentPage: (saleCurrentPage) => {
+            dispatch(saleManageAction.setSaleCurrentPage(saleCurrentPage));
         },
         fetchSalePlan: (timeType, page) => {
             dispatch(saleManageAjax.fetchSalePlan(timeType, page));
