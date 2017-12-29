@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import SideBar from '../Side/components/SideBar';
 import MainContent from './MainContent';
 import * as hideSideAction from '../../views/Side/actions/hideSideAction';
-import SearchInputComponent from '../../../publicComponent/searchInputComponent/SearchInputComponent';
+import HeaderComponent from '../../../publicComponent/headerComponent/HeaderComponent';
 import './css/index.scss';
 
 const ControlTotalComponent = (props) => {
     const{ Content = '', sidebarClosed = false, closeSideBar, ...otherProps } = props;
     return(
         <div className="container-index">
-            <SearchInputComponent sidebarClosed={ sidebarClosed } closeSideBar={ closeSideBar } />
+            <HeaderComponent sidebarClosed={ sidebarClosed } closeSideBar={ closeSideBar } />
             <SideBar sidebarClosed={ sidebarClosed } />
             <MainContent render={ () => <Content { ...otherProps } /> } sidebarClosed={ sidebarClosed } closeSideBar={ closeSideBar } />
         </div>

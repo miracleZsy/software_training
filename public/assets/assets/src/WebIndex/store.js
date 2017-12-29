@@ -14,7 +14,7 @@ const reducers = combineReducers({
     phaseAndTimeReducer,
     customerTypeCountReducer,
     customerDetailReducer,
-    saleManageReducer
+    saleManageReducer,
 });
 const store = createStore(
     enableBatching(reducers), /* preloadedState, */

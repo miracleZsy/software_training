@@ -1,6 +1,7 @@
 import axios from 'axios';
 import qs from 'qs';
 
+
 const axiosUtil = (method, url, data = {}, timeout = 8000) => {
     return axios({
         url: url,
@@ -20,7 +21,10 @@ const axiosUtil = (method, url, data = {}, timeout = 8000) => {
                     return 409;  //验证码错误
                 case 500:
                     return 500;
+                case 401:
+                    window.location.href = '/software_training/public/index';
                 }
+
             }
         })
         .catch((error) => {

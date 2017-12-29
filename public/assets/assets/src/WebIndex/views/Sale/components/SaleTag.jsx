@@ -11,12 +11,18 @@ class SaleTag extends Component {
     }
 
     handleChange(index, checked) {
-        const { summarize, setSaleTimeType, fetchSaleAnalyse } = this.props;
+        const { summarize, setSaleTimeType, fetchSaleAnalyse, saleTab, fetchSalePlan, saleCurrentPage, setSaleCurrentPage } = this.props;
         let nextSelectedTags;
         nextSelectedTags = [index];
         if (summarize === '时间') {
-            setSaleTimeType(nextSelectedTags[0]);
-            fetchSaleAnalyse(nextSelectedTags[0] + 1);
+            if(saleTab == 0) {
+                setSaleTimeType(nextSelectedTags[0]);
+                fetchSaleAnalyse(nextSelectedTags[0] + 1);
+            }else if(saleTab == 1) {
+                setSaleTimeType(nextSelectedTags[0]);
+                fetchSalePlan(nextSelectedTags[0], 0);
+                setSaleCurrentPage(0);
+            }
         }
     }
 
