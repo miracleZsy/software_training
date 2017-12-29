@@ -55,12 +55,6 @@ class SaleManage extends Component {
             if (err) {
                 return;
             }
-            // setPhaseType(0);
-            // setTime(0);
-            // setCustomerType(0);
-            // setCurrentPage(1);
-            // console.log(values.customers);
-            // console.log(JSON.stringify(values.customers));
             let customersArr = this.getCustomerArr(values.customers);
             values.customers = customersArr;
 
