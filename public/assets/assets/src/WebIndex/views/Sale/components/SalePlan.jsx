@@ -126,8 +126,22 @@ class SalePlan extends Component {
             <span>{res}</span>
         );
     };
+    // getCurrentPage = (page) => {
+    //     const { fetchCustomer, phaseType, time, setCurrentPage, customerType } = this.props;
+    //     setCurrentPage(page);
+    //     fetchCustomer(phaseType, time, page, customerType);
+    //     console.log(page);
+    // };
+
+
     render() {
         const { salePlan, saleDetail } = this.props;
+        // const pagination = {
+        //     defaultPageSize: 10,
+        //     total: customerTotalCount,
+        //     onChange: (page) => this.getCurrentPage(page),
+        //     current: currentPage,
+        // };
         return(
             <div className="customerAnalyseTable">
                 <SaleAnalyseTable

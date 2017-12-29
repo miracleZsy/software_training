@@ -63,8 +63,7 @@ class SaleManage extends Component {
             // console.log(JSON.stringify(values.customers));
             let customersArr = this.getCustomerArr(values.customers);
             values.customers = customersArr;
-            // console.log(values);
-            // console.log(JSON.stringify(values));
+
             addSalePlan(values);
             form.resetFields();
             this.setState({ showCreateSalePlan: false });

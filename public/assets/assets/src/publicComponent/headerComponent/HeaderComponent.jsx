@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
 import './css/searchInputComponent.scss';
-import { Input } from 'antd';
+import { Input, Button } from 'antd';
 const Search = Input.Search;
+import cookieUtil from '../../lib/cookieUtil';
+import jwt from 'jsonwebtoken';
 
-const SearchInputComponent = (props) => {
+
+const HeaderComponent = (props) => {
     const { sidebarClosed = false, closeSideBar } = props;
+    const logOut = () => {
+        cookieUtil.unset('token', '/');
+        window.location.href = '/software_training/public/index';
+    };
     return(
         <div className={`header  ${sidebarClosed ? 'close' : ''}`}>
             <div className="sideButton" onClick={ () => closeSideBar(!sidebarClosed) }>
                 <i className="iconfont close-icon">{ sidebarClosed ? '\ue646' : '\ue645' }</i>
             </div>
-            <div className="searchInput">
-                <Search
-                    placeholder="搜索"
-                    onSearch={value => {
-                        console.log(value);
-                    }}
-                />
+            <div className="logOutInput">
+                <Button type="primary" onClick={logOut}>退出</Button>
             </div>
         </div>
     );
 };
 
-export default SearchInputComponent;
+export default HeaderComponent;
