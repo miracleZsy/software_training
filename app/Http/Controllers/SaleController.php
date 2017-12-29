@@ -14,7 +14,8 @@ class SaleController extends Controller
     {
         Assert::oneOf((int)$_POST['time'],[0,1,2,3],'time must be 1 2 or 3');
         $time = $_POST['time'];
-        $salePlans = SalePlan::saleList($request->get('user')->uuid,$time);
+        $page = (int)$_POST['page'] > 0 ? (int)$_POST['page'] : 1;
+        $salePlans = SalePlan::saleList($request->get('user')->uuid,$time,$page);
         $this->json_die([
             'code' => 200,
             'msg' => 'success',
