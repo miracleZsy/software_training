@@ -5,10 +5,12 @@ namespace App;
 use App\sys\Config;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
 class SalePlan extends Model
 {
+    use SoftDeletes;
     protected $table = 'sale_plan';
     protected $fillable = ['title', 'content', 'uuid', 'act_time'];
     public $timestamps = true;
