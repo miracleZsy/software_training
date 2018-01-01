@@ -113,7 +113,9 @@ class FormCustomer extends Component {
                         )}
                     </FormItem>
                     <FormItem label="内容">
-                        {getFieldDecorator('content')(
+                        {getFieldDecorator('content',  {
+                            rules: [{ required: true, message: '请填写内容!' }],
+                        })(
                             <Input type="textarea" rows="5" />
                         )}
                     </FormItem>

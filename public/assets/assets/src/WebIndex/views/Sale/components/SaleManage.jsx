@@ -33,7 +33,9 @@ class SaleManage extends Component {
     };
 
     handleCancel = () => {
+        const form = this.form;
         this.setState({ showCreateSalePlan: false });
+        form.resetFields();
     };
     getCustomerArr = (customers) => {
         // console.log(customers);
