@@ -11,6 +11,10 @@ const NavBarMap = {
         tag:'客户管理',
     },
     2:{
+        url: '/sale',
+        tag: '销售管理',
+    },
+    3:{
         url: '/staff',
         tag: '员工管理',
     },
