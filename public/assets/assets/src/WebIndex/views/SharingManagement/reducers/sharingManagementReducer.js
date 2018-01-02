@@ -4,6 +4,8 @@ const INITIAL_STATE = {
     time: 0,
     currentPage: 1,
     sharingType: 0,
+    sharedCustomerData: [],
+    receivedCustomerData: [],
 };
 
 const sharingManagementReducer = (state = INITIAL_STATE, action) => {
@@ -22,6 +24,11 @@ const sharingManagementReducer = (state = INITIAL_STATE, action) => {
         return {
             ...state,
             sharingType: action.sharingType,
+        };
+    case types.FETCH_SHARED_CUSTOMER:
+        return {
+            ...state,
+            sharedCustomerData: action.sharedCustomerData,
         };
     default:
         return state;

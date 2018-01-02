@@ -22,9 +22,9 @@ export const setSharingType = (sharingType) => {
     };
 };
 
-export const fetchSharedCustomer = (sharedData) =>  {
+export const fetchSharedCustomer = (sharedCustomerData) =>  {
     return {
         type: types.FETCH_SHARED_CUSTOMER,
-        sharedData,
+        sharedCustomerData,
     };
 };

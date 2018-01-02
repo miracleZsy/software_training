@@ -3,11 +3,16 @@ import { Button, Menu, Tag } from 'antd';
 import SharingTable from './components/SharingTable';
 import TimeTags from './components/TimeTags';
 import { setSharingTime, setCurrentPage, setSharingType } from './actions';
+import { fetchSharedCustomer } from './api';
+import { connect } from 'react-redux';
 import './style.scss';
 
 const { CheckableTag } = Tag;
 
 class SharingManagement extends Component {
+    componentWillMount() {
+        this.props.fetchSharedCustomer(0, 1);
+    }
     handleSideBarClick = ({ key }) => {
         this.props.setSharingType(key);
         // fetch
@@ -62,9 +67,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         setSharingType: (type) => {
             dispatch(setSharingType(type));
-        }
+        },
+        fetchSharedCustomer:(time, currentPage) => {
+            dispatch(fetchSharedCustomer(time, currentPage));
+        },
     };
 };
 
 
-export default SharingManagement;
+export default connect(mapStateToProps, mapDispatchToProps)(SharingManagement);

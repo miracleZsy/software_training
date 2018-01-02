@@ -37,11 +37,11 @@ class TimeTags extends Component {
 }
 
 const mapStateToProps = () => {
-
+    return {};
 };
 
 const mapDispatchToProps = () => {
-
+    return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TimeTags);
