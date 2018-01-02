@@ -22,8 +22,10 @@ class UserController extends Controller
         try {
             $page = (int)$_POST['page'] > 0 ? (int)$_POST['page'] : 1;
             $size = Config::get('sys_page_size');
-            $user = $request->get('user')->uuid;
+            $uuid = $request->get('user')->uuid;
+            $user = User::find($uuid);
             $users = User::where('company_id',$user->company_id);
+
             $this->json_die([
                 'code' => 200,
                 'msg' => 'success',

@@ -3,14 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 
 class User extends Model
 {
     use Notifiable;
+    use SoftDeletes;
     protected $table = 'user';
     protected $keyType = 'char';
     protected $primaryKey = 'uuid';
@@ -43,6 +44,8 @@ class User extends Model
     {
         $user = User::find($uuid);
         $user_me = User::find($myUuid);
+        $salt = $user->salt;
+        $password = md5(md5($password).$salt);
         if ($user->company_id === $user_me->company_id && $user_me->authority == 1) {
             $user->username = $username;
             $user->name = $name;
