@@ -13,6 +13,9 @@ class Customer extends Model
     use SoftDeletes;
     protected $table = 'customer';
     protected $fillable = ['name', 'tel', 'work', 'remark', 'pic_url', 'email', 'address', 'origin', 'QQ', 'birthday', 'sex', 'type', 'uuid', 'phase'];
+    public function salePlans(){
+        return $this->belongsToMany('App\SalePlan','user_sale_plan','customer_id','sale_plan_id');
+    }
     public function user(){
         return $this->belongsTo('App\User','uuid','uuid');
     }
@@ -129,6 +132,43 @@ class Customer extends Model
         $amount = ['amount' => $amount];
         $count = array_column($count, 'count', 'type');
         return $amount + $count;
+    }
+
+
+    public static function customerManage($uuid,$time)
+    {
+        $end = Carbon::now()->addDay();
+        switch ($time){
+            case 2:$start = Carbon::now()->subWeek()->addDay();break;
+            case 3:$start = Carbon::now()->subMonth()->addDay();break;
+            default:$start = Carbon::now()->subDay();
+        }
+        $newCountArr = self::where('uuid', $uuid)->whereBetween('created_at', [$start->toDateString(), $end->toDateString()])->withTrashed()
+            ->select(DB::raw("count(*) as new_count,date_format(created_at,'%Y-%m-%d') as date"))
+            ->groupBy(DB::raw("date_format(created_at,'%Y-%m-%d')"))->get()->toArray();
+        $deleteCountArr = self::where('uuid', $uuid)->whereBetween('deleted_at', [$start->toDateString(), $end->toDateString()])->withTrashed()
+            ->select(DB::raw("count(*) as delete_count,date_format(deleted_at,'%Y-%m-%d') as date"))
+            ->groupBy(DB::raw("date_format(deleted_at,'%Y-%m-%d')"))->get()->toArray();
+        $newCountArr = array_column($newCountArr, 'new_count', 'date');
+        $deleteCountArr = array_column($deleteCountArr, 'delete_count', 'date');
+        $amount = self::withTrashed()->where('uuid',$uuid)->where('created_at', '<', $start->toDateString())->where(function ($query) use ($start, $end) {
+            $query->where('deleted_at', '>', $start->toDateString())->orWhere('deleted_at', NULL);
+        })->count();
+        $countArr = [];
+        while ($start->lte($end)) {
+            $newCount = key_exists($start->toDateString(), $newCountArr) ? $newCountArr[$start->toDateString()] : 0;
+            $deleteCount = key_exists($start->toDateString(), $deleteCountArr) ? $deleteCountArr[$start->toDateString()] : 0;
+            $amount = $amount + $newCount - $deleteCount;
+            $countArr[] = [
+                'time'=>$start->toDateString(),
+                'increase' => $newCount,
+                'decrease' => $deleteCount,
+                'netIncrease' => $newCount - $deleteCount,
+                'amount' => $amount
+            ];
+            $start->addDay();
+        }
+        return $countArr;
     }
 
     public static function phaseChange($id, $uuid, $phase)

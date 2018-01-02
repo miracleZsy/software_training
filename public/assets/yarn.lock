@@ -2222,6 +2222,12 @@ ecdsa-sig-formatter@1.0.9:
     base64url "^2.0.0"
     safe-buffer "^5.0.1"
 
+echarts@^3.8.5:
+  version "3.8.5"
+  resolved "https://registry.yarnpkg.com/echarts/-/echarts-3.8.5.tgz#58e4a51d2743c6fb75257b0dc0a9cf9f5378ac0e"
+  dependencies:
+    zrender "3.7.4"
+
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
@@ -5770,8 +5776,8 @@ rc-input-number@~4.0.0:
     rmc-feedback "^1.0.0"
 
 rc-menu@^6.1.0, rc-menu@~6.2.0:
-  version "6.2.5"
-  resolved "https://registry.yarnpkg.com/rc-menu/-/rc-menu-6.2.5.tgz#cb27585cfb6a2e9c2cb09a122df1980ec807bfc8"
+  version "6.2.4"
+  resolved "https://registry.yarnpkg.com/rc-menu/-/rc-menu-6.2.4.tgz#5ee1b8202ffaa234d6f97e8cebd4a3ccf27f44da"
   dependencies:
     babel-runtime "6.x"
     classnames "2.x"
@@ -7492,3 +7498,7 @@ yargs@~3.10.0:
     cliui "^2.1.0"
     decamelize "^1.0.0"
     window-size "0.1.0"
+
+zrender@3.7.4:
+  version "3.7.4"
+  resolved "https://registry.yarnpkg.com/zrender/-/zrender-3.7.4.tgz#f847d53948481ef6d42906d1ea9aeec7acbefdf2"
