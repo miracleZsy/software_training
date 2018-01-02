@@ -10,8 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+//share部分
+Route::post('/share/shareList','ShareController@shareList');
+Route::post('/share/sharedList','ShareController@sharedList');
+Route::post('/share/insert','ShareController@insert');
+Route::post('/share/delete','ShareController@delete');
 
-//index
+
 
 //customer部分
 Route::post('/customer/insert','CustomerController@insert');

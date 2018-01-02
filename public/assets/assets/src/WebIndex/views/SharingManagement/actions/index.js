@@ -1,4 +1,4 @@
-import types from '../types';
+import * as types from '../types';
 
 export const setSharingTime = (time) => {
     return {
@@ -28,3 +28,11 @@ export const fetchSharedCustomer = (sharedCustomerData) =>  {
         sharedCustomerData,
     };
 };
+
+export const fetchReceivedCustomer = (receivedCustomerData) => {
+    return {
+        type: types.FETCH_RECEIVED_CUSTOMER,
+        receivedCustomerData,
+    };
+};
+

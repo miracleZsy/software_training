@@ -30,6 +30,11 @@ const sharingManagementReducer = (state = INITIAL_STATE, action) => {
             ...state,
             sharedCustomerData: action.sharedCustomerData,
         };
+    case types.FETCH_RECEIVED_CUSTOMER:
+        return {
+            ...state,
+            receivedCustomerData: action.receivedCustomerData,
+        };
     default:
         return state;
     }

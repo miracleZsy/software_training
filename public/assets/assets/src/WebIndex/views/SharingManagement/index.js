@@ -3,7 +3,7 @@ import { Button, Menu, Tag } from 'antd';
 import SharingTable from './components/SharingTable';
 import TimeTags from './components/TimeTags';
 import { setSharingTime, setCurrentPage, setSharingType } from './actions';
-import { fetchSharedCustomer } from './api';
+import { fetchSharedCustomer, fetchReceivedCustomer } from './api';
 import { connect } from 'react-redux';
 import './style.scss';
 
@@ -12,13 +12,15 @@ const { CheckableTag } = Tag;
 class SharingManagement extends Component {
     componentWillMount() {
         this.props.fetchSharedCustomer(0, 1);
+        this.props.fetchReceivedCustomer(0, 1);
     }
     handleSideBarClick = ({ key }) => {
         this.props.setSharingType(key);
         // fetch
     }
     render() {
-        const { setSharingTime, sharingTime } = this.props;
+        const { setSharingTime, sharingTime, sharingType, sharedCustomerData, receivedCustomerData } = this.props;
+        const customerData = sharingType ? receivedCustomerData : sharedCustomerData;
         return (
             <div className="sharingContainer">
                 <div className="innerSideBar">
@@ -31,8 +33,8 @@ class SharingManagement extends Component {
                             defaultSelectedKeys={['1']}
                             mode="inline"
                         >
-                            <Menu.Item key="sharing">我共享的客户</Menu.Item>
-                            <Menu.Item key="received">共享给我的客户</Menu.Item>
+                            <Menu.Item key="0">我共享的客户</Menu.Item>
+                            <Menu.Item key="1">共享给我的客户</Menu.Item>
                         </Menu>
                     </div>
                 </div>
@@ -41,7 +43,7 @@ class SharingManagement extends Component {
                         <TimeTags setSharingTime={setSharingTime} sharingTime={sharingTime} />
                     </div>
                     <div className="contentTable">
-                        <SharingTable />
+                        <SharingTable data={customerData} />
                     </div>
                 </div>
             </div>
@@ -70,6 +72,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         fetchSharedCustomer:(time, currentPage) => {
             dispatch(fetchSharedCustomer(time, currentPage));
+        },
+        fetchReceivedCustomer:(time, currentPage) => {
+            dispatch(fetchReceivedCustomer(time, currentPage));
         },
     };
 };

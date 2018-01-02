@@ -1,23 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Icon, Divider, Popconfirm } from 'antd';
 
-const data = [{
-    key: '1',
-    name: 'harry potter',
-    sharing_at: 'John Brown',
-    tel: 32,
-}, {
-    key: '2',
-    name: 'harry potter',
-    sharing_at: 'John Brown',
-    tel: 32,
-}, {
-    key: '3',
-    name: 'harry potter',
-    sharing_at: 'John Brown',
-    tel: 32,
-}];
-
 class SharingTable extends Component {
     onDeleteCustomer = () => {};
     createColumns = () => {
@@ -34,7 +17,7 @@ class SharingTable extends Component {
             )
         }, {
             title: '共享时间',
-            dataIndex: 'sharing_at',
+            dataIndex: 'share_time',
         }, {
             title: '联系方式',
             dataIndex: 'tel',
@@ -53,8 +36,17 @@ class SharingTable extends Component {
         }];
     }
     render() {
+        const { data } = this.props;
+        const dataSource = data.map((item) => (
+            {
+                key: item.id,
+                name: item.name,
+                share_time: item.share_time,
+                tel: item.tel,
+            }
+        ));
         return (
-            <Table dataSource={data} columns={this.createColumns()} />
+            <Table dataSource={dataSource} columns={this.createColumns()} />
         );
     }
 }
