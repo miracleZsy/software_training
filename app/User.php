@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 
 class User extends Model
@@ -18,13 +19,12 @@ class User extends Model
         return self::where('username',$username)
             ->join('company','user.company_id','=','company.id')->select('user.username','user.uuid','user.password','user.salt')->first();
     }
-    public static function createNewUser($uuid, $username, $name, $authority, $password, $salt, $company_id, $myUuid)
+    public static function createNewUser($username, $name, $authority, $password,$myUuid)
     {
-        $user = User::find($uuid);
         $user_me = User::find($myUuid);
-        if ($user->company_id === $user_me->company_id && $user_me->authority == 1) {
-            DB::beginTransaction();
-            try {
+        $salt = Str::random(8);
+        $password = md5(md5($password).$salt);
+        if ($user_me->authority == 1) {
                 $user = self::create([
                     'uuid' => Uuid::uuid1()->getHex(),
                     'username' => $username,
@@ -32,17 +32,12 @@ class User extends Model
                     'authority' => $authority,
                     'password' => $password,
                     'salt' => $salt,
-                    'company_id' => $company_id,
+                    'company_id' => $user_me->company_id,
                 ]);
-                DB::commit();
                 return $user;
-            } catch (\Exception $e) {
-                DB::rollBack();
-                return false;
             }
-        }else{
-            return false;
-        }
+        else return false;
+
     }
     public static function updateUser($uuid, $username, $name, $password, $authority, $myUuid)
     {

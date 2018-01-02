@@ -17,12 +17,13 @@ use Webmozart\Assert\Assert;
 
 class UserController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
         try {
             $page = (int)$_POST['page'] > 0 ? (int)$_POST['page'] : 1;
             $size = Config::get('sys_page_size');
-            $users = User::all();
+            $user = $request->get('user')->uuid;
+            $users = User::where('company_id',$user->company_id);
             $this->json_die([
                 'code' => 200,
                 'msg' => 'success',
@@ -41,21 +42,16 @@ class UserController extends Controller
     public function insert(Request $request)
     {
         try {
-            Assert::notEmpty($_POST['uuid'], 'uuid can not be empty');
             Assert::notEmpty($_POST['username'], 'username can not be empty');
             Assert::notEmpty($_POST['password'], 'password can not be empty');
             Assert::notEmpty($_POST['authority'], 'authority can not be empty');
-            Assert::notEmpty($_POST['salt'], 'salt can not be empty');
-            Assert::notEmpty($_POST['company_id'], 'company_id can not be empty');
-            $uuid = $_POST['uuid'];
             $username = $_POST['username'];
             $password = $_POST['password'];
             $authority = $_POST['authority'];
-            $salt = $_POST['salt'];
-            $company_id = $_POST['company_id'];
             $name = isset($_POST['name']) ? $_POST['name'] : '';
-            $user = User::createNewUser($uuid , $username, $name, $authority, $password, $salt, $company_id, $request->get('user')->uuid);
-            $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $user->uuid]);
+            $user = User::createNewUser($username, $name, $authority, $password, $request->get('user')->uuid);
+            if ($user) $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $user->uuid]);
+            else $this->json_die(['code'=>403,'msg' => 'no authority']);
         } catch (\InvalidArgumentException $e) {
             $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
         } catch (\Exception $e) {
