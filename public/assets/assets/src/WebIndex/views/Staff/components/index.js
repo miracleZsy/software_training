@@ -3,6 +3,8 @@ import { Button, Input, Menu, Modal, Pagination } from 'antd';
 import StaffInfoCard from './StaffInfoCard';
 import CreateStaff from './CreateStaff';
 import '../css/index.scss';
+import { fetchStaff } from '../api';
+import { connect } from 'react-redux';
 
 const Search = Input.Search;
 const SubMenu = Menu.SubMenu;
@@ -11,6 +13,9 @@ const CardList = [1, 2, 3, 4, 5, 6, 7].map((ele) =>
 );
 
 class Staff extends Component {
+    componentWillMount() {
+        this.props.fetchStaff(1);
+    }
     state = { visible: false };
     handleMenuClick = () => {
 
@@ -81,4 +86,18 @@ class Staff extends Component {
     }
 }
 
-export default Staff;
+const mapStateToProps = (state) => {
+    return {
+        staffData: state.staffReducer.staffData,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchStaff: (page) => {
+            dispatch(fetchStaff(page));
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Staff);
