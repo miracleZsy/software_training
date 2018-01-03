@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { Form, Modal, Select } from 'antd';
+import jwt from 'jsonwebtoken';
+import cookieUtil from '../../../../lib/cookieUtil';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-const ShareCustomerModalModal = Form.create()(
+const ShareCustomerModal = Form.create()(
     (props) => {
-        const { visible, onCancel, onOk, okText, title, form } = props;
+        const { visible, onCancel, onOk, okText, title, form, staffData } = props;
         const { getFieldDecorator } = form;
+        let myUuid = jwt.decode(cookieUtil.get('token')).uuid;
+        // remove curren user
+        const staffList = staffData.filter(item => item.uuid !== myUuid);
         return (
             <Modal
                 width="300"
@@ -29,9 +34,9 @@ const ShareCustomerModalModal = Form.create()(
                             <Select
                                 placeholder="选择员工"
                             >
-                                <Option value="1">1</Option>
-                                <Option value="2">2</Option>
-                                <Option value="3">3</Option>
+                                {staffList.map((item) => (
+                                    <Option key={item.uuid} value={item.uuid}>{item.name}</Option>
+                                ))}
                             </Select>
                         )}
                     </FormItem>
@@ -41,4 +46,4 @@ const ShareCustomerModalModal = Form.create()(
     }
 );
 
-export default ShareCustomerModalModal;
+export default ShareCustomerModal;

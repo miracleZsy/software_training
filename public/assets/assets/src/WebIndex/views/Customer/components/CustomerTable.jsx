@@ -6,6 +6,7 @@ import { Table, Popconfirm, Modal } from 'antd';
 import CreateCustomer from "./CreateCustomer";
 import CustomerDetail from "./CustomerDetail";
 import ShareCustomerModal from './ShareCustomerModal';
+import { fetchStaff } from '../../Staff/api';
 
 class CustomerTable extends Component {
     constructor() {
@@ -23,6 +24,9 @@ class CustomerTable extends Component {
     componentWillMount() {
         const { fetchCustomer, phaseType, time, currentPage, customerType } = this.props;
         fetchCustomer(phaseType, time, currentPage, customerType);
+        if (this.props.staffData.length === 0) {
+            this.props.fetchStaff(0);
+        }
     }
     onDeleteCustomer = (id) => {
         const { deleteCustomer,  phaseType, time, currentPage, customerType } = this.props;
@@ -65,7 +69,8 @@ class CustomerTable extends Component {
         const sharingForm = this.sharingForm;
         sharingForm.validateFields((err, value) => {
             if(err) return;
-            console.log(value);
+            console.log('客户数据', customer);
+            console.log('接收人', value);
         });
     }
     saveFormRef = (form) => {
@@ -139,7 +144,7 @@ class CustomerTable extends Component {
     };
 
     render() {
-        const { customerData, checkedCustomer, customerTotalCount, currentPage } = this.props;
+        const { customerData, staffData, checkedCustomer, customerTotalCount, currentPage } = this.props;
         {
             customerData.forEach(function (item, index) {
                 item.index = index;
@@ -176,6 +181,7 @@ class CustomerTable extends Component {
                     cancelShowDetail={this.cancelShowDetail}
                 />
                 <ShareCustomerModal
+                    staffData={staffData}
                     ref={(sharingForm) => { this.sharingForm = sharingForm; }}
                     visible={showSharing}
                     title="共享客户"
@@ -197,7 +203,8 @@ const mapStateToProps = (state) => {
         phaseType: state.phaseAndTimeReducer.phaseType,
         time: state.phaseAndTimeReducer.time,
         currentPage:state.phaseAndTimeReducer.currentPage,
-        customerType: state.phaseAndTimeReducer.customerType
+        customerType: state.phaseAndTimeReducer.customerType,
+        staffData: state.staffReducer.staffData,
     };
 };
 
@@ -226,6 +233,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         getPhaseLog: (id) => {
             dispatch(customerAjax.getPhaseLog(id));
+        },
+        fetchStaff: (page) => {
+            dispatch(fetchStaff(page));
         }
     };
 };

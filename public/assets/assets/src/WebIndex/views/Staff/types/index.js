@@ -1,3 +1,3 @@
 export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
-
+export const SET_STAFF_COUNT = 'SET_STAFF_COUNT';
 export const FETCH_STAFF = 'FETCH_STAFF';

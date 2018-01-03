@@ -8,6 +8,7 @@ export const fetchStaff = (page = 1) => (dispatch) => axiosUtil('post', fetchSta
     page, 
 }).then((value) => {
     if (value !== undefined) {
-        dispatch(actions.fetchStaff(value));
+        dispatch(actions.fetchStaff(value.user));
+        dispatch(actions.setStaffCount(value.count));
     }
 });

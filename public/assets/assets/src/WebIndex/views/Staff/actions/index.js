@@ -13,3 +13,11 @@ export const fetchStaff = (staffData) =>  {
         staffData,
     };
 };
+
+export const setStaffCount = (count) =>  {
+    return {
+        type: types.SET_STAFF_COUNT,
+        staffCount: count,
+    };
+};
+

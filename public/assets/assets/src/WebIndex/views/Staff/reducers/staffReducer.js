@@ -3,6 +3,7 @@ import * as types from '../types';
 const INITIAL_STATE = {
     currentPage: 1,
     staffData: [],
+    staffCount: 0,
 };
 
 const staffReducer = (state = INITIAL_STATE, action) => {
@@ -17,6 +18,11 @@ const staffReducer = (state = INITIAL_STATE, action) => {
         return {
             ...state,
             staffData: action.staffData,
+        };
+    case types.SET_STAFF_COUNT:
+        return {
+            ...state,
+            staffCount: action.staffCount,
         };
     default:
         return state;
