@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Menu, Tag } from 'antd';
 import SharingTable from './components/SharingTable';
-import TimeTags from './components/TimeTags';
 import { setSharingTime, setCurrentPage, setSharingType } from './actions';
 import { fetchSharedCustomer, fetchReceivedCustomer } from './api';
 import { connect } from 'react-redux';
@@ -38,9 +37,7 @@ class SharingManagement extends Component {
                     </div>
                 </div>
                 <div className="sharingContent">
-                    <div className="contentTopPanel">
-                        <TimeTags setSharingTime={setSharingTime} sharingTime={sharingTime} />
-                    </div>
+
                     <div className="contentTable">
                         { sharingType == 0 && <SharingTable data={receivedCustomerData} /> }
                         { sharingType == 1 && <SharingTable data={sharedCustomerData} /> }
