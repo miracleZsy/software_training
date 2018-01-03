@@ -70,9 +70,12 @@ class CustomerTable extends Component {
         const sharingForm = this.sharingForm;
         sharingForm.validateFields((err, value) => {
             if(err) return;
-            console.log('接收人uuid', value);
+            console.log('接收人uuid', value.staff);
             console.log('客户', customer);
-            this.props.insertSharedCustomer(value, customer);
+            this.props.insertSharedCustomer(value.staff, customer);
+            this.setState({
+                showSharing: false,
+            });
         });
     }
     saveFormRef = (form) => {

@@ -54,7 +54,7 @@ class SharingTable extends Component {
         const { data } = this.props;
         const dataSource = data.map((item) => (
             {
-                key: item.id,
+                key: item.share_time,
                 name: item.name,
                 share_time: item.share_time,
                 tel: item.tel,
