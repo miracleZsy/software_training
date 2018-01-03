@@ -20,7 +20,6 @@ class SharingManagement extends Component {
     }
     render() {
         const { setSharingTime, sharingTime, sharingType, sharedCustomerData, receivedCustomerData } = this.props;
-        const customerData = sharingType ? receivedCustomerData : sharedCustomerData;
         return (
             <div className="sharingContainer">
                 <div className="innerSideBar">
@@ -30,7 +29,7 @@ class SharingManagement extends Component {
                     <div className="sharingSideBarBottom">
                         <Menu
                             onClick={this.handleSideBarClick}
-                            defaultSelectedKeys={['1']}
+                            defaultSelectedKeys={['0']}
                             mode="inline"
                         >
                             <Menu.Item key="0">我共享的客户</Menu.Item>
@@ -43,7 +42,8 @@ class SharingManagement extends Component {
                         <TimeTags setSharingTime={setSharingTime} sharingTime={sharingTime} />
                     </div>
                     <div className="contentTable">
-                        <SharingTable data={customerData} />
+                        { sharingType == 0 && <SharingTable data={receivedCustomerData} /> }
+                        { sharingType == 1 && <SharingTable data={sharedCustomerData} /> }
                     </div>
                 </div>
             </div>
@@ -56,6 +56,8 @@ const mapStateToProps = ({ sharingManagementReducer }) => {
         sharingTime: sharingManagementReducer.time,
         currentPage: sharingManagementReducer.currentPage,
         sharingType: sharingManagementReducer.sharingType,
+        sharedCustomerData: sharingManagementReducer.sharedCustomerData,
+        receivedCustomerData: sharingManagementReducer.receivedCustomerData,
     };
 };
 
