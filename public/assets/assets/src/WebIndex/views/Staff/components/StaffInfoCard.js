@@ -3,15 +3,15 @@ import { Card, Icon, Avatar } from 'antd';
 
 const { Meta } = Card;
 
-const StaffInfoCard = () => (
+const StaffInfoCard = (props) => (
     <Card
-        style={{ width: 300 }}
+        style={{ width: 250 }}
         actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
     >
         <Meta
             avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-            title="Sytone"
-            description="账号:12345"
+            title={props.name}
+            description={`用户名:${props.username}`}
         />
     </Card>
 );

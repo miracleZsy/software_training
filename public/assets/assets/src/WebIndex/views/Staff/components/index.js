@@ -8,9 +8,9 @@ import { connect } from 'react-redux';
 
 const Search = Input.Search;
 const SubMenu = Menu.SubMenu;
-const CardList = [1, 2, 3, 4, 5, 6, 7].map((ele) => 
-    <StaffInfoCard key={ele} />
-);
+// const CardList = [1, 2, 3, 4, 5, 6, 7].map((ele) => 
+//     <StaffInfoCard key={ele} />
+// );
 
 class Staff extends Component {
     componentWillMount() {
@@ -32,6 +32,7 @@ class Staff extends Component {
         });
     }
     render() {
+        const { staffData, staffCount } = this.props;
         return (
             <div className="staffContainer">
                 <div className="innerSideBar">
@@ -65,10 +66,12 @@ class Staff extends Component {
                     </div>
                     <h2 style={{ margin: "5px 0" }}>杭州阿里巴巴有限公司</h2>
                     <span style={{ display: "block", fontSize: "1.05rem" }}>
-                        共有员工 2 名
+                        共有员工 { staffCount } 名
                     </span>
                     <div className="cardList">
-                        {CardList}
+                        {staffData.map((item) => (
+                            <StaffInfoCard key={item.uuid} {...item} />
+                        ))}
                     </div>
                     <div className="staffFooter" style={{ marginTop: "1rem" }}>
                         <Pagination style={{ float: "right" }} defaultCurrent={1} total={50} />
@@ -89,6 +92,7 @@ class Staff extends Component {
 const mapStateToProps = (state) => {
     return {
         staffData: state.staffReducer.staffData,
+        staffCount: state.staffReducer.staffCount,
     };
 };
 
