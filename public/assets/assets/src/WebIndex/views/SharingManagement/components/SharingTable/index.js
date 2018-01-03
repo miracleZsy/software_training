@@ -60,7 +60,7 @@ class SharingTable extends Component {
                 tel: item.tel,
             }
         ));
-
+        // Todo：set total number
         return (
             <Table dataSource={dataSource} columns={this.createColumns()} pagination={{
                 'defaultCurrent': 1,

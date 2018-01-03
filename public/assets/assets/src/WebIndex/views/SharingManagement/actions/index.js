@@ -7,7 +7,6 @@ export const setSharingTime = (time) => {
     };
 };
 
-
 export const setCurrentPage = (currenPage) => {
     return {
         type: types.SET_CURRENT_PAGE,
@@ -43,4 +42,10 @@ export const insertSharedCustomer = (sharedCustomer) =>  {
     };
 };
 
+export const deleteSharedCustomer = (removedId) =>  {
+    return {
+        type: types.DELETE_SHARED_CUSTOMER,
+        payload: removedId,
+    };
+};
 

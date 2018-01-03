@@ -40,6 +40,11 @@ const sharingManagementReducer = (state = INITIAL_STATE, action) => {
             ...state,
             sharedCustomerData: [...state.sharedCustomerData, action.sharedCustomer],
         };
+    case types.DELETE_SHARED_CUSTOMER:
+        return {
+            ...state,
+            sharedCustomerData: state.sharedCustomerData.filter(item => item.id !== action.payload);
+        };
     default:
         return state;
     }
