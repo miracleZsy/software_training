@@ -49,6 +49,7 @@ class Login extends Component {
                         message.info('用户名或密码错误!');
                     }else if(value === 409) {
                         message.info('验证码错误!');
+                        this.fetchCaptcha();
                     }
                     else {
                         message.info('登录成功!', 1);

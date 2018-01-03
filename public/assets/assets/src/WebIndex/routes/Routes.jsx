@@ -3,6 +3,7 @@ import { HashRouter, Route, Redirect, Switch } from 'react-router-dom';
 import Customer from '../views/Customer/components/Customer';
 import SaleManage from '../views/Sale/components/SaleManage';
 import Staff from '../views/Staff/components';
+import SharingManagement from '../views/SharingManagement';
 import Login from '../views/Login/components/Login';
 import ControlTotalComponent from '../views/ControlTotalComponent/ControlTotalComponent';
 
@@ -21,6 +22,7 @@ class RoutesComponent extends Component {
                 <Route path="/customer" exact component={ consoleWrap(Customer) } />
                 <Route path="/sale" exact component={ consoleWrap(SaleManage) } />
                 <Route path="/staff" exact component={ consoleWrap(Staff) } />
+                <Route path="/sharing" exact component={ consoleWrap(SharingManagement)} />
                 <Redirect to={ '/customer' } />
             </Switch>
         );
