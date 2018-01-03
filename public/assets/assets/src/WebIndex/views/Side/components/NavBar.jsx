@@ -18,7 +18,7 @@ const NavBarMap = {
         url: '/staff',
         tag: '员工管理',
     },
-    3:{
+    4:{
         url: '/sharing',
         tag: '共享管理',
     }
