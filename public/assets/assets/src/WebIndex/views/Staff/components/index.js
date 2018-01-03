@@ -74,7 +74,7 @@ class Staff extends Component {
                         ))}
                     </div>
                     <div className="staffFooter" style={{ marginTop: "1rem" }}>
-                        <Pagination style={{ float: "right" }} defaultCurrent={1} total={50} />
+                        <Pagination style={{ float: "right" }} defaultCurrent={1} total={staffCount} />
                     </div>
                 </div>
                 <CreateStaff
