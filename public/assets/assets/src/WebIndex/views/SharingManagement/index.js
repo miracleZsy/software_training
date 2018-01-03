@@ -39,8 +39,8 @@ class SharingManagement extends Component {
                 <div className="sharingContent">
 
                     <div className="contentTable">
-                        { sharingType == 0 && <SharingTable data={receivedCustomerData} /> }
-                        { sharingType == 1 && <SharingTable data={sharedCustomerData} /> }
+                        { sharingType == 0 && <SharingTable data={sharedCustomerData} /> }
+                        { sharingType == 1 && <SharingTable data={receivedCustomerData} /> }
                     </div>
                 </div>
             </div>

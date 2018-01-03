@@ -36,3 +36,11 @@ export const fetchReceivedCustomer = (receivedCustomerData) => {
     };
 };
 
+export const insertSharedCustomer = (sharedCustomer) =>  {
+    return {
+        type: types.INSERT_SHARED_CUSTOMER,
+        sharedCustomer,
+    };
+};
+
+
