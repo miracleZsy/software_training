@@ -4,6 +4,7 @@ const INITIAL_STATE = {
     currentPage: 1,
     staffData: [],
     staffCount: 0,
+    newStaff: {},
 };
 
 const staffReducer = (state = INITIAL_STATE, action) => {
@@ -23,6 +24,13 @@ const staffReducer = (state = INITIAL_STATE, action) => {
         return {
             ...state,
             staffCount: action.staffCount,
+        };
+    case types.CREATE_STAFF:
+        return {
+            ...state,
+            newStaff: action.staff,
+            staffData: state.staffData.push(action.staff),
+            staffCount: state.staffCount ++,
         };
     default:
         return state;

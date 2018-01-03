@@ -21,3 +21,9 @@ export const setStaffCount = (count) =>  {
     };
 };
 
+export const createStaff = (staff) =>  {
+    return {
+        type: types.CREATE_STAFF,
+        staff,
+    };
+};

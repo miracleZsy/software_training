@@ -3,14 +3,11 @@ import { Button, Input, Menu, Modal, Pagination } from 'antd';
 import StaffInfoCard from './StaffInfoCard';
 import CreateStaff from './CreateStaff';
 import '../css/index.scss';
-import { fetchStaff } from '../api';
+import { fetchStaff, createStaff } from '../api';
 import { connect } from 'react-redux';
 
 const Search = Input.Search;
 const SubMenu = Menu.SubMenu;
-// const CardList = [1, 2, 3, 4, 5, 6, 7].map((ele) => 
-//     <StaffInfoCard key={ele} />
-// );
 
 class Staff extends Component {
     componentWillMount() {
@@ -25,7 +22,17 @@ class Staff extends Component {
             visible: true,
         });
     }
-    handleCreate = () => {}
+    handleCreate = () => {
+        const staffForm = this.staffForm;
+        staffForm.validateFields((err, value) => {
+            if(err) return;
+            console.log('staffFrom', value);
+            this.props.createStaff(value);
+            this.setState({
+                visible: false,
+            });
+        });
+    }
     handleCancel = () => {
         this.setState({
             visible: false,
@@ -78,6 +85,9 @@ class Staff extends Component {
                     </div>
                 </div>
                 <CreateStaff
+                    ref={(staffForm) => {
+                        this.staffForm = staffForm;
+                    }}
                     visible={this.state.visible}
                     title="添加员工"
                     okText="创建"
@@ -101,6 +111,9 @@ const mapDispatchToProps = (dispatch) => {
         fetchStaff: (page) => {
             dispatch(fetchStaff(page));
         },
+        createStaff: (staff) => {
+            dispatch(createStaff(staff));
+        }
     };
 };
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Modal, Input, Icon, Button, Select } from 'antd';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 const CreateStaff = Form.create()(
     (props) => {
@@ -19,6 +20,13 @@ const CreateStaff = Form.create()(
                 style={{ top: 0 }}
             >
                 <Form layout="vertical">
+                    <FormItem label="用户名">
+                        {getFieldDecorator('username', {
+                            rules: [{ required: true, message: '请输入用户名' }],
+                        })(
+                            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="员工用户名" />
+                        )}
+                    </FormItem>
                     <FormItem label="姓名">
                         {getFieldDecorator('name', {
                             rules: [{ required: true, message: '请输入姓名' }],
