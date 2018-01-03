@@ -49,8 +49,10 @@ class SharingTable extends Component {
             )
         }];
     }
+
     render() {
         const { data } = this.props;
+        const { selectedRowKeys } = this.state;
         const dataSource = data.map((item) => (
             {
                 key: item.id,
@@ -59,8 +61,12 @@ class SharingTable extends Component {
                 tel: item.tel,
             }
         ));
+
         return (
-            <Table dataSource={dataSource} columns={this.createColumns()} />
+            <Table dataSource={dataSource} columns={this.createColumns()} pagination={{
+                'defaultCurrent': 1,
+                'total': 50, 
+            }} />
         );
     }
 }
