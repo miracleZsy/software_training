@@ -190,17 +190,39 @@ class CustomerController extends Controller
             $this->json_die(['code' => 500, 'msg' => 'unknown error']);
         }
     }
-    public function changePhase(Request $request){
-        try{
+
+    public function changePhase(Request $request)
+    {
+        try {
             Assert::notEmpty($_POST['id'], 'id can not be null');
-            Assert::integer((int)$_POST['id'],'id must be int');
-            Assert::integer((int)$_POST['phase'],'phase must be int');
+            Assert::integer((int)$_POST['id'], 'id must be int');
+            Assert::integer((int)$_POST['phase'], 'phase must be int');
             $id = $_POST['id'];
             $phase = $_POST['phase'];
-            $res = Customer::phaseChange($id,$request->get('user')->uuid,$phase);
-            if ($res) $this->json_die(['code'=>200, 'msg'=>'success']);
-            else $this->json_die(['code'=>403,'msg'=>'customer is not exist']);
-        }catch (\InvalidArgumentException $e) {
+            $res = Customer::phaseChange($id, $request->get('user')->uuid, $phase);
+            if ($res) $this->json_die(['code' => 200, 'msg' => 'success']);
+            else $this->json_die(['code' => 403, 'msg' => 'customer is not exist']);
+        } catch (\InvalidArgumentException $e) {
+            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->json_die(['code' => 500, 'msg' => 'unknown error']);
+        }
+    }
+
+    public function getMyCustomers(Request $request)
+    {
+        try {
+            Assert::notEmpty($_POST['hint']);
+            $hint = $_POST['hint'];
+            $customers = Customer::where('uuid', $request->get('user')->uuid)
+                ->where('name', 'like', $hint . '%')->select('id', 'name', 'pic_url')->get()->toArray();
+            $this->json_die([
+                'code' => 200,
+                'msg' => 'success',
+                'data' => $customers
+            ]);
+        } catch (\InvalidArgumentException $e) {
             $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
         } catch (\Exception $e) {
             Log::error($e->getMessage());

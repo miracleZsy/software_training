@@ -95,7 +95,7 @@ class CustomerTable extends Component {
             dataIndex: 'oper',
             render:(text, record) => (
                 <span>
-                    <Popconfirm title="确认删除?" onConfirm={() => {
+                    <Popconfirm title="确认删除?" cancelText="取消" okText="确定" onConfirm={() => {
                         this.onDeleteCustomer(record.id);
                     }}>
                         <a href="#">删除用户</a>
@@ -103,7 +103,7 @@ class CustomerTable extends Component {
                     <span style={{ paddingLeft: 10, paddingRight: 10, color: '#108ee9', cursor: 'pointer' }} onClick={() => {
                         this.onUpdateCustomer(record.id);
                     }} >修改用户</span>
-                    <Popconfirm title="确认共享?" onConfirm={() => {
+                    <Popconfirm title="确认共享?" cancelText="取消" okText="确定" onConfirm={() => {
                         this.onShareCustomer(record.id, record.index);
                     }}>
                         <a href="#">共享用户</a>
