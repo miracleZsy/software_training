@@ -7,6 +7,7 @@ import CreateCustomer from "./CreateCustomer";
 import CustomerDetail from "./CustomerDetail";
 import ShareCustomerModal from './ShareCustomerModal';
 import { fetchStaff } from '../../Staff/api';
+import { insertSharedCustomer } from '../../SharingManagement/api';
 
 class CustomerTable extends Component {
     constructor() {
@@ -69,8 +70,9 @@ class CustomerTable extends Component {
         const sharingForm = this.sharingForm;
         sharingForm.validateFields((err, value) => {
             if(err) return;
-            console.log('客户数据', customer);
-            console.log('接收人', value);
+            console.log('接收人uuid', value);
+            console.log('客户', customer);
+            this.props.insertSharedCustomer(value, customer);
         });
     }
     saveFormRef = (form) => {
@@ -127,7 +129,7 @@ class CustomerTable extends Component {
                         this.onUpdateCustomer(record.id);
                     }} >修改用户</span>
                     <Popconfirm title="确认共享?" cancelText="取消" okText="确定" onConfirm={() => {
-                        this.onShareCustomer(record.id, record.index);
+                        this.onShareCustomer(record);
                     }}>
                         <a href="#">共享用户</a>
                     </Popconfirm>
@@ -186,7 +188,6 @@ class CustomerTable extends Component {
                     visible={showSharing}
                     title="共享客户"
                     okText="共享"
-                    record={showSharingRecord}
                     onCancel={this.cancelShowSharing}
                     onOk={this.handleSharing}
                 />
@@ -236,6 +237,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         fetchStaff: (page) => {
             dispatch(fetchStaff(page));
+        },
+        insertSharedCustomer: (uuid_received, customer) => {
+            dispatch(insertSharedCustomer(uuid_received, customer));
         }
     };
 };

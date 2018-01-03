@@ -52,7 +52,6 @@ class SharingTable extends Component {
 
     render() {
         const { data } = this.props;
-        const { selectedRowKeys } = this.state;
         const dataSource = data.map((item) => (
             {
                 key: item.id,

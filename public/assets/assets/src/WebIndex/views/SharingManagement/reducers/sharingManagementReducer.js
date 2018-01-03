@@ -35,6 +35,11 @@ const sharingManagementReducer = (state = INITIAL_STATE, action) => {
             ...state,
             receivedCustomerData: action.receivedCustomerData,
         };
+    case types.INSERT_SHARED_CUSTOMER:
+        return {
+            ...state,
+            sharedCustomerData: state.sharedCustomerData.push(action.sharedCustomer),
+        };
     default:
         return state;
     }
