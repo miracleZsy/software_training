@@ -17,7 +17,7 @@ class ShareController extends Controller
             $uuid = $request->get('user')->uuid;
             $shares = Share::filter($time)->where('uuid_send', $uuid)
                 ->join('customer', 'share.customer_id', '=', 'customer.id')
-                ->select('customer.id', 'customer.name', 'share.created_at as share_time', 'customer.tel', 'customer.pic_url')
+                ->select('share.id as shareId','customer.id as customerId', 'customer.name', 'share.created_at as share_time', 'customer.tel', 'customer.pic_url')
                 ->get()->toArray();;
             $this->json_die([
                 'code' => 200,
@@ -39,7 +39,7 @@ class ShareController extends Controller
             $time = $_POST['time'];
             $uuid = $request->get('user')->uuid;
             $shares = Share::filter($time)->where('uuid_received', $uuid)->join('customer', 'share.customer_id', '=', 'customer.id')
-                ->select('customer.id', 'customer.name', 'share.created_at as share_time', 'customer.tel', 'customer.pic_url')
+                ->select('share.id as shareId','customer.id as customerId', 'customer.name', 'share.created_at as share_time', 'customer.tel', 'customer.pic_url')
                 ->get()->toArray();
             $this->json_die([
                 'code' => 200,
