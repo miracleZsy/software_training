@@ -54,7 +54,7 @@ class SharingTable extends Component {
         const { data, count } = this.props;
         const dataSource = data.map((item) => (
             {
-                key: item.share_time,
+                key: item.shareId,
                 name: item.name,
                 share_time: item.share_time,
                 tel: item.tel,
@@ -64,7 +64,6 @@ class SharingTable extends Component {
             defaultCurrent: 1,
             total: count,
         };
-        // Todo：set total number
         return (
             <Table dataSource={dataSource} columns={this.createColumns()} pagination={pageination} />
         );
