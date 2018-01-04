@@ -28,6 +28,14 @@ export const fetchSharedCustomer = (sharedCustomerData) =>  {
     };
 };
 
+export const fetchSharedAndReceivedCustomerCount = (countObj) =>  {
+    return {
+        type: types.FETCH_SHARED_AND_RECEIVED_CUSTOMER_COUNT,
+        payload: countObj,
+    };
+};
+
+
 export const fetchReceivedCustomer = (receivedCustomerData) => {
     return {
         type: types.FETCH_RECEIVED_CUSTOMER,

@@ -6,6 +6,7 @@ const fetchSharedCustomerUrl = '/software_training/public/share/shareList';
 const fetchReceivedCustomerUrl = '/software_training/public/share/sharedList';
 const insertSharedCustomerUrl = '/software_training/public/share/insert';
 const deleteSharedCustomerUrl = '/software_training/public/share/delete';
+const sharedAndReceivedCustomerCountUrl = '/software_training/public/share/count';
 
 export const fetchSharedCustomer = (time = 0, page = 1) => (dispatch) => axiosUtil('post', fetchSharedCustomerUrl, {
     time,
@@ -13,6 +14,12 @@ export const fetchSharedCustomer = (time = 0, page = 1) => (dispatch) => axiosUt
 }).then((value) => {
     if (value !== undefined) {
         dispatch(actions.fetchSharedCustomer(value));
+    }
+});
+
+export const fetchSharedAndReceivedCustomerCount = () => (dispatch) => axiosUtil('post', sharedAndReceivedCustomerCountUrl, {}).then((value) => {
+    if (value !== undefined) {
+        dispatch(actions.fetchSharedAndReceivedCustomerCount(value));
     }
 });
 

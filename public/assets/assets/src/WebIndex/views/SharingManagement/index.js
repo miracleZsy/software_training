@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Menu, Tag } from 'antd';
 import SharingTable from './components/SharingTable';
 import { setSharingTime, setCurrentPage, setSharingType } from './actions';
-import { fetchSharedCustomer, fetchReceivedCustomer } from './api';
+import { fetchSharedCustomer, fetchReceivedCustomer, fetchSharedAndReceivedCustomerCount } from './api';
 import { connect } from 'react-redux';
 import './style.scss';
 
@@ -12,13 +12,14 @@ class SharingManagement extends Component {
     componentWillMount() {
         this.props.fetchSharedCustomer(0, 1);
         this.props.fetchReceivedCustomer(0, 1);
+        this.props.fetchSharedAndReceivedCustomerCount();
     }
     handleSideBarClick = ({ key }) => {
         this.props.setSharingType(key);
         // fetch
     }
     render() {
-        const { setSharingTime, sharingTime, sharingType, sharedCustomerData, receivedCustomerData } = this.props;
+        const { setSharingTime, sharingTime, sharingType, sharedCustomerData, receivedCustomerData, sharedCustomerCount, receivedCustomerCount } = this.props;
         return (
             <div className="sharingContainer">
                 <div className="innerSideBar">
@@ -39,8 +40,8 @@ class SharingManagement extends Component {
                 <div className="sharingContent">
 
                     <div className="contentTable">
-                        { sharingType == 0 && <SharingTable data={sharedCustomerData} /> }
-                        { sharingType == 1 && <SharingTable data={receivedCustomerData} /> }
+                        { sharingType == 0 && <SharingTable data={sharedCustomerData} count={sharedCustomerCount} /> }
+                        { sharingType == 1 && <SharingTable data={receivedCustomerData} count={receivedCustomerCount} /> }
                     </div>
                 </div>
             </div>
@@ -54,7 +55,9 @@ const mapStateToProps = ({ sharingManagementReducer }) => {
         currentPage: sharingManagementReducer.currentPage,
         sharingType: sharingManagementReducer.sharingType,
         sharedCustomerData: sharingManagementReducer.sharedCustomerData,
+        sharedCustomerCount: sharingManagementReducer.sharedCustomerCount,
         receivedCustomerData: sharingManagementReducer.receivedCustomerData,
+        receivedCustomerCount: sharingManagementReducer.receivedCustomerCount,
     };
 };
 
@@ -75,6 +78,9 @@ const mapDispatchToProps = (dispatch) => {
         fetchReceivedCustomer:(time, currentPage) => {
             dispatch(fetchReceivedCustomer(time, currentPage));
         },
+        fetchSharedAndReceivedCustomerCount:() => {
+            dispatch(fetchSharedAndReceivedCustomerCount());
+        }
     };
 };
 

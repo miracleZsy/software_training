@@ -94,4 +94,13 @@ class ShareController extends Controller
             $this->json_die(['code' => 500, 'msg' => 'unknown error']);
         }
     }
+    public function shareCount(Request $request){
+        $uuid = $request->get('user')->uuid;
+        $shareCount = Share::where('uuid_send',$uuid)->count();
+        $sharedCount = Share::where('uuid_received',$uuid)->count();
+        $this->json_die(['code'=>200,'msg'=>'success','data'=>[
+            'shareCount'=>$shareCount,
+            'sharedCount'=>$sharedCount
+        ]]);
+    }
 }
