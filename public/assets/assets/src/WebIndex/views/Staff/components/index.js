@@ -4,7 +4,7 @@ import StaffInfoCard from './StaffInfoCard';
 import CreateStaff from './CreateStaff';
 import StaffDetail from './StaffDetail';
 import ModifyStaff from './ModifyStaff';
-import { fetchStaff, createStaff, modifyStaff } from '../api';
+import { fetchStaff, createStaff, modifyStaff, deleteStaff } from '../api';
 import { setActiveStaff } from '../actions';
 import { connect } from 'react-redux';
 import '../css/index.scss';
@@ -73,6 +73,9 @@ class Staff extends Component {
             detailVisible: false,
         });
     }
+    handleDeleteStaff = (id) => {
+        this.props.deleteStaff(id);
+    }
     render() {
         const { staffData, staffCount, activeStaff } = this.props;
         const { detailVisible } = this.state;
@@ -118,6 +121,7 @@ class Staff extends Component {
                                 staff={item}
                                 openStaffModal={this.handleStaffModalOpen}
                                 openModifyModal={this.handleModifyModalOpen}
+                                deleteStaff={this.handleDeleteStaff}
                             />
                         ))}
                     </div>
@@ -178,6 +182,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         modifyStaff: (staff) => {
             dispatch(modifyStaff(staff));
+        },
+        deleteStaff: (uuid) => {
+            dispatch(deleteStaff(uuid));
         }
     };
 };

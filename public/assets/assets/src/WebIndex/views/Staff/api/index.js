@@ -5,6 +5,7 @@ import * as actions from '../actions';
 const fetchStaffUrl = '/software_training/public/user/list';
 const createStaffUrl = '/software_training/public/user/insert';
 const modifyStaffUrl = '/software_training/public/user/update';
+// const deleteStaffUrl = '/'
 
 export const fetchStaff = (page = 1) => (dispatch) => axiosUtil('post', fetchStaffUrl, {
     page, 
