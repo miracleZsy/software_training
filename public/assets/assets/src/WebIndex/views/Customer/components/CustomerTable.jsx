@@ -98,15 +98,15 @@ class CustomerTable extends Component {
                     <Popconfirm title="确认删除?" cancelText="取消" okText="确定" onConfirm={() => {
                         this.onDeleteCustomer(record.id);
                     }}>
-                        <a href="#">删除用户</a>
+                        <a href="#">删除客户</a>
                     </Popconfirm>
                     <span style={{ paddingLeft: 10, paddingRight: 10, color: '#108ee9', cursor: 'pointer' }} onClick={() => {
                         this.onUpdateCustomer(record.id);
-                    }} >修改用户</span>
+                    }} >修改客户</span>
                     <Popconfirm title="确认共享?" cancelText="取消" okText="确定" onConfirm={() => {
                         this.onShareCustomer(record.id, record.index);
                     }}>
-                        <a href="#">共享用户</a>
+                        <a href="#">共享客户</a>
                     </Popconfirm>
                 </span>
             )
@@ -148,7 +148,7 @@ class CustomerTable extends Component {
                     visible={visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
-                    title="修改用户"
+                    title="修改客户"
                     okText="修改"
                     checkedCustomer={checkedCustomer}
                 />
