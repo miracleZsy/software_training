@@ -6,7 +6,9 @@ import customerReducer from './views/Customer/reducers/customerReducer';
 import phaseAndTimeReducer from './views/Customer/reducers/phaseAndTimeReducer';
 import customerTypeCountReducer from './views/Customer/reducers/customerTypeCountReducer';
 import customerDetailReducer from './views/Customer/reducers/customerDetailReducer';
+import sharingManagementReducer from './views/SharingManagement/reducers/sharingManagementReducer';
 import saleManageReducer from './views/Sale/reducers/saleManageReducer';
+import staffReducer from './views/Staff/reducers/staffReducer';
 
 const reducers = combineReducers({
     hideSideReducer,
@@ -14,6 +16,8 @@ const reducers = combineReducers({
     phaseAndTimeReducer,
     customerTypeCountReducer,
     customerDetailReducer,
+    staffReducer,
+    sharingManagementReducer,
     saleManageReducer,
 });
 const store = createStore(
