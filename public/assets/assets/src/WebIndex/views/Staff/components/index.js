@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import { Button, Input, Menu, Modal, Pagination } from 'antd';
 import StaffInfoCard from './StaffInfoCard';
 import CreateStaff from './CreateStaff';
-import '../css/index.scss';
-import { fetchStaff, createStaff } from '../api';
+import StaffDetail from './StaffDetail';
+import ModifyStaff from './ModifyStaff';
+import { fetchStaff, createStaff, modifyStaff } from '../api';
+import { setActiveStaff } from '../actions';
 import { connect } from 'react-redux';
+import '../css/index.scss';
 
 const Search = Input.Search;
 const SubMenu = Menu.SubMenu;
@@ -13,7 +16,7 @@ class Staff extends Component {
     componentWillMount() {
         this.props.fetchStaff(1);
     }
-    state = { visible: false };
+    state = { visible: false, detailVisible: false, modifyVisible: false, };
     handleMenuClick = () => {
 
     }
@@ -33,13 +36,46 @@ class Staff extends Component {
             });
         });
     }
+    handleModify = () => {
+        const modifyForm = this.modifyForm;
+        modifyForm.validateFields((err, value) => {
+            if (err) return;
+            this.props.modifyStaff({ ...value, uuid: this.props.activeStaff.uuid });
+            this.setState({
+                modifyVisible: false,
+            });
+        });
+    }
     handleCancel = () => {
         this.setState({
             visible: false,
         });
     }
+    handleModifyCancel = () => {
+        this.setState({
+            modifyVisible: false,
+        });
+    }
+    handleStaffModalOpen = (staff) => {
+        this.props.setActiveStaff(staff);
+        this.setState({
+            detailVisible: true,
+        });
+    }
+    handleModifyModalOpen = (staff) => {
+        this.props.setActiveStaff(staff);
+        this.setState({
+            modifyVisible: true,
+        });
+    } 
+    handleStaffModalClose = () => {
+        this.setState({
+            detailVisible: false,
+        });
+    }
     render() {
-        const { staffData, staffCount } = this.props;
+        const { staffData, staffCount, activeStaff } = this.props;
+        const { detailVisible } = this.state;
         return (
             <div className="staffContainer">
                 <div className="innerSideBar">
@@ -77,7 +113,12 @@ class Staff extends Component {
                     </span>
                     <div className="cardList">
                         {staffData.map((item) => (
-                            <StaffInfoCard key={item.uuid} {...item} />
+                            <StaffInfoCard
+                                key={item.uuid}
+                                staff={item}
+                                openStaffModal={this.handleStaffModalOpen}
+                                openModifyModal={this.handleModifyModalOpen}
+                            />
                         ))}
                     </div>
                     <div className="staffFooter" style={{ marginTop: "1rem" }}>
@@ -94,6 +135,23 @@ class Staff extends Component {
                     onCreate={this.handleCreate}
                     onCancel={this.handleCancel}
                 />
+                <ModifyStaff
+                    ref={(form) => {
+                        this.modifyForm = form;
+                    }}
+                    staff={activeStaff}
+                    visible={this.state.modifyVisible}
+                    title="修改员工信息"
+                    okText="修改"
+                    onOk={this.handleModify}
+                    onCancel={this.handleModifyCancel}
+                />
+                <StaffDetail
+                    visible={detailVisible}
+                    staff={activeStaff}
+                    title="员工信息"
+                    onCancel={this.handleStaffModalClose}
+                />
             </div>
         );
     }
@@ -103,6 +161,7 @@ const mapStateToProps = (state) => {
     return {
         staffData: state.staffReducer.staffData,
         staffCount: state.staffReducer.staffCount,
+        activeStaff: state.staffReducer.activeStaff,
     };
 };
 
@@ -113,6 +172,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         createStaff: (staff) => {
             dispatch(createStaff(staff));
+        },
+        setActiveStaff:(staff) => {
+            dispatch(setActiveStaff(staff));
+        },
+        modifyStaff: (staff) => {
+            dispatch(modifyStaff(staff));
         }
     };
 };

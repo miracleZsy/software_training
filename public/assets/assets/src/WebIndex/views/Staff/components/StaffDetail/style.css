@@ -1,0 +1,9 @@
+.staffDetailContainer {
+  display: flex;
+  justify-content: space-around
+}
+
+.staffAvatar > img {
+  height: 100px;
+  width: 100px;
+}

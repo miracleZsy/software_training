@@ -27,3 +27,17 @@ export const createStaff = (staff) =>  {
         staff,
     };
 };
+
+export const setActiveStaff = (staff) =>  {
+    return {
+        type: types.SET_ACTIVE_STAFF,
+        payload: staff,
+    };
+};
+
+export const modifyStaff = (newStaff) =>  {
+    return {
+        type: types.MODIFY_STAFF,
+        payload: newStaff,
+    };
+};

@@ -5,6 +5,7 @@ const INITIAL_STATE = {
     staffData: [],
     staffCount: 0,
     newStaff: {},
+    activeStaff: {},
 };
 
 const staffReducer = (state = INITIAL_STATE, action) => {
@@ -31,6 +32,18 @@ const staffReducer = (state = INITIAL_STATE, action) => {
             newStaff: action.staff,
             staffData: state.staffData.push(action.staff),
             staffCount: state.staffCount ++,
+        };
+    case types.SET_ACTIVE_STAFF:
+        return {
+            ...state,
+            activeStaff: action.payload,
+        };
+    case types.MODIFY_STAFF:
+        return {
+            ...state,
+            staffData: state.staffData.map((item) => {
+                return item.uuid == action.payload.uuid ? { ...item, ...action.payload } : item;
+            }),
         };
     default:
         return state;
