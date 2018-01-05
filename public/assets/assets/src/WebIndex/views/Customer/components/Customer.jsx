@@ -67,7 +67,7 @@ class Customer extends Component {
                             visible={this.state.visible}
                             onCancel={this.handleCancel}
                             onCreate={this.handleCreate}
-                            title="新增用户"
+                            title="新增客户"
                             okText="创建"
                         />
                     </div>
