@@ -49,6 +49,7 @@ const staffReducer = (state = INITIAL_STATE, action) => {
         return {
             ...state,
             staffData: state.staffData.filter(item => item.uuid != action.payload),
+            staffCount: state.staffCount --,            
         };
     default:
         return state;
