@@ -13,12 +13,12 @@ const Search = Input.Search;
 const SubMenu = Menu.SubMenu;
 
 class Staff extends Component {
+    state = { visible: false, detailVisible: false, modifyVisible: false };
     componentWillMount() {
         this.props.fetchStaff(1);
     }
-    state = { visible: false, detailVisible: false, modifyVisible: false, };
-    handleMenuClick = () => {
-
+    handleOnPageChange = (page, pageSize) => {
+        this.props.fetchStaff(page);
     }
     handleAddStaff = () => {
         this.setState({
@@ -86,7 +86,6 @@ class Staff extends Component {
                       员工管理
                     </div>
                     <Menu
-                        onClick={this.handleMenuClick}
                         defaultSelectedKeys={['1']}
                         defaultOpenKeys={['sub1']}
                         mode="inline"    
@@ -100,14 +99,6 @@ class Staff extends Component {
                     <div className="contentTopPanel">
                         <div className="btn-group">
                             <Button icon="plus" type="primary" onClick={this.handleAddStaff}>添加员工</Button>
-                            <Button icon="plus" type="primary">批量导入员工</Button>
-                        </div>
-                        <div className="searchBar">
-                            <Search
-                                placeholder="员工姓名/ID"
-                                onSearch={value => console.log(value)}
-                                style={{ width: 200 }}
-                            />
                         </div>
                     </div>
                     <h2 style={{ margin: "5px 0" }}>杭州阿里巴巴有限公司</h2>
@@ -126,7 +117,11 @@ class Staff extends Component {
                         ))}
                     </div>
                     <div className="staffFooter" style={{ marginTop: "1rem" }}>
-                        <Pagination style={{ float: "right" }} defaultCurrent={1} total={staffCount} />
+                        <Pagination
+                            onChange={handleOnPageChange}
+                            style={{ float: "right" }}
+                            defaultCurrent={1}
+                            total={staffCount} />
                     </div>
                 </div>
                 <CreateStaff
