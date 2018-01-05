@@ -1,12 +1,32 @@
 import React, { Component } from 'react';
 import { Table, Icon, Divider, Popconfirm } from 'antd';
+import { connect } from 'react-redux';
+import CustomerDetail from '../../../Customer/components/CustomerDetail';
+import { fetchCustomerDetail, getPhaseLog } from '../../../Customer/ajaxOperation/customerAjax';
 import moment from 'moment';
 
 class SharingTable extends Component {
+    state = {
+        showDetail: false,
+        showDetailId: -1,
+    }
     onDeleteCustomer = (shareId, type) => {
         this.props.handleOnDelete(shareId, type);
     };
 
+    showCustomerDetail = (customerId) => {
+        this.setState({
+            showDetail: true,
+            showDetailId: customerId,
+        });
+        this.props.fetchCustomerDetail(customerId);
+        this.props.getPhaseLog(customerId);
+    };
+    cancelShowDetail = () => {
+        this.setState({
+            showDetail: false,
+        });
+    }
     createColumns = () => {
         return [{
             title: '客户名称',
@@ -15,11 +35,16 @@ class SharingTable extends Component {
                 <span
                     style={{ cursor: 'pointer' }}
                     onClick={() => {
-                        this.showCustomerDatil(record.id);
+                        this.showCustomerDetail(record.customerId);
                     }}
                 >{record.name}</span>
             )
-        }, {
+        },
+        {
+            title: this.props.sharingType == 0 ? '接收人' : '共享人',
+            dataIndex: 'username',
+        }, 
+        {
             title: '共享时间',
             dataIndex: 'share_time',
             filters: [
@@ -58,8 +83,10 @@ class SharingTable extends Component {
             {
                 key: item.shareId,
                 name: item.name,
+                username: item.username,
                 share_time: item.share_time,
                 tel: item.tel,
+                customerId: item.customerId,
             }
         ));
         const pageination = {
@@ -67,9 +94,33 @@ class SharingTable extends Component {
             total: count,
         };
         return (
-            <Table dataSource={dataSource} columns={this.createColumns()} pagination={pageination} />
+            <div>
+                <Table dataSource={dataSource} columns={this.createColumns()} pagination={pageination} />
+                <CustomerDetail
+                    showDetailId={this.state.showDetailId}
+                    showDetail={this.state.showDetail}
+                    cancelShowDetail={this.cancelShowDetail}
+                />
+            </div>
         );
     }
 }
 
-export default SharingTable;
+const mapStateToProps = (state) => {
+    return {
+        customerDetail: state.customerDetailReducer.customerDetail,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchCustomerDetail:(id) => {
+            dispatch(fetchCustomerDetail(id));
+        },
+        getPhaseLog: (id) => {
+            dispatch(getPhaseLog(id));
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SharingTable);

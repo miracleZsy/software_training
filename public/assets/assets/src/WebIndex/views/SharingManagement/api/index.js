@@ -44,7 +44,6 @@ export const insertSharedCustomer = (uuid_received, customer) => (dispatch) => a
     }
 });
 
-// Todo
 export const deleteSharedCustomer = (id, type) => (dispatch) => axiosUtil('post', deleteSharedCustomerUrl, {
     id,
 })
