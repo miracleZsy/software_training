@@ -118,7 +118,7 @@ class Staff extends Component {
                     </div>
                     <div className="staffFooter" style={{ marginTop: "1rem" }}>
                         <Pagination
-                            onChange={handleOnPageChange}
+                            onChange={this.handleOnPageChange}
                             style={{ float: "right" }}
                             defaultCurrent={1}
                             total={staffCount} />
