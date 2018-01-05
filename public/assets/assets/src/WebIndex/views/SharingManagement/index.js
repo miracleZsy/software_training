@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Menu, Tag } from 'antd';
 import SharingTable from './components/SharingTable';
 import { setSharingTime, setCurrentPage, setSharingType } from './actions';
-import { fetchSharedCustomer, fetchReceivedCustomer, fetchSharedAndReceivedCustomerCount } from './api';
+import { fetchSharedCustomer, fetchReceivedCustomer, fetchSharedAndReceivedCustomerCount, deleteSharedCustomer } from './api';
 import { connect } from 'react-redux';
 import './style.scss';
 
@@ -16,10 +16,9 @@ class SharingManagement extends Component {
     }
     handleSideBarClick = ({ key }) => {
         this.props.setSharingType(key);
-        // fetch
     }
     render() {
-        const { setSharingTime, sharingTime, sharingType, sharedCustomerData, receivedCustomerData, sharedCustomerCount, receivedCustomerCount } = this.props;
+        const { setSharingTime, sharingTime, sharingType, sharedCustomerData, receivedCustomerData, sharedCustomerCount, receivedCustomerCount, deleteSharedCustomer } = this.props;
         return (
             <div className="sharingContainer">
                 <div className="innerSideBar">
@@ -40,8 +39,16 @@ class SharingManagement extends Component {
                 <div className="sharingContent">
 
                     <div className="contentTable">
-                        { sharingType == 0 && <SharingTable data={sharedCustomerData} count={sharedCustomerCount} /> }
-                        { sharingType == 1 && <SharingTable data={receivedCustomerData} count={receivedCustomerCount} /> }
+                        { sharingType == 0 && <SharingTable
+                            sharingType={sharingType}
+                            data={sharedCustomerData}
+                            count={sharedCustomerCount}
+                            handleOnDelete={deleteSharedCustomer} /> }
+                        { sharingType == 1 && <SharingTable
+                            sharingType={sharingType}
+                            data={receivedCustomerData}
+                            count={receivedCustomerCount}
+                            handleOnDelete={deleteSharedCustomer} /> }
                     </div>
                 </div>
             </div>
@@ -80,6 +87,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         fetchSharedAndReceivedCustomerCount:() => {
             dispatch(fetchSharedAndReceivedCustomerCount());
+        },
+        deleteSharedCustomer: (shareId, sharingType) => {
+            dispatch(deleteSharedCustomer(shareId, sharingType));
         }
     };
 };

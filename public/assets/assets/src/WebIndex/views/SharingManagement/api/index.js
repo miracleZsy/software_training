@@ -44,15 +44,15 @@ export const insertSharedCustomer = (uuid_received, customer) => (dispatch) => a
     }
 });
 
-// Todo: 等待后端修改接口
-export const deleteSharedCustomer = (id) => (dispatch) => axiosUtil('post', deleteSharedCustomerUrl, {
+// Todo
+export const deleteSharedCustomer = (id, type) => (dispatch) => axiosUtil('post', deleteSharedCustomerUrl, {
     id,
 })
     .then((value) => {
         if(value === 403 || value === 500) {
             message.info('删除失败!');
-        }else {
-            dispatch(actions.deleteSharedCustomer(id));
+        } else {
+            type == 0 ? dispatch(actions.deleteSharedCustomer(id)) : dispatch(actions.deleteReceivedCustomer(id));
             message.info('删除成功!');
         }
     });

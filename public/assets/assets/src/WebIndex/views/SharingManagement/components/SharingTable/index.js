@@ -3,7 +3,9 @@ import { Table, Icon, Divider, Popconfirm } from 'antd';
 import moment from 'moment';
 
 class SharingTable extends Component {
-    onDeleteCustomer = () => {};
+    onDeleteCustomer = (shareId, type) => {
+        this.props.handleOnDelete(shareId, type);
+    };
 
     createColumns = () => {
         return [{
@@ -42,7 +44,7 @@ class SharingTable extends Component {
                 <span>
                     <Popconfirm 
                         title="确认删除？"
-                        onConfirm={() => { this.onDeleteCustomer(record.id); }}>
+                        onConfirm={() => { this.onDeleteCustomer(record.key, this.props.sharingType); }}>
                         <a href="#">删除共享</a>
                     </Popconfirm>
                 </span>

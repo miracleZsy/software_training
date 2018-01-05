@@ -57,3 +57,11 @@ export const deleteSharedCustomer = (removedId) =>  {
     };
 };
 
+export const deleteReceivedCustomer = (removedId) =>  {
+    return {
+        type: types.DELETE_RECEIVED_CUSTOMER,
+        paylaod: removedId,
+    };
+};
+
+
