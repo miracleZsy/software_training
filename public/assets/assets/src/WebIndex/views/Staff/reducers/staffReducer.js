@@ -45,6 +45,11 @@ const staffReducer = (state = INITIAL_STATE, action) => {
                 return item.uuid == action.payload.uuid ? { ...item, ...action.payload } : item;
             }),
         };
+    case types.DELETE_STAFF:
+        return {
+            ...state,
+            staffData: state.staffData.filter(item => item.uuid != action.payload),
+        };
     default:
         return state;
     }

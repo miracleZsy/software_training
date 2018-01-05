@@ -73,8 +73,8 @@ class Staff extends Component {
             detailVisible: false,
         });
     }
-    handleDeleteStaff = (id) => {
-        this.props.deleteStaff(id);
+    handleDeleteStaff = (uuid) => {
+        this.props.deleteStaff(uuid);
     }
     render() {
         const { staffData, staffCount, activeStaff } = this.props;

@@ -4,3 +4,4 @@ export const FETCH_STAFF = 'FETCH_STAFF';
 export const CREATE_STAFF = 'CREATE_STAFF';
 export const SET_ACTIVE_STAFF = 'SET_ACTIVE_STAFF';
 export const MODIFY_STAFF = 'MODIFY_STAFF';
+export const DELETE_STAFF = 'DELETE_STAFF';

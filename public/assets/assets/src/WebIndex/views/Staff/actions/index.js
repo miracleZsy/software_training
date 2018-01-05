@@ -41,3 +41,10 @@ export const modifyStaff = (newStaff) =>  {
         payload: newStaff,
     };
 };
+
+export const deleteStaff = (uuid) => {
+    return {
+        type: types.DELETE_STAFF,
+        payload: uuid,
+    };
+};
