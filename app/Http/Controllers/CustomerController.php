@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Customer;
 use App\CustomerPhaseLog;
+use App\Share;
 use App\sys\Config;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Webmozart\Assert\Assert;
 
@@ -116,14 +118,18 @@ class CustomerController extends Controller
             Assert::integer((int)$_POST['id'], 'id can should be int');
             $id = $_POST['id'];
             $customer = Customer::find($id);
+            DB::beginTransaction();
             if ($customer && $request->get('user')->uuid === $customer->uuid) {
-                $customer->delete();
-                $this->json_die(['code' => 200, 'msg' => 'success']);
+                    $customer->delete();
+                    Share::where('customer_id',$id)->delete();
+                    DB::commit();
+                    $this->json_die(['code' => 200, 'msg' => 'success']);
             } else $this->json_die(['code' => 403, 'msg' => 'customer not exist or it is not self']);
         } catch (\InvalidArgumentException $e) {
             $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
+            DB::rollBack();
             $this->json_die(['code' => 500, 'msg' => 'unknown error']);
         }
     }
@@ -149,7 +155,7 @@ class CustomerController extends Controller
                 case 3:
                     $customer->type = '已成交客户';
             }
-            if ($customer && $customer->uuid === $request->get('user')->uuid) $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $customer]);
+            if ($customer) $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $customer]);
             else $this->json_die(['code' => 403, 'msg' => 'customer not found']);
         } catch (\InvalidArgumentException $e) {
             $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);

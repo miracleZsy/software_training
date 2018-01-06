@@ -181,6 +181,7 @@ class CustomerTable extends Component {
                     checkedCustomer={checkedCustomer}
                 />
                 <CustomerDetail
+                    type="view"
                     showDetailId={showDetailId}
                     showDetail={showDetail}
                     cancelShowDetail={this.cancelShowDetail}

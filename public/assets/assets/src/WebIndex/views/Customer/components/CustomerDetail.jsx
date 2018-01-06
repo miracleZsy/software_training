@@ -97,6 +97,7 @@ class CustomerDetail extends Component {
                     </div>
                     <div className="phaseTypeContainer">
                         <Slider
+                            disabled={this.props.type === "share"}
                             marks={marks}
                             step={null}
                             value={sliderValue}
