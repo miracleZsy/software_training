@@ -13,12 +13,16 @@ class Customer extends Model
     use SoftDeletes;
     protected $table = 'customer';
     protected $fillable = ['name', 'tel', 'work', 'remark', 'pic_url', 'email', 'address', 'origin', 'QQ', 'birthday', 'sex', 'type', 'uuid', 'phase'];
+
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'uuid', 'uuid');
+    }
     public function salePlans(){
         return $this->belongsToMany('App\SalePlan','user_sale_plan','customer_id','sale_plan_id');
     }
-    public function user(){
-        return $this->belongsTo('App\User','uuid','uuid');
-    }
+
+
     public static function createNewCustomer($name, $tel, $work, $remark, $email, $address, $origin, $QQ, $birthday, $sex, $type, $uuid)
     {
         if ($sex === '男') $sex = 1;
@@ -84,27 +88,31 @@ class Customer extends Model
                 $type = 1;
         }
         $customer = Customer::find($id);
-        if ($customer->uuid === $uuid) {
-            $customer->name = $name;
-            $customer->tel = $tel;
-            $customer->work = $work;
-            $customer->remark = $remark;
-            $customer->email = $email;
-            $customer->address = $address;
-            $customer->origin = $origin;
-            $customer->QQ = $QQ;
-            $customer->birthday = $birthday;
-            $customer->sex = $sex;
-            $customer->type = $type;
-            $customer->save();
-            return true;
-        } else return false;
+        if ($customer->uuid !== $uuid) {
+            $user = User::find($uuid);
+            $userBelong = User::find($customer->uuid);
+            if ($user->company_id !== $userBelong->company_id || $user->authority > 2) return false;
+        }
+        $customer->name = $name;
+        $customer->tel = $tel;
+        $customer->work = $work;
+        $customer->remark = $remark;
+        $customer->email = $email;
+        $customer->address = $address;
+        $customer->origin = $origin;
+        $customer->QQ = $QQ;
+        $customer->birthday = $birthday;
+        $customer->sex = $sex;
+        $customer->type = $type;
+        $customer->save();
+        return true;
     }
 
-    public static function filter($type, $phase, $time, $uuid)
+    public static function filter($type, $phase, $time, $uuid, $uid)
     {
         $start = 0;
         $end = Carbon::now();
+        $user = User::find($uuid);
         switch ($time) {
             case 1:
                 $start = Carbon::create()->toDateString();
@@ -118,7 +126,12 @@ class Customer extends Model
             case 4:
                 $start = Carbon::create()->subMonth();
         }
-        $customer = self::where('uuid', $uuid);
+        if ($user->authority > 2) $customer= self::where('uuid', $uuid);
+        else if ($user->authority < 2 && $uid) $customer = self::where('uuid',$uid);
+        else {
+            $uuids = User::where('company_id', $user->company_id)->pluck('uuid')->toArray();
+            $customer = self::whereIn('uuid', $uuids);
+        }
         if ($phase) $customer = $customer->where('phase', $phase);
         if ($type) $customer = $customer->where('type', $type);
         $customer = $customer->whereBetween('created_at', [$start, $end]);
@@ -176,10 +189,13 @@ class Customer extends Model
         DB::beginTransaction();
         try {
             $customer = self::find($id);
-            if ($customer && $customer->uuid === $uuid) {
+            if ($customer->uuid !== $uuid) {
+                $user = User::find($uuid);
+                $userBelong = User::find($customer->uuid);
+                if ($user->company_id !== $userBelong->company_id || $user->authority > 2) throw new Exception('customer not exist');
+            }
                 $customer->phase = $phase;
                 $customer->save();
-            } else throw new Exception('customer not exist');
             CustomerPhaseLog::create([
                 'uuid' => $uuid,
                 'customer_id' => $id,
@@ -191,5 +207,39 @@ class Customer extends Model
             DB::rollback();
             return false;
         }
+    }
+    public static function selectOne($id,$uuid){
+        $customer = self::find($id);
+        if ($customer->uuid !== $uuid) {
+            $user = User::find($uuid);
+            $userBelong = User::find($customer->uuid);
+            if ($user->company_id !== $userBelong->company_id || $user->authority > 2) return false;
+        }
+        $username = $customer->user->name;
+        $customer->followName = $username;
+        unset($customer->user);
+        $customer->sex = ($customer->sex === 1) ? '男' : '女';
+        switch ($customer->type) {
+            case 1:
+                $customer->type = '一般客户';
+                break;
+            case 2:
+                $customer->type = '意向客户';
+                break;
+            case 3:
+                $customer->type = '已成交客户';
+        }
+        return $customer;
+    }
+    public static function deleteOne($id,$uuid){
+        $customer = Customer::find($id);
+        if ($customer->uuid !== $uuid) {
+            $user = User::find($uuid);
+            $userBelong = User::find($customer->uuid);
+            if ($user->company_id !== $userBelong->company_id || $user->authority > 2) return false;
+        }
+        if ($customer->delete()) return true;
+        else return false;
+
     }
 }
