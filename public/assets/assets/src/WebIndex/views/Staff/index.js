@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { Button, Input, Menu, Modal, Pagination } from 'antd';
-import StaffInfoCard from './StaffInfoCard';
-import CreateStaff from './CreateStaff';
-import StaffDetail from './StaffDetail';
-import ModifyStaff from './ModifyStaff';
-import { fetchStaff, createStaff, modifyStaff, deleteStaff } from '../ajaxOperations';
-import { setActiveStaff } from '../actions';
+import StaffInfoCard from './components/StaffInfoCard';
+import CreateStaff from './components/CreateStaff';
+import StaffDetail from './components/StaffDetail';
+import ModifyStaff from './components/ModifyStaff';
+import { fetchStaff, createStaff, modifyStaff, deleteStaff } from './ajaxOperations';
+import { setActiveStaff } from './actions';
 import { connect } from 'react-redux';
-import '../css/index.scss';
+import jwt from 'jsonwebtoken';
+import cookieUtil from '../../../lib/cookieUtil';
+import './css/index.scss';
 
 const Search = Input.Search;
 const SubMenu = Menu.SubMenu;
@@ -79,29 +81,16 @@ class Staff extends Component {
     render() {
         const { staffData, staffCount, activeStaff } = this.props;
         const { detailVisible } = this.state;
+        const { companyName } = jwt.decode(cookieUtil.get('token'));
         return (
             <div className="staffContainer">
-                <div className="innerSideBar">
-                    <div className="innerSideBarTitle">
-                      员工管理
-                    </div>
-                    <Menu
-                        defaultSelectedKeys={['1']}
-                        defaultOpenKeys={['sub1']}
-                        mode="inline"    
-                    >
-                        <SubMenu key="sub1" title={<span>组织架构</span>}>
-                            <Menu.Item key="1">杭州阿里巴巴有限公司</Menu.Item>
-                        </SubMenu>
-                    </Menu>
-                </div>
                 <div className="staffContent">
                     <div className="contentTopPanel">
                         <div className="btn-group">
                             <Button icon="plus" type="primary" onClick={this.handleAddStaff}>添加员工</Button>
                         </div>
                     </div>
-                    <h2 style={{ margin: "5px 0" }}>杭州阿里巴巴有限公司</h2>
+                    <h2 style={{ margin: "5px 0" }}>{ companyName }</h2>
                     <span style={{ display: "block", fontSize: "1.05rem" }}>
                         共有员工 { staffCount } 名
                     </span>
