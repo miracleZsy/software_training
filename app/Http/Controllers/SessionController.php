@@ -32,7 +32,10 @@ class SessionController extends Controller
                 unset($_SESSION['captcha']);
                 $token = Auth::create()->buildToken([
                     'username' => $user->username,
-                    'uuid' => $user->uuid
+                    'uuid' => $user->uuid,
+                    'authority'=>$user->authority,
+                    'companyId' =>$user->company_id,
+                    'companyName'=>$user->company_name
                 ]);
                 setcookie('token', (String)$token, time() + 3600, '/');
                 $this->json_die(['code' => 200, 'msg' => 'success']);
