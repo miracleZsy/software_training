@@ -15,7 +15,7 @@ const ShareCustomerModal = Form.create()(
         const staffList = staffData.filter(item => item.uuid !== myUuid);
         return (
             <Modal
-                width="300"
+                width={300}
                 visible={visible}
                 title={title}
                 okText={okText}

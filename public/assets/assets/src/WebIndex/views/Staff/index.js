@@ -4,7 +4,7 @@ import StaffInfoCard from './components/StaffInfoCard';
 import CreateStaff from './components/CreateStaff';
 import StaffDetail from './components/StaffDetail';
 import ModifyStaff from './components/ModifyStaff';
-import { fetchStaff, createStaff, modifyStaff, deleteStaff } from './api';
+import { fetchStaff, createStaff, modifyStaff, deleteStaff } from './ajaxOperations';
 import { setActiveStaff } from './actions';
 import { connect } from 'react-redux';
 import jwt from 'jsonwebtoken';

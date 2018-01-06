@@ -41,16 +41,19 @@ const sharingManagementReducer = (state = INITIAL_STATE, action) => {
         return {
             ...state,
             sharedCustomerData: [...state.sharedCustomerData, action.sharedCustomer],
+            sharedCustomerCount: state.sharedCustomerCount++,
         };
     case types.DELETE_SHARED_CUSTOMER:
         return {
             ...state,
-            sharedCustomerData: state.sharedCustomerData.filter(item => item.id != action.payload),
+            sharedCustomerData: state.sharedCustomerData.filter(item => item.shareId != action.payload),
+            sharedCustomerCount: state.sharedCustomerCount--,
         };
     case types.DELETE_RECEIVED_CUSTOMER:
         return {
             ...state,
-            receivedCustomerData: state.receivedCustomerData.filter(item => item.id != action.payload),
+            receivedCustomerData: state.receivedCustomerData.filter(item => item.shareId != action.payload),
+            receivedCustomerCount: state.receivedCustomerCount--,
         };
     case types.FETCH_SHARED_AND_RECEIVED_CUSTOMER_COUNT:
         return {

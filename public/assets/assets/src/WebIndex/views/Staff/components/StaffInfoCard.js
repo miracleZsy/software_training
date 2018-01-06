@@ -23,7 +23,7 @@ const StaffInfoCard = ({ staff, openStaffModal, openModifyModal, deleteStaff }) 
             actions={[
                 <Icon type="edit" onClick={handleOnModify} />,
                 <Icon type="ellipsis" onClick={handleOnDetailClick} />,
-                <Popconfirm title="你确定要删除此员工吗？" onConfirm={onConfirmDelete}>
+                <Popconfirm title="你确定要删除此员工吗？" cancelText="取消" okText="确定" onConfirm={onConfirmDelete}>
                     <Icon type="delete" />
                 </Popconfirm>
             ]}
