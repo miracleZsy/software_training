@@ -17,6 +17,7 @@ const ModifyStaff = Form.create()(
                 visible={visible}
                 title={title}
                 okText={okText}
+                cancelText="取消"
                 onCancel={onCancel}
                 onOk={onOk}
                 style={{ top: 0 }}
