@@ -66,8 +66,8 @@ const mapDispatchToProps = (dispatch) => {
         setTime: (time) => {
             dispatch(phaseAndTimeAction.setTime(time));
         },
-        fetchCustomer: (phaseType, time, currentPage, customerType) => {
-            dispatch(customerAjax.fetchCustomer(phaseType, time, currentPage, customerType));
+        fetchCustomer: (phaseType, time, currentPage, customerType, staffUuid) => {
+            dispatch(customerAjax.fetchCustomer(phaseType, time, currentPage, customerType, staffUuid));
         },
         setCurrentPage: (currentPage) => {
             dispatch(phaseAndTimeAction.setCurrentPage(currentPage));

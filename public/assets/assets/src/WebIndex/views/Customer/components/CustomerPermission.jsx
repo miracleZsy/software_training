@@ -37,6 +37,13 @@ class CustomerPermission extends Component {
         fetchCustomer(phaseType, time, currentPage, customerType, value);
         fetchCustomerTypeCount(value);
     };
+    blurStaff = (value) => {
+        console.log(value);
+        const{ phaseType, time, currentPage, customerType, fetchCustomer, setStaffUuid, fetchCustomerTypeCount } = this.props;
+        setStaffUuid(value);
+        fetchCustomer(phaseType, time, currentPage, customerType, value);
+        fetchCustomerTypeCount(value);
+    };
     render() {
         const { children } = this.state;
         const childrenList = [];
@@ -57,6 +64,7 @@ class CustomerPermission extends Component {
                 showArrow={false}
                 filterOption={false}
                 onSelect={this.selectStaff}
+                onBlur={this.blurStaff}
             >
                 {childrenList}
             </Select>
