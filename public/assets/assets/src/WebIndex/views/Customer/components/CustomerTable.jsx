@@ -25,9 +25,6 @@ class CustomerTable extends Component {
     componentWillMount() {
         const { fetchCustomer, phaseType, time, currentPage, customerType } = this.props;
         fetchCustomer(phaseType, time, currentPage, customerType);
-        if (this.props.staffData.length === 0) {
-            this.props.fetchStaff(0);
-        }
     }
     onDeleteCustomer = (id) => {
         const { deleteCustomer,  phaseType, time, currentPage, customerType, staffUuid } = this.props;
@@ -44,6 +41,9 @@ class CustomerTable extends Component {
         form.resetFields();
     };
     onShareCustomer = (record) => {
+        if (this.props.staffData.length === 0) {
+            this.props.fetchStaff(0);
+        }
         this.setState({
             showSharingRecord: record,
             showSharing: true,
