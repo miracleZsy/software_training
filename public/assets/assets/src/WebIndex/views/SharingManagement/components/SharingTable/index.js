@@ -69,6 +69,7 @@ class SharingTable extends Component {
                 <span>
                     <Popconfirm 
                         title="确认删除？"
+                        cancelText="取消"
                         onConfirm={() => { this.onDeleteCustomer(record.key, this.props.sharingType); }}>
                         <a href="#">删除共享</a>
                     </Popconfirm>
