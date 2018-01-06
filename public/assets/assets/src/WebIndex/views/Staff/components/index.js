@@ -4,7 +4,7 @@ import StaffInfoCard from './StaffInfoCard';
 import CreateStaff from './CreateStaff';
 import StaffDetail from './StaffDetail';
 import ModifyStaff from './ModifyStaff';
-import { fetchStaff, createStaff, modifyStaff, deleteStaff } from '../api';
+import { fetchStaff, createStaff, modifyStaff, deleteStaff } from '../ajaxOperations';
 import { setActiveStaff } from '../actions';
 import { connect } from 'react-redux';
 import '../css/index.scss';

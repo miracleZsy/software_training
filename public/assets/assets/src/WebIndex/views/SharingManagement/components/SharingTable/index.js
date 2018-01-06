@@ -96,7 +96,7 @@ class SharingTable extends Component {
         };
         return (
             <div>
-                <Table dataSource={dataSource} columns={this.createColumns()} pagination={pageination} />
+                <Table rowKey="key" dataSource={dataSource} columns={this.createColumns()} pagination={pageination} />
                 <CustomerDetail
                     type="share"
                     showDetailId={this.state.showDetailId}
