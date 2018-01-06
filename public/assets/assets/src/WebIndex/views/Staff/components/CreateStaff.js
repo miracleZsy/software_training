@@ -49,7 +49,6 @@ const CreateStaff = Form.create()(
                                 <Select
                                     placeholder="选择员工权限"
                                 >
-                                    <Option value="1">公司所有人</Option>
                                     <Option value="2">销售总监</Option>
                                     <Option value="3">普通销售</Option>
                                 </Select>

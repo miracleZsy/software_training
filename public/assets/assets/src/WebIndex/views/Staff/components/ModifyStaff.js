@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Form, Modal, Input, Icon, Button, Select } from 'antd';
 import store from '../../../store';
+import isBoss from '../../../../lib/isBoss';
+import cookieUtil from '../../../../lib/cookieUtil';
+import jwt from 'jsonwebtoken';
+
 
 const authorityList = store.getState().staffReducer.authorityList;
 const FormItem = Form.Item;
@@ -54,6 +58,7 @@ const ModifyStaff = Form.create()(
                             })(
                                 <Select
                                     placeholder="选择员工权限"
+                                    disabled={staff.authority == jwt.decode(cookieUtil.get('token')).authority}
                                 >
                                     <Option value="2">销售总监</Option>
                                     <Option value="3">普通销售</Option>
