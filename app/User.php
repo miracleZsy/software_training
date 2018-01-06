@@ -42,16 +42,13 @@ class User extends Model
         else return false;
 
     }
-    public static function updateUser($uuid, $username, $name, $password, $authority, $myUuid)
+    public static function updateUser($uuid, $username, $name,$authority, $myUuid)
     {
         $user = User::find($uuid);
         $user_me = User::find($myUuid);
-        $salt = $user->salt;
-        $password = md5(md5($password).$salt);
         if ($user->company_id === $user_me->company_id && $user_me->authority == 1) {
             $user->username = $username;
             $user->name = $name;
-            $user->password = $password;
             $user->authority = $authority;
             $user->save();
             return true;
