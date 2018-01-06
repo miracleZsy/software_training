@@ -27,8 +27,9 @@ class User extends Model
         $salt = Str::random(8);
         $password = md5(md5($password).$salt);
         if ($user_me->authority == 1) {
-                $user = self::create([
-                    'uuid' => Uuid::uuid1()->getHex(),
+            $uuid = Uuid::uuid1()->getHex();
+                self::create([
+                    'uuid' => $uuid,
                     'username' => $username,
                     'name' => $name,
                     'authority' => $authority,
@@ -36,7 +37,7 @@ class User extends Model
                     'salt' => $salt,
                     'company_id' => $user_me->company_id,
                 ]);
-                return $user;
+                return $uuid;
             }
         else return false;
 

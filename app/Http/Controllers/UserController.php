@@ -53,7 +53,7 @@ class UserController extends Controller
             $name = isset($_POST['name']) ? $_POST['name'] : '';
             if (User::where('username',$username)->count()>0) $this->json_die(['code'=>405,'msg' => 'username exist']);
             $user = User::createNewUser($username, $name, $authority, $password, $request->get('user')->uuid);
-            if ($user) $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $user->uuid]);
+            if ($user) $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $user]);
             else $this->json_die(['code' => 403, 'msg' => 'unauthorized']);
         } catch (\InvalidArgumentException $e) {
             $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
