@@ -3,22 +3,37 @@ import { connect } from 'react-redux';
 import '../css/index.scss';
 import * as customerAjax from '../ajaxOperation/customerAjax';
 import CreateCustomer from './CreateCustomer';
-import { Button } from 'antd';
+import { Button, Select } from 'antd';
 import CustomerRightTopContainer from "./CustomerRightTopContainer";
 import CustomerTable from "./CustomerTable";
 import * as phaseAndTimeAction from '../actions/phaseAndTimeAction';
-
+import CustomerPermission from './CustomerPermission';
+import cookieUtil from '../../../../lib/cookieUtil';
+import jwt from 'jsonwebtoken';
 
 class Customer extends Component {
     constructor() {
         super();
         this.state = {
             visible: false,
+            customerPermissionVisible: false,
         };
     }
     componentWillMount() {
         const { fetchCustomerTypeCount } = this.props;
         fetchCustomerTypeCount();
+        if(jwt.decode(cookieUtil.get('token')) !== null) {
+            let authority = jwt.decode(cookieUtil.get('token')).authority;
+            if(authority != null && parseInt(authority) <= 2) {
+                this.setState({
+                    customerPermissionVisible:true
+                });
+            }else {
+                this.setState({
+                    customerPermissionVisible:false
+                });
+            }
+        }
     }
     showModal = () => {
         this.setState({ visible: true });
@@ -46,17 +61,26 @@ class Customer extends Component {
         this.form = form;
     };
     changeCurrentCustomerType = (e) => {
-        const { setCustomerType, fetchCustomer, phaseType, time, currentPage, customerType, setCurrentPage } = this.props;
+        const { setCustomerType, fetchCustomer, phaseType, time, currentPage, customerType, setCurrentPage, staffUuid } = this.props;
         console.log(e.target.getAttribute('value'));
         setCustomerType(e.target.getAttribute('value'));
         setCurrentPage(1);
-        fetchCustomer(phaseType, time, 1, e.target.getAttribute('value'));
+        fetchCustomer(phaseType, time, 1, e.target.getAttribute('value'), staffUuid);
     };
     render() {
-        const { customerType, totalCustomerCount, simpleCustomerCount, purposeCustomerCount, finishCustomerCount, sidebarClosed } = this.props;
+        const { customerType, totalCustomerCount, simpleCustomerCount, purposeCustomerCount, finishCustomerCount, setStaffUuid } = this.props;
+        const { customerPermissionVisible } = this.state;
         return (
             <div className="customerContainer">
                 <div className="customerLeft">
+                    <div className="customerPermission">
+                        {
+                            customerPermissionVisible === true ?
+                                <CustomerPermission
+                                    setStaffUuid={setStaffUuid}
+                                /> : (null)
+                        }
+                    </div>
                     <div className="customerLeftTop">
                         我的客户
                     </div>
@@ -99,7 +123,8 @@ const mapStateToProps = (state) => {
         simpleCustomerCount:state.customerTypeCountReducer.simpleCustomerCount,
         purposeCustomerCount: state.customerTypeCountReducer.purposeCustomerCount,
         finishCustomerCount: state.customerTypeCountReducer.finishCustomerCount,
-        sidebarClosed: state.hideSideReducer.sidebarClosed
+        sidebarClosed: state.hideSideReducer.sidebarClosed,
+        staffUuid: state.phaseAndTimeReducer.staffUuid
     };
 };
 
@@ -120,11 +145,14 @@ const mapDispatchToProps = (dispatch) => {
         setCustomerType: (customerType) => {
             dispatch(phaseAndTimeAction.setCustomerType(customerType));
         },
-        fetchCustomerTypeCount:() => {
-            dispatch(customerAjax.fetchCustomerTypeCount());
+        fetchCustomerTypeCount:(staffUuid) => {
+            dispatch(customerAjax.fetchCustomerTypeCount(staffUuid));
         },
-        fetchCustomer: (phaseType, time, page, customerType) => {
-            dispatch(customerAjax.fetchCustomer(phaseType, time, page, customerType));
+        fetchCustomer: (phaseType, time, page, customerType, staffUuid) => {
+            dispatch(customerAjax.fetchCustomer(phaseType, time, page, customerType, staffUuid));
+        },
+        setStaffUuid:(staffUuid) => {
+            dispatch(phaseAndTimeAction.setStaffUuId(staffUuid));
         }
     };
 };

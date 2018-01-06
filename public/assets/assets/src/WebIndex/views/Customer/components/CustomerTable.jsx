@@ -30,8 +30,8 @@ class CustomerTable extends Component {
         }
     }
     onDeleteCustomer = (id) => {
-        const { deleteCustomer,  phaseType, time, currentPage, customerType } = this.props;
-        deleteCustomer(id, phaseType, time, currentPage, customerType);
+        const { deleteCustomer,  phaseType, time, currentPage, customerType, staffUuid } = this.props;
+        deleteCustomer(id, phaseType, time, currentPage, customerType, staffUuid);
     };
     onUpdateCustomer = (id) => {
         const { getCheckedCustomer } = this.props;
@@ -54,13 +54,13 @@ class CustomerTable extends Component {
     };
     handleCreate = () => {
         const form = this.form;
-        const { updateCustomer, phaseType, time, currentPage, customerType } = this.props;
+        const { updateCustomer, phaseType, time, currentPage, customerType, staffUuid } = this.props;
         const { selectedKey } = this.state;
         form.validateFields((err, values) => {
             if (err) {
                 return;
             }
-            updateCustomer(selectedKey, values, phaseType, time, currentPage, customerType);
+            updateCustomer(selectedKey, values, phaseType, time, currentPage, customerType, staffUuid);
             form.resetFields();
             this.setState({ visible: false });
         });
@@ -142,9 +142,9 @@ class CustomerTable extends Component {
     };
 
     getCurrentPage = (page) => {
-        const { fetchCustomer, phaseType, time, setCurrentPage, customerType } = this.props;
+        const { fetchCustomer, phaseType, time, setCurrentPage, customerType, staffUuid } = this.props;
         setCurrentPage(page);
-        fetchCustomer(phaseType, time, page, customerType);
+        fetchCustomer(phaseType, time, page, customerType, staffUuid);
         console.log(page);
     };
 
@@ -210,22 +210,23 @@ const mapStateToProps = (state) => {
         currentPage:state.phaseAndTimeReducer.currentPage,
         customerType: state.phaseAndTimeReducer.customerType,
         staffData: state.staffReducer.staffData,
+        staffUuid: state.staffReducer.staffUuid
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchCustomer: (phaseType, time, page, customerType) => {
-            dispatch(customerAjax.fetchCustomer(phaseType, time, page, customerType));
+        fetchCustomer: (phaseType, time, page, customerType, staffUuid) => {
+            dispatch(customerAjax.fetchCustomer(phaseType, time, page, customerType, staffUuid));
         },
-        deleteCustomer: (key, phaseType, time, currentPage, customerType) => {
-            dispatch(customerAjax.deleteCustomer(key, phaseType, time, currentPage, customerType));
+        deleteCustomer: (key, phaseType, time, currentPage, customerType, staffUuid) => {
+            dispatch(customerAjax.deleteCustomer(key, phaseType, time, currentPage, customerType, staffUuid));
         },
         getCheckedCustomer: (id) => {
             dispatch(customerAjax.getCheckedCustomer(id));
         },
-        updateCustomer: (id, customerUpdated, phaseType, time, currentPage, customerType) => {
-            dispatch(customerAjax.updateCustomer(id, customerUpdated, phaseType, time, currentPage, customerType));
+        updateCustomer: (id, customerUpdated, phaseType, time, currentPage, customerType, staffUuid) => {
+            dispatch(customerAjax.updateCustomer(id, customerUpdated, phaseType, time, currentPage, customerType, staffUuid));
         },
         setCurrentPage: (currentPage) => {
             dispatch(phaseAndTimeAction.setCurrentPage(currentPage));

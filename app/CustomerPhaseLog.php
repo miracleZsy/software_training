@@ -10,7 +10,7 @@ class CustomerPhaseLog extends Model
     protected $fillable = ['uuid','customer_id','phase'];
     public static function getPhaseLog($customerId,$uuid){
         return self::where('customer_id',$customerId)
-            ->where('uuid',$uuid)->select('phase','created_at')
+            ->where('customer_phase_log.uuid',$uuid)->join('user','customer_phase_log.uuid','=','user.uuid')->select('customer_phase_log.phase','customer_phase_log.created_at','user.name as tagName')
             ->get()->toArray();
     }
 }
