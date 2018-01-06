@@ -4,10 +4,10 @@ import { Form, Modal, Input, Icon, Button, Select } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-const CreateStaff = Form.create()(
+const ModifyStaff = Form.create()(
     (props) => {
         const {
-            visible, onCancel, onCreate, form, okText, title, checkStaff
+            staff, visible, onCancel, onOk, form, okText, title, checkStaff
         } = props;
         const { getFieldDecorator, setFieldsValue } = form;
         return (
@@ -16,13 +16,14 @@ const CreateStaff = Form.create()(
                 title={title}
                 okText={okText}
                 onCancel={onCancel}
-                onOk={onCreate}
+                onOk={onOk}
                 style={{ top: 0 }}
             >
                 <Form layout="vertical">
                     <FormItem label="用户名">
                         {getFieldDecorator('username', {
                             rules: [{ required: true, message: '请输入用户名' }],
+                            initialValue: staff.username,
                         })(
                             <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="员工用户名" />
                         )}
@@ -30,6 +31,7 @@ const CreateStaff = Form.create()(
                     <FormItem label="姓名">
                         {getFieldDecorator('name', {
                             rules: [{ required: true, message: '请输入姓名' }],
+                            initialValue: staff.name,
                         })(
                             <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="员工姓名" />
                         )}
@@ -45,11 +47,11 @@ const CreateStaff = Form.create()(
                         {
                             getFieldDecorator('authority', {
                                 rules: [{ required: true, message: '请选择权限' }],
+                                initialValue: staff.authority,
                             })(
                                 <Select
                                     placeholder="选择员工权限"
                                 >
-                                    <Option value="1">1</Option>
                                     <Option value="2">2</Option>
                                     <Option value="3">3</Option>
                                 </Select>
@@ -63,4 +65,4 @@ const CreateStaff = Form.create()(
 );
 
 
-export default CreateStaff;
+export default ModifyStaff;
