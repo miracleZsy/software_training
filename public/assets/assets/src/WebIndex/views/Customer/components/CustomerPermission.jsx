@@ -31,10 +31,10 @@ class CustomerPermission extends Component {
         console.log(value);
     };
     render() {
-        // const childrenList = [];
-        // for (let i = 10; i < 20; i++) {
-        //     childrenList.push(<Option key={i.toString(36) + i}>舒小台 + {i}</Option>);
-        // }
+        const childrenList = [];
+        for (let i = 10; i < 20; i++) {
+            childrenList.push(<Option key={i.toString(36) + i}>舒小台 + {i}</Option>);
+        }
         const { children } = this.state;
         return(
             <Select
@@ -48,7 +48,7 @@ class CustomerPermission extends Component {
                 filterOption={false}
                 labelInValue
             >
-                {children}
+                {childrenList}
             </Select>
         );
     }

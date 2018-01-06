@@ -8,18 +8,32 @@ import CustomerRightTopContainer from "./CustomerRightTopContainer";
 import CustomerTable from "./CustomerTable";
 import * as phaseAndTimeAction from '../actions/phaseAndTimeAction';
 import CustomerPermission from './CustomerPermission';
-
+import cookieUtil from '../../../../lib/cookieUtil';
+import jwt from 'jsonwebtoken';
 
 class Customer extends Component {
     constructor() {
         super();
         this.state = {
             visible: false,
+            customerPermissionVisible: false,
         };
     }
     componentWillMount() {
         const { fetchCustomerTypeCount } = this.props;
         fetchCustomerTypeCount();
+        if(jwt.decode(cookieUtil.get('token')) !== null) {
+            let authority = jwt.decode(cookieUtil.get('token')).authority;
+            if(authority != null && parseInt(authority) <= 2) {
+                this.setState({
+                    customerPermissionVisible:true
+                });
+            }else {
+                this.setState({
+                    customerPermissionVisible:false
+                });
+            }
+        }
     }
     showModal = () => {
         this.setState({ visible: true });
@@ -55,11 +69,14 @@ class Customer extends Component {
     };
     render() {
         const { customerType, totalCustomerCount, simpleCustomerCount, purposeCustomerCount, finishCustomerCount, setStaffUuid } = this.props;
+        const { customerPermissionVisible } = this.state;
         return (
             <div className="customerContainer">
                 <div className="customerLeft">
                     <div className="customerPermission">
-                        <CustomerPermission setStaffUuid={setStaffUuid} />
+                        {
+                            customerPermissionVisible === true ? <CustomerPermission setStaffUuid={setStaffUuid} /> : (null)
+                        }
                     </div>
                     <div className="customerLeftTop">
                         我的客户
