@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import '../css/index.scss';
 import * as customerAjax from '../ajaxOperation/customerAjax';
 import CreateCustomer from './CreateCustomer';
-import { Button } from 'antd';
+import { Button, Select } from 'antd';
 import CustomerRightTopContainer from "./CustomerRightTopContainer";
 import CustomerTable from "./CustomerTable";
 import * as phaseAndTimeAction from '../actions/phaseAndTimeAction';
+import CustomerPermission from './CustomerPermission';
 
 
 class Customer extends Component {
@@ -53,10 +54,13 @@ class Customer extends Component {
         fetchCustomer(phaseType, time, 1, e.target.getAttribute('value'));
     };
     render() {
-        const { customerType, totalCustomerCount, simpleCustomerCount, purposeCustomerCount, finishCustomerCount, sidebarClosed } = this.props;
+        const { customerType, totalCustomerCount, simpleCustomerCount, purposeCustomerCount, finishCustomerCount, setStaffUuid } = this.props;
         return (
             <div className="customerContainer">
                 <div className="customerLeft">
+                    <div className="customerPermission">
+                        <CustomerPermission setStaffUuid={setStaffUuid} />
+                    </div>
                     <div className="customerLeftTop">
                         我的客户
                     </div>
@@ -125,6 +129,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         fetchCustomer: (phaseType, time, page, customerType) => {
             dispatch(customerAjax.fetchCustomer(phaseType, time, page, customerType));
+        },
+        setStaffUuid:(staffUuid) => {
+            dispatch(phaseAndTimeAction.setStaffUuId(staffUuid));
         }
     };
 };
