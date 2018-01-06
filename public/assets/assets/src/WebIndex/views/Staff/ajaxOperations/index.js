@@ -26,7 +26,7 @@ export const createStaff = ({ username, password, authority, name }) => (dispatc
         message.info('创建失败!');
     } else {
         dispatch(actions.createStaff({
-            id: value,
+            uuid: value,
             username,
             password,
             authority,
