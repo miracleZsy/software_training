@@ -5,7 +5,9 @@ import * as phaseAndTimeAction from '../actions/phaseAndTimeAction';
 import { Table, Popconfirm, Modal } from 'antd';
 import CreateCustomer from "./CreateCustomer";
 import CustomerDetail from "./CustomerDetail";
-
+import ShareCustomerModal from './ShareCustomerModal';
+import { fetchStaff } from '../../Staff/api';
+import { insertSharedCustomer } from '../../SharingManagement/api';
 
 class CustomerTable extends Component {
     constructor() {
@@ -15,12 +17,17 @@ class CustomerTable extends Component {
             selectedKey: -1,
             showDetailId: -1,
             showDetail: false,
+            showSharing: false,
+            showSharingRecord: null,
         };
     }
 
     componentWillMount() {
         const { fetchCustomer, phaseType, time, currentPage, customerType } = this.props;
         fetchCustomer(phaseType, time, currentPage, customerType);
+        if (this.props.staffData.length === 0) {
+            this.props.fetchStaff(0);
+        }
     }
     onDeleteCustomer = (id) => {
         const { deleteCustomer,  phaseType, time, currentPage, customerType } = this.props;
@@ -36,8 +43,11 @@ class CustomerTable extends Component {
         });
         form.resetFields();
     };
-    onShareCustomer = (key, index) => {
-        //共享
+    onShareCustomer = (record) => {
+        this.setState({
+            showSharingRecord: record,
+            showSharing: true,
+        });
     };
     handleCancel = () => {
         this.setState({ visible: false });
@@ -55,6 +65,19 @@ class CustomerTable extends Component {
             this.setState({ visible: false });
         });
     };
+    handleSharing = () => {
+        const customer = this.state.showSharingRecord;
+        const sharingForm = this.sharingForm;
+        sharingForm.validateFields((err, value) => {
+            if(err) return;
+            console.log('接收人uuid', value.staff);
+            console.log('客户', customer);
+            this.props.insertSharedCustomer(value.staff, customer);
+            this.setState({
+                showSharing: false,
+            });
+        });
+    }
     saveFormRef = (form) => {
         this.form = form;
     };
@@ -72,6 +95,11 @@ class CustomerTable extends Component {
             showDetail: false
         });
     };
+    cancelShowSharing = () => {
+        this.setState({
+            showSharing: false
+        });
+    }
     createColumns = () => {
         return  [{
             title: '客户名称',
@@ -95,18 +123,18 @@ class CustomerTable extends Component {
             dataIndex: 'oper',
             render:(text, record) => (
                 <span>
-                    <Popconfirm title="确认删除?" onConfirm={() => {
+                    <Popconfirm title="确认删除?" cancelText="取消" okText="确定" onConfirm={() => {
                         this.onDeleteCustomer(record.id);
                     }}>
-                        <a href="#">删除用户</a>
+                        <a href="#">删除客户</a>
                     </Popconfirm>
                     <span style={{ paddingLeft: 10, paddingRight: 10, color: '#108ee9', cursor: 'pointer' }} onClick={() => {
                         this.onUpdateCustomer(record.id);
-                    }} >修改用户</span>
-                    <Popconfirm title="确认共享?" onConfirm={() => {
-                        this.onShareCustomer(record.id, record.index);
+                    }} >修改客户</span>
+                    <Popconfirm title="确认共享?" cancelText="取消" okText="确定" onConfirm={() => {
+                        this.onShareCustomer(record);
                     }}>
-                        <a href="#">共享用户</a>
+                        <a href="#">共享客户</a>
                     </Popconfirm>
                 </span>
             )
@@ -121,7 +149,7 @@ class CustomerTable extends Component {
     };
 
     render() {
-        const { customerData, checkedCustomer, customerTotalCount, currentPage } = this.props;
+        const { customerData, staffData, checkedCustomer, customerTotalCount, currentPage } = this.props;
         {
             customerData.forEach(function (item, index) {
                 item.index = index;
@@ -134,7 +162,7 @@ class CustomerTable extends Component {
             current: currentPage,
         };
 
-        const { visible, showDetail, showDetailId } = this.state;
+        const { visible, showDetail, showDetailId, showSharing, showSharingRecord } = this.state;
         return (
             <div>
                 <Table
@@ -148,14 +176,24 @@ class CustomerTable extends Component {
                     visible={visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
-                    title="修改用户"
+                    title="修改客户"
                     okText="修改"
                     checkedCustomer={checkedCustomer}
                 />
                 <CustomerDetail
+                    type="view"
                     showDetailId={showDetailId}
                     showDetail={showDetail}
                     cancelShowDetail={this.cancelShowDetail}
+                />
+                <ShareCustomerModal
+                    staffData={staffData}
+                    ref={(sharingForm) => { this.sharingForm = sharingForm; }}
+                    visible={showSharing}
+                    title="共享客户"
+                    okText="共享"
+                    onCancel={this.cancelShowSharing}
+                    onOk={this.handleSharing}
                 />
             </div>
         );
@@ -170,7 +208,8 @@ const mapStateToProps = (state) => {
         phaseType: state.phaseAndTimeReducer.phaseType,
         time: state.phaseAndTimeReducer.time,
         currentPage:state.phaseAndTimeReducer.currentPage,
-        customerType: state.phaseAndTimeReducer.customerType
+        customerType: state.phaseAndTimeReducer.customerType,
+        staffData: state.staffReducer.staffData,
     };
 };
 
@@ -199,6 +238,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         getPhaseLog: (id) => {
             dispatch(customerAjax.getPhaseLog(id));
+        },
+        fetchStaff: (page) => {
+            dispatch(fetchStaff(page));
+        },
+        insertSharedCustomer: (uuid_received, customer) => {
+            dispatch(insertSharedCustomer(uuid_received, customer));
         }
     };
 };

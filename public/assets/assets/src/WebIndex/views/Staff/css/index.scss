@@ -4,8 +4,7 @@
   flex-direction: row;
   .innerSideBar{
     flex: 3;
-    //background-color: #1b6d85;
-    max-width: 180px;
+    min-width: 180px;
     min-height: 538px;
     border-right: 1px solid #d4d1d1;
     .innerSideBarTitle{
@@ -17,7 +16,25 @@
     }
   }
   .staffContent {
-    padding: 20px;
     display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px;
+    .contentTopPanel {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      .btn-group {
+        width: 30%;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+    .cardList {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
   }
 }

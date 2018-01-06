@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Customer;
 use App\CustomerPhaseLog;
+use App\Share;
 use App\sys\Config;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Webmozart\Assert\Assert;
 
@@ -25,7 +27,7 @@ class CustomerController extends Controller
             $type = $_POST['type'];
             $phase = $_POST['phase'];
             $time = $_POST['time'];
-            $uuid = isset($_POST['uuid'])?$_POST['uuid']:'';
+            $uuid = empty($_POST['uuid'])?$_POST['uuid']:$request->get('user')->uuid;
             $page = (int)$_POST['page'] > 0 ? (int)$_POST['page'] : 1;
             $size = Config::get('sys_page_size');
             $customers = Customer::filter($type, $phase, $time, $request->get('user')->uuid,$uuid);
@@ -34,7 +36,8 @@ class CustomerController extends Controller
                 'msg' => 'success',
                 'data' => [
                     'count' => $customers->count(),
-                    'customer' => $customers->forPage($page, $size)->get()->toArray()]
+                    'customer' => $customers->forPage($page, $size)->get()->toArray()
+                ]
             ]);
         } catch (\InvalidArgumentException $e) {
             $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
@@ -73,7 +76,6 @@ class CustomerController extends Controller
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             $this->json_die(['code' => 500, 'msg' => $e->getMessage()]);
-
         }
     }
 
@@ -116,13 +118,19 @@ class CustomerController extends Controller
             Assert::notEmpty($_POST['id'], 'id can not be empty');
             Assert::integer((int)$_POST['id'], 'id can should be int');
             $id = $_POST['id'];
-            if (Customer::deleteOne($id,$request->get('user')->uuid)) {
-                $this->json_die(['code' => 200, 'msg' => 'success']);
+            $customer = Customer::find($id);
+            DB::beginTransaction();
+            if ($customer && $request->get('user')->uuid === $customer->uuid) {
+                    $customer->delete();
+                    Share::where('customer_id',$id)->delete();
+                    DB::commit();
+                    $this->json_die(['code' => 200, 'msg' => 'success']);
             } else $this->json_die(['code' => 403, 'msg' => 'customer not exist or it is not self']);
         } catch (\InvalidArgumentException $e) {
             $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
+            DB::rollBack();
             $this->json_die(['code' => 500, 'msg' => 'unknown error']);
         }
     }
@@ -175,17 +183,39 @@ class CustomerController extends Controller
             $this->json_die(['code' => 500, 'msg' => 'unknown error']);
         }
     }
-    public function changePhase(Request $request){
-        try{
+
+    public function changePhase(Request $request)
+    {
+        try {
             Assert::notEmpty($_POST['id'], 'id can not be null');
-            Assert::integer((int)$_POST['id'],'id must be int');
-            Assert::integer((int)$_POST['phase'],'phase must be int');
+            Assert::integer((int)$_POST['id'], 'id must be int');
+            Assert::integer((int)$_POST['phase'], 'phase must be int');
             $id = $_POST['id'];
             $phase = $_POST['phase'];
-            $res = Customer::phaseChange($id,$request->get('user')->uuid,$phase);
-            if ($res) $this->json_die(['code'=>200, 'msg'=>'success']);
-            else $this->json_die(['code'=>403,'msg'=>'customer is not exist']);
-        }catch (\InvalidArgumentException $e) {
+            $res = Customer::phaseChange($id, $request->get('user')->uuid, $phase);
+            if ($res) $this->json_die(['code' => 200, 'msg' => 'success']);
+            else $this->json_die(['code' => 403, 'msg' => 'customer is not exist']);
+        } catch (\InvalidArgumentException $e) {
+            $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->json_die(['code' => 500, 'msg' => 'unknown error']);
+        }
+    }
+
+    public function getMyCustomers(Request $request)
+    {
+        try {
+            Assert::notEmpty($_POST['hint']);
+            $hint = $_POST['hint'];
+            $customers = Customer::where('uuid', $request->get('user')->uuid)
+                ->where('name', 'like', $hint . '%')->select('id', 'name', 'pic_url')->get()->toArray();
+            $this->json_die([
+                'code' => 200,
+                'msg' => 'success',
+                'data' => $customers
+            ]);
+        } catch (\InvalidArgumentException $e) {
             $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
         } catch (\Exception $e) {
             Log::error($e->getMessage());

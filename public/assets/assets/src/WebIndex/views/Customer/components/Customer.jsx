@@ -67,7 +67,7 @@ class Customer extends Component {
                             visible={this.state.visible}
                             onCancel={this.handleCancel}
                             onCreate={this.handleCreate}
-                            title="新增用户"
+                            title="新增客户"
                             okText="创建"
                         />
                     </div>
@@ -78,7 +78,7 @@ class Customer extends Component {
                         <span value="3"  className={`${customerType == 3 ? 'current' : ''}`} onClick={this.changeCurrentCustomerType}>已成交客户 ({finishCustomerCount})</span>
                     </div>
                 </div>
-                <div className={`customerRight ${sidebarClosed ? 'close' : ''}`}>
+                <div className="customerRight">
                     <CustomerRightTopContainer />
                     <div className="customerInforTable">
                         <CustomerTable />
