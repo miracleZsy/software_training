@@ -86,7 +86,9 @@ class ShareController extends Controller
             Assert::numeric($_POST['id'], 'id should be int type');
             $id = $_POST['id'];
             $uuid = $request->get('user')->uuid;
-            $share = Share::where('id', $id)->where('uuid_received', $uuid)->orWhere('uuid_send', $uuid);
+            $share = Share::where('id', $id)->where(function ($query) use ($uuid){
+                $query->where('uuid_received', $uuid)->orWhere('uuid_send', $uuid);
+            });
             if ($share->delete()) $this->json_die(['code' => 200, 'msg' => 'success']);
             else $this->json_die(['code' => 500, 'msg' => 'unknown error']);
         } catch (\InvalidArgumentException $e) {
