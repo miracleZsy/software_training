@@ -19,7 +19,7 @@ const StaffInfoCard = ({ staff, openStaffModal, openModifyModal, deleteStaff }) 
     };
     return (
         <Card
-            style={{ width: 250 }}
+            style={{ width: 250, margin: "10px 20px" }}
             actions={[
                 <Icon type="edit" onClick={handleOnModify} />,
                 <Icon type="ellipsis" onClick={handleOnDetailClick} />,

@@ -81,20 +81,6 @@ class Staff extends Component {
         const { detailVisible } = this.state;
         return (
             <div className="staffContainer">
-                <div className="innerSideBar">
-                    <div className="innerSideBarTitle">
-                      员工管理
-                    </div>
-                    <Menu
-                        defaultSelectedKeys={['1']}
-                        defaultOpenKeys={['sub1']}
-                        mode="inline"    
-                    >
-                        <SubMenu key="sub1" title={<span>组织架构</span>}>
-                            <Menu.Item key="1">杭州阿里巴巴有限公司</Menu.Item>
-                        </SubMenu>
-                    </Menu>
-                </div>
                 <div className="staffContent">
                     <div className="contentTopPanel">
                         <div className="btn-group">
