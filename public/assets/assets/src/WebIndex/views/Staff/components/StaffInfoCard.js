@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Icon, Avatar, Popconfirm, message } from 'antd';
-import isBoss from '../../../../lib/isBoss';
+import cookieUtil from '../../../../lib/cookieUtil';
+import jwt from 'jsonwebtoken';
 
 const { Meta } = Card;
 
@@ -12,7 +13,7 @@ const StaffInfoCard = ({ staff, openStaffModal, openModifyModal, deleteStaff }) 
         openModifyModal(staff);
     };
     const onConfirmDelete = () => {
-        if (isBoss) {
+        if (staff.uuid == jwt.decode(cookieUtil.get('token')).uuid) {
             return message.info('老板，您不能删除自己');
         }
         deleteStaff(staff.uuid);
