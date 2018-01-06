@@ -6,3 +6,5 @@ export const SET_TIME = 'SET_TIME';
 export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 
 export const SET_CUSTOMER_TYPE = 'SET_CUSTOMER_TYPE';
+
+export const SET_STAFF_UUID = 'SET_STAFF_UUID';

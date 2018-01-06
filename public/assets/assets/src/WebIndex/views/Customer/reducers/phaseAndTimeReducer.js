@@ -4,7 +4,8 @@ const init = {
     phaseType: 0,
     time: 0,
     currentPage: 1,
-    customerType: 0
+    customerType: 0,
+    staffUuid: '',
 };
 
 const phaseAndTimeReducer = (state = init, action) => {
@@ -17,6 +18,8 @@ const phaseAndTimeReducer = (state = init, action) => {
         return { ...state, currentPage: action.currentPage };
     case phaseAndTimeTypes.SET_CUSTOMER_TYPE:
         return { ...state, customerType: action.customerType };
+    case phaseAndTimeTypes.SET_STAFF_UUID:
+        return { ...state, staffUuid: action.staffUuid };
     default:
         return state;
     }

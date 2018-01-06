@@ -48,7 +48,7 @@ class CustomerDetail extends Component {
         const { customerDetail, phaseLog, showDetail, cancelShowDetail, sliderValue } = this.props;
         phaseLog.forEach(function (item, index) {
             let title = '';
-            switch (item.phase) {
+            switch (parseInt(item.phase)) {
             case 1:
                 title = '新入库';
                 break;
@@ -66,7 +66,7 @@ class CustomerDetail extends Component {
                 break;
             }
             phaseLogChildren.push(<Card title={title} key={index} extra={<span>{item['created_at']}</span>} style={{ width: 410, marginBottom: 10 }}>
-                <p>{customerDetail.followName}将客户{customerDetail.name}标记为了{title}</p>
+                <p>{item['tagName']}将客户{customerDetail.name}标记为了{title}</p>
             </Card>);
         });
         return(

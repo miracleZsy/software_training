@@ -13,17 +13,17 @@ class PhaseTag extends Component {
         };
     }
     handleChange(index, checked) {
-        const { summarize, setPhaseType, setTime, fetchCustomer, phaseType, time, setCurrentPage, customerType } = this.props;
+        const { summarize, setPhaseType, setTime, fetchCustomer, phaseType, time, setCurrentPage, customerType, staffUuid } = this.props;
         let nextSelectedTags ;
         nextSelectedTags = [index];
         if(summarize  === '客户阶段') {
             setPhaseType(nextSelectedTags[0]);
             setCurrentPage(1);
-            fetchCustomer(nextSelectedTags[0], time, 1, customerType);
+            fetchCustomer(nextSelectedTags[0], time, 1, customerType, staffUuid);
         }else {
             setTime(nextSelectedTags[0]);
             setCurrentPage(1);
-            fetchCustomer(phaseType, nextSelectedTags[0], 1, customerType);
+            fetchCustomer(phaseType, nextSelectedTags[0], 1, customerType, staffUuid);
         }
     }
 
@@ -53,7 +53,8 @@ const mapStateToProps = (state) => {
         phaseType: state.phaseAndTimeReducer.phaseType,
         time: state.phaseAndTimeReducer.time,
         currentPage: state.phaseAndTimeReducer.currentPage,
-        customerType: state.phaseAndTimeReducer.customerType
+        customerType: state.phaseAndTimeReducer.customerType,
+        staffUuid: state.phaseAndTimeReducer.staffUuid
     };
 };
 

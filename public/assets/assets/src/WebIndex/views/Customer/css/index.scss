@@ -74,6 +74,11 @@
     overflow-y: scroll;
     height: calc(100% - 171px);
   }
+  .customerPermission {
+    max-width: 150px;
+    margin-left: 16px;
+    margin-top: 11px;
+  }
 }
 
 .customerDetailContainer {

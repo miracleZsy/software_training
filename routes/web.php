@@ -26,6 +26,7 @@ Route::post('/customer/delete','CustomerController@delete');
 Route::post('/customer/list','CustomerController@list');
 Route::post('/customer/select','CustomerController@select');
 Route::post('/customer/count','CustomerController@amountCount');
+Route::post('/customer/getMyCustomers','CustomerController@getMyCustomers');
 
 //sale部分
 Route::post('/sale/customerManage','SaleController@customerManage');
@@ -39,7 +40,7 @@ Route::post('/user/delete','UserController@delete');
 Route::post('/user/list','UserController@list');
 Route::post('/user/select','UserController@select');
 Route::post('/user/count','UserController@amountCount');
-Route::post('/customer/getMyCustomers','CustomerController@getMyCustomers');
+Route::post('/user/hint','UserController@hint');
 
 //sale plan 部分
 Route::post('/sale/plan/list','SaleController@list');

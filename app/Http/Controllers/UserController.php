@@ -119,4 +119,14 @@ class UserController extends Controller
             $this->json_die(['code' => 500, 'msg' => 'unknown error']);
         }
     }
+    public function hint(Request $request){
+        $hint = $_POST['hint'];
+        $customers = User::where('company_id', $request->get('user')->company_id)
+            ->where('name', 'like', $hint . '%')->select('uuid', 'name')->get()->toArray();
+        $this->json_die([
+            'code' => 200,
+            'msg' => 'success',
+            'data' => $customers
+        ]);
+    }
 }

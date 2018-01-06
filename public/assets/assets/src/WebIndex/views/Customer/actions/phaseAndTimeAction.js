@@ -30,3 +30,9 @@ export const setCustomerType = (customerType) => {
     };
 };
 
+export const setStaffUuId = (staffUuid) => {
+    return {
+        type: phaseAndTimeTypes.SET_STAFF_UUID,
+        staffUuid: staffUuid
+    };
+};
