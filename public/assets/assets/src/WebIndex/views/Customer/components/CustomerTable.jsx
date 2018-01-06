@@ -6,8 +6,8 @@ import { Table, Popconfirm, Modal } from 'antd';
 import CreateCustomer from "./CreateCustomer";
 import CustomerDetail from "./CustomerDetail";
 import ShareCustomerModal from './ShareCustomerModal';
-import { fetchStaff } from '../../Staff/api';
-import { insertSharedCustomer } from '../../SharingManagement/api';
+import { fetchStaff } from '../../Staff/ajaxOperations';
+import { insertSharedCustomer } from '../../SharingManagement/ajaxOperations';
 
 class CustomerTable extends Component {
     constructor() {
