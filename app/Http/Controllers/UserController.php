@@ -73,7 +73,7 @@ class UserController extends Controller
             $authority = $_POST['authority'];
             $name = isset($_POST['name']) ? $_POST['name'] : '';
             if (User::where('uuid','<>',$uuid)->where('username',$username)->count()>0)
-                $this->json_die(['code' => 403, 'msg' => 'username exist']);
+                $this->json_die(['code' => 405, 'msg' => 'username exist']);
             if (User::updateUser($uuid, $username, $name,$authority,$request->get('user')->uuid))
                 $this->json_die(['code' => 200, 'msg' => 'success']);
             else $this->json_die(['code' => 403, 'msg' => 'unauthorized']);
