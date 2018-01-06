@@ -18,7 +18,8 @@ class User extends Model
     protected $fillable = ['uuid', 'username', 'name','authority','password','salt','company_id'];
     public static function selectUserByUsername($username){
         return self::where('username',$username)
-            ->join('company','user.company_id','=','company.id')->first();
+            ->join('company','user.company_id','=','company.id')
+            ->select('user.username','user.uuid','user.password','user.salt','user.company_id','user.authority','company.name as company_name')->first();
     }
     public static function createNewUser($username, $name, $authority, $password,$myUuid)
     {

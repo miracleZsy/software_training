@@ -34,7 +34,8 @@ class SessionController extends Controller
                     'username' => $user->username,
                     'uuid' => $user->uuid,
                     'authority'=>$user->authority,
-                    'companyId' =>$user->company_id
+                    'companyId' =>$user->company_id,
+                    'companyName'=>$user->company_name
                 ]);
                 setcookie('token', (String)$token, time() + 3600, '/');
                 $this->json_die(['code' => 200, 'msg' => 'success']);
