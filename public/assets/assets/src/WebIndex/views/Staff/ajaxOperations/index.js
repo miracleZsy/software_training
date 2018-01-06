@@ -25,7 +25,9 @@ export const createStaff = ({ username, password, authority, name }) => (dispatc
     if (value === 500) {
         message.info('创建失败！');
     } else if(value === 403) {
-        message.info('创建失败，用户名已被占用！');
+        message.info('创建失败，无权限！');
+    } else if(value === 405) {
+        message.info('修改失败，用户名被占用！');
     } else {
         dispatch(actions.createStaff({
             id: value,
@@ -48,7 +50,9 @@ export const modifyStaff = ({ uuid, username, password, authority, name }) => (d
     if (value === 500) {
         message.info('修改失败!');
     } else if(value === 403) {
-        message.info('修改失败，用户名已被占用！');
+        message.info('修改失败，无权限！');
+    } else if(value === 405) {
+        message.info('修改失败，用户名被占用！');
     } else {
         dispatch(actions.modifyStaff({
             uuid,
