@@ -21,6 +21,7 @@ class Session
             $user = new User();
             $user->username = $token->getClaim('username');
             $user->uuid = $token->getClaim('uuid');
+
             $request->attributes->set('user', $user);
             return $next($request);
         } else die(json_encode([
