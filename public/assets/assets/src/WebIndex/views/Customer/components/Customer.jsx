@@ -20,8 +20,8 @@ class Customer extends Component {
         };
     }
     componentWillMount() {
-        const { fetchCustomerTypeCount } = this.props;
-        fetchCustomerTypeCount();
+        const { fetchCustomerTypeCount, staffUuid } = this.props;
+        fetchCustomerTypeCount(staffUuid);
         if(jwt.decode(cookieUtil.get('token')) !== null) {
             let authority = jwt.decode(cookieUtil.get('token')).authority;
             if(authority != null && parseInt(authority) <= 2) {
@@ -145,8 +145,8 @@ const mapDispatchToProps = (dispatch) => {
         setCustomerType: (customerType) => {
             dispatch(phaseAndTimeAction.setCustomerType(customerType));
         },
-        fetchCustomerTypeCount:() => {
-            dispatch(customerAjax.fetchCustomerTypeCount());
+        fetchCustomerTypeCount:(staffUuid) => {
+            dispatch(customerAjax.fetchCustomerTypeCount(staffUuid));
         },
         fetchCustomer: (phaseType, time, page, customerType, staffUuid) => {
             dispatch(customerAjax.fetchCustomer(phaseType, time, page, customerType, staffUuid));

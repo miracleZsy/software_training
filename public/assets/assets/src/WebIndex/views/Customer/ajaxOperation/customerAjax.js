@@ -108,7 +108,9 @@ export const updateCustomer = (id, customerUpdated, phaseType, time, currentPage
     }
 });
 
-export const fetchCustomerTypeCount = () => (dispatch) => axiosUtil('post', fetchCustomerTypeCountAddress, {})
+export const fetchCustomerTypeCount = (staffUuid = '') => (dispatch) => axiosUtil('post', fetchCustomerTypeCountAddress, {
+    uuid: staffUuid
+})
     .then((value) => {
         if(value !== undefined) {
             const simpleCustomerCount = value['1'] === undefined ? '0' : value['1'];
