@@ -27,7 +27,7 @@ class CustomerController extends Controller
             $type = $_POST['type'];
             $phase = $_POST['phase'];
             $time = $_POST['time'];
-            $uuid = empty($_POST['uuid'])?$_POST['uuid']:$request->get('user')->uuid;
+            $uuid = (!empty($_POST['uuid']))?$_POST['uuid']:$request->get('user')->uuid;
             $page = (int)$_POST['page'] > 0 ? (int)$_POST['page'] : 1;
             $size = Config::get('sys_page_size');
             $customers = Customer::filter($type, $phase, $time, $request->get('user')->uuid,$uuid);
