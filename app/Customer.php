@@ -127,11 +127,7 @@ class Customer extends Model
                 $start = Carbon::create()->subMonth();
         }
         if ($user->authority > 2) $customer= self::where('uuid', $uuid);
-        else if ($user->authority < 2 && $uid) $customer = self::where('uuid',$uid);
-        else {
-            $uuids = User::where('company_id', $user->company_id)->pluck('uuid')->toArray();
-            $customer = self::whereIn('uuid', $uuids);
-        }
+        else if ($user->authority <= 2 && $uid) $customer = self::where('uuid',$uid);
         if ($phase) $customer = $customer->where('phase', $phase);
         if ($type) $customer = $customer->where('type', $type);
         $customer = $customer->whereBetween('created_at', [$start, $end]);
