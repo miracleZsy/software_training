@@ -20,8 +20,8 @@ class Customer extends Component {
         };
     }
     componentWillMount() {
-        const { fetchCustomerTypeCount, staffUuid } = this.props;
-        fetchCustomerTypeCount(staffUuid);
+        const { fetchCustomerTypeCount } = this.props;
+        fetchCustomerTypeCount();
         if(jwt.decode(cookieUtil.get('token')) !== null) {
             let authority = jwt.decode(cookieUtil.get('token')).authority;
             if(authority != null && parseInt(authority) <= 2) {

@@ -31,10 +31,11 @@ class CustomerPermission extends Component {
         // console.log(value);
     };
     selectStaff = (value) => {
-        const{ phaseType, time, currentPage, customerType, fetchCustomer, setStaffUuid } = this.props;
-        console.log(value);
+        const{ phaseType, time, currentPage, customerType, fetchCustomer, setStaffUuid, fetchCustomerTypeCount } = this.props;
+        // console.log(value);
         setStaffUuid(value);
         fetchCustomer(phaseType, time, currentPage, customerType, value);
+        fetchCustomerTypeCount(value);
     };
     render() {
         const { children } = this.state;
@@ -75,6 +76,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchCustomer: (phaseType, time, page, customerType, staffUuid) => {
             dispatch(customerAjax.fetchCustomer(phaseType, time, page, customerType, staffUuid));
+        },
+        fetchCustomerTypeCount:(staffUuid) => {
+            dispatch(customerAjax.fetchCustomerTypeCount(staffUuid));
         }
     };
 };
