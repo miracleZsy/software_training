@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { Button, Input, Menu, Modal, Pagination } from 'antd';
-import StaffInfoCard from './StaffInfoCard';
-import CreateStaff from './CreateStaff';
-import StaffDetail from './StaffDetail';
-import ModifyStaff from './ModifyStaff';
-import { fetchStaff, createStaff, modifyStaff, deleteStaff } from '../api';
-import { setActiveStaff } from '../actions';
+import StaffInfoCard from './components/StaffInfoCard';
+import CreateStaff from './components/CreateStaff';
+import StaffDetail from './components/StaffDetail';
+import ModifyStaff from './components/ModifyStaff';
+import { fetchStaff, createStaff, modifyStaff, deleteStaff } from './api';
+import { setActiveStaff } from './actions';
 import { connect } from 'react-redux';
-import '../css/index.scss';
+import jwt from 'jsonwebtoken';
+import cookieUtil from '../../../lib/cookieUtil';
+import './css/index.scss';
 
 const Search = Input.Search;
 const SubMenu = Menu.SubMenu;
@@ -79,6 +81,7 @@ class Staff extends Component {
     render() {
         const { staffData, staffCount, activeStaff } = this.props;
         const { detailVisible } = this.state;
+        const { companyName } = jwt.decode(cookieUtil.get('token'));
         return (
             <div className="staffContainer">
                 <div className="staffContent">
@@ -87,7 +90,7 @@ class Staff extends Component {
                             <Button icon="plus" type="primary" onClick={this.handleAddStaff}>添加员工</Button>
                         </div>
                     </div>
-                    <h2 style={{ margin: "5px 0" }}>杭州阿里巴巴有限公司</h2>
+                    <h2 style={{ margin: "5px 0" }}>{ companyName }</h2>
                     <span style={{ display: "block", fontSize: "1.05rem" }}>
                         共有员工 { staffCount } 名
                     </span>

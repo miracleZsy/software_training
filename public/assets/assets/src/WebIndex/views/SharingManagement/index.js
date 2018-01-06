@@ -4,7 +4,7 @@ import SharingTable from './components/SharingTable';
 import { setSharingTime, setCurrentPage, setSharingType } from './actions';
 import { fetchSharedCustomer, fetchReceivedCustomer, fetchSharedAndReceivedCustomerCount, deleteSharedCustomer } from './api';
 import { connect } from 'react-redux';
-import './style.scss';
+import './css/style.scss';
 
 const { CheckableTag } = Tag;
 

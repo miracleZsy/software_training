@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { HashRouter, Route, Redirect, Switch } from 'react-router-dom';
 import Customer from '../views/Customer/components/Customer';
 import SaleManage from '../views/Sale/components/SaleManage';
-import Staff from '../views/Staff/components';
+import Staff from '../views/Staff';
 import SharingManagement from '../views/SharingManagement';
 import Login from '../views/Login/components/Login';
 import ControlTotalComponent from '../views/ControlTotalComponent/ControlTotalComponent';
