@@ -14,7 +14,7 @@ const fetchCustomerTypeCountAddress = '/software_training/public/customer/count'
 const fetchCustomerDetailAddress = '/software_training/public/customer/select';
 const setCustomerPhaseAddress = '/software_training/public/customer/changePhase';
 const getPhaseLogAddress = '/software_training/public/customer/getPhaseLog';
-const fetchStaffInCustomerListAddress = '';
+const fetchStaffInCustomerListAddress = '/software_training/public/user/hint';
 
 export const fetchCustomer = (phaseType = 0, time = 0, page = 1, customerType = 0, staffUuid = '') => (dispatch) => axiosUtil('post', fetchCustomerAddress, {
     phase: phaseType,

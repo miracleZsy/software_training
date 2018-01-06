@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Select } from 'antd';
+import { connect } from 'react-redux';
 const Option = Select.Option;
 import debounce from 'lodash.debounce';
 import * as customerAjax from '../ajaxOperation/customerAjax';
@@ -14,7 +15,6 @@ class CustomerPermission extends Component {
         };
     }
     searchStaffInCustomer = (value) => {
-        const { customerList } = this.props;
         if (value !== '') {
             customerAjax.fetchStaffInCustomerList(value)
                 .then((res) => {
@@ -28,25 +28,34 @@ class CustomerPermission extends Component {
     };
     handleChange = (value) => {
         // const { setStaffUuid } = this.props;
+        // console.log(value);
+    };
+    selectStaff = (value) => {
+        const{ phaseType, time, currentPage, customerType, fetchCustomer, setStaffUuid } = this.props;
         console.log(value);
+        setStaffUuid(value);
+        fetchCustomer(phaseType, time, currentPage, customerType, value);
     };
     render() {
-        const childrenList = [];
-        for (let i = 10; i < 20; i++) {
-            childrenList.push(<Option key={i.toString(36) + i}>舒小台 + {i}</Option>);
-        }
         const { children } = this.state;
+        const childrenList = [];
+        if(children != [] && children != undefined) {
+            for (let item of children) {
+                childrenList.push(<Option key={item.uuid} title={item.name}>{item.name}</Option>);
+            }
+        }
         return(
             <Select
                 mode="combobox"
                 size="default"
                 placeholder="根据员工查看客户"
+                optionLabelProp="title"
                 onChange={this.handleChange}
                 onSearch={debounce(this.searchStaffInCustomer, 800)}
                 style={{ width: '100%' }}
                 showArrow={false}
                 filterOption={false}
-                labelInValue
+                onSelect={this.selectStaff}
             >
                 {childrenList}
             </Select>
@@ -54,4 +63,19 @@ class CustomerPermission extends Component {
     }
 }
 
-export default CustomerPermission;
+const mapStateToProps = (state) => {
+    return {
+        phaseType: state.phaseAndTimeReducer.phaseType,
+        time: state.phaseAndTimeReducer.time,
+        currentPage:state.phaseAndTimeReducer.currentPage,
+        customerType: state.phaseAndTimeReducer.customerType
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchCustomer: (phaseType, time, page, customerType, staffUuid) => {
+            dispatch(customerAjax.fetchCustomer(phaseType, time, page, customerType, staffUuid));
+        }
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerPermission);

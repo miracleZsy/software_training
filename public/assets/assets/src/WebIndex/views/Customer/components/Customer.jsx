@@ -61,11 +61,11 @@ class Customer extends Component {
         this.form = form;
     };
     changeCurrentCustomerType = (e) => {
-        const { setCustomerType, fetchCustomer, phaseType, time, currentPage, customerType, setCurrentPage } = this.props;
+        const { setCustomerType, fetchCustomer, phaseType, time, currentPage, customerType, setCurrentPage, staffUuid } = this.props;
         console.log(e.target.getAttribute('value'));
         setCustomerType(e.target.getAttribute('value'));
         setCurrentPage(1);
-        fetchCustomer(phaseType, time, 1, e.target.getAttribute('value'));
+        fetchCustomer(phaseType, time, 1, e.target.getAttribute('value'), staffUuid);
     };
     render() {
         const { customerType, totalCustomerCount, simpleCustomerCount, purposeCustomerCount, finishCustomerCount, setStaffUuid } = this.props;
@@ -75,7 +75,10 @@ class Customer extends Component {
                 <div className="customerLeft">
                     <div className="customerPermission">
                         {
-                            customerPermissionVisible === true ? <CustomerPermission setStaffUuid={setStaffUuid} /> : (null)
+                            customerPermissionVisible === true ?
+                                <CustomerPermission
+                                    setStaffUuid={setStaffUuid}
+                                /> : (null)
                         }
                     </div>
                     <div className="customerLeftTop">
@@ -120,7 +123,8 @@ const mapStateToProps = (state) => {
         simpleCustomerCount:state.customerTypeCountReducer.simpleCustomerCount,
         purposeCustomerCount: state.customerTypeCountReducer.purposeCustomerCount,
         finishCustomerCount: state.customerTypeCountReducer.finishCustomerCount,
-        sidebarClosed: state.hideSideReducer.sidebarClosed
+        sidebarClosed: state.hideSideReducer.sidebarClosed,
+        staffUuid: state.phaseAndTimeReducer.staffUuid
     };
 };
 
@@ -144,8 +148,8 @@ const mapDispatchToProps = (dispatch) => {
         fetchCustomerTypeCount:() => {
             dispatch(customerAjax.fetchCustomerTypeCount());
         },
-        fetchCustomer: (phaseType, time, page, customerType) => {
-            dispatch(customerAjax.fetchCustomer(phaseType, time, page, customerType));
+        fetchCustomer: (phaseType, time, page, customerType, staffUuid) => {
+            dispatch(customerAjax.fetchCustomer(phaseType, time, page, customerType, staffUuid));
         },
         setStaffUuid:(staffUuid) => {
             dispatch(phaseAndTimeAction.setStaffUuId(staffUuid));
