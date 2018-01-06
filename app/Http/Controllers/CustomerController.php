@@ -155,7 +155,8 @@ class CustomerController extends Controller
     public function amountCount(Request $request)
     {
         try {
-            $count = Customer::amountCount($request->get('user')->uuid);
+            $uuid = (!empty($_POST['uuid']))?$_POST['uuid']?$request->get('user')->uuid;
+            $count = Customer::amountCount($uuid);
             $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $count]);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
