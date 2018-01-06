@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Modal, Input, Icon, Button, Select } from 'antd';
+import store from '../../../store';
 
+const authorityList = store.getState().staffReducer.authorityList;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -40,20 +42,20 @@ const ModifyStaff = Form.create()(
                         {getFieldDecorator('password', {
                             rules: [{ required: true, message: '请输入密码' }],
                         })(
-                            <Input prefix={<Icon type="key" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="密码" />
+                            <Input type="password" prefix={<Icon type="key" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="密码" />
                         )}
                     </FormItem>
                     <FormItem label="权限">
                         {
                             getFieldDecorator('authority', {
                                 rules: [{ required: true, message: '请选择权限' }],
-                                initialValue: staff.authority,
+                                initialValue: authorityList[Number(staff.authority) - 1],
                             })(
                                 <Select
                                     placeholder="选择员工权限"
                                 >
-                                    <Option value="2">2</Option>
-                                    <Option value="3">3</Option>
+                                    <Option value="2">销售总监</Option>
+                                    <Option value="3">普通销售</Option>
                                 </Select>
                             )
                         }

@@ -6,6 +6,7 @@ const INITIAL_STATE = {
     staffCount: 0,
     newStaff: {},
     activeStaff: {},
+    authorityList: ["公司所有人", "销售总监", "普通销售"],
 };
 
 const staffReducer = (state = INITIAL_STATE, action) => {

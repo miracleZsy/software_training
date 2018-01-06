@@ -29,7 +29,7 @@ const StaffInfoCard = ({ staff, openStaffModal, openModifyModal, deleteStaff }) 
             ]}
         >
             <Meta
-                avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                avatar={<Avatar src={staff.pic_url} />}
                 title={staff.name}
                 description={`用户名:${staff.username}`}
             />

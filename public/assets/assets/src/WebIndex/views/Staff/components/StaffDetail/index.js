@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Modal } from 'antd';
+import store from '../../../../store';
 import './style.css';
+
+const authorityList = store.getState().staffReducer.authorityList;
 
 const StaffDetail = ({ visible, title, onCancel, staff }) => (
     <div>
@@ -12,12 +15,12 @@ const StaffDetail = ({ visible, title, onCancel, staff }) => (
         >
             <div className="staffDetailContainer">
                 <div className="staffAvatar">
-                    <img src="http://o6ljw8wcq.bkt.clouddn.com/logo.jpg" alt="" />
+                    <img src={staff.pic_url} alt="staff avatar" />
                 </div>
                 <div className="staffInfoo">
                     <p>姓名：{staff.name}</p>
                     <p>用户名：{staff.username}</p>
-                    <p>权限：{staff.authority}</p>
+                    <p>权限：{authorityList[Number(staff.authority) - 1]}</p>
                 </div>
             </div>
         </Modal>

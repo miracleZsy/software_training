@@ -38,7 +38,7 @@ const CreateStaff = Form.create()(
                         {getFieldDecorator('password', {
                             rules: [{ required: true, message: '请输入密码' }],
                         })(
-                            <Input prefix={<Icon type="key" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="密码" />
+                            <Input type="password" prefix={<Icon type="key" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="密码" />
                         )}
                     </FormItem>
                     <FormItem label="权限">
@@ -49,9 +49,9 @@ const CreateStaff = Form.create()(
                                 <Select
                                     placeholder="选择员工权限"
                                 >
-                                    <Option value="1">1</Option>
-                                    <Option value="2">2</Option>
-                                    <Option value="3">3</Option>
+                                    <Option value="1">公司所有人</Option>
+                                    <Option value="2">销售总监</Option>
+                                    <Option value="3">普通销售</Option>
                                 </Select>
                             )
                         }
