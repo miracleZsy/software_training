@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Button, Menu, Tag } from 'antd';
 import SharingTable from './components/SharingTable';
 import { setSharingTime, setCurrentPage, setSharingType } from './actions';
-import { fetchSharedCustomer, fetchReceivedCustomer, fetchSharedAndReceivedCustomerCount, deleteSharedCustomer } from './api';
+import { fetchSharedCustomer, fetchReceivedCustomer, fetchSharedAndReceivedCustomerCount, deleteSharedCustomer } from './ajaxOperations';
 import { connect } from 'react-redux';
-import './style.scss';
+import './css/style.scss';
 
 const { CheckableTag } = Tag;
 
@@ -14,8 +14,8 @@ class SharingManagement extends Component {
         this.props.fetchReceivedCustomer(0, 1);
         this.props.fetchSharedAndReceivedCustomerCount();
     }
-    handleSideBarClick = ({ key }) => {
-        this.props.setSharingType(key);
+    handleSideBarClick = (e) => {
+        this.props.setSharingType(e.target.getAttribute('value'));
     }
     render() {
         const { setSharingTime, sharingTime, sharingType, sharedCustomerData, receivedCustomerData, sharedCustomerCount, receivedCustomerCount, deleteSharedCustomer } = this.props;
@@ -26,14 +26,8 @@ class SharingManagement extends Component {
                         共享管理
                     </div>
                     <div className="sharingSideBarBottom">
-                        <Menu
-                            onClick={this.handleSideBarClick}
-                            defaultSelectedKeys={['0']}
-                            mode="inline"
-                        >
-                            <Menu.Item key="0">我共享的客户</Menu.Item>
-                            <Menu.Item key="1">共享给我的客户</Menu.Item>
-                        </Menu>
+                        <span value="0" className={`${sharingType == 0 ? 'current' : ''}`} onClick={this.handleSideBarClick}>我共享的客户</span>
+                        <span value="1" className={`${sharingType == 1 ? 'current' : ''}`} onClick={this.handleSideBarClick}>共享给我的客户</span>
                     </div>
                 </div>
                 <div className="sharingContent">
