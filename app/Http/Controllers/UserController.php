@@ -53,7 +53,7 @@ class UserController extends Controller
             $name = isset($_POST['name']) ? $_POST['name'] : '';
             if (User::where('username',$username)->count()>0) $this->json_die(['code'=>405,'msg' => 'username exist']);
             $user = User::createNewUser($username, $name, $authority, $password, $request->get('user')->uuid);
-            if ($user) $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $user->uuid]);
+            if ($user) $this->json_die(['code' => 200, 'msg' => 'success', 'data' => $user]);
             else $this->json_die(['code' => 403, 'msg' => 'unauthorized']);
         } catch (\InvalidArgumentException $e) {
             $this->json_die(['code' => 407, 'msg' => $e->getMessage()]);
@@ -67,16 +67,14 @@ class UserController extends Controller
         try {
             Assert::notEmpty($_POST['uuid'], 'uuid can not be empty');
             Assert::notEmpty($_POST['username'], 'username can not be empty');
-            Assert::notEmpty($_POST['password'], 'password can not be empty');
             Assert::notEmpty($_POST['authority'], 'authority can not be empty');
             $uuid = $_POST['uuid'];
             $username = $_POST['username'];
-            $password = $_POST['password'];
             $authority = $_POST['authority'];
             $name = isset($_POST['name']) ? $_POST['name'] : '';
             if (User::where('uuid','<>',$uuid)->where('username',$username)->count()>0)
                 $this->json_die(['code' => 403, 'msg' => 'username exist']);
-            if (User::updateUser($uuid, $username, $name, $password,$authority,$request->get('user')->uuid))
+            if (User::updateUser($uuid, $username, $name,$authority,$request->get('user')->uuid))
                 $this->json_die(['code' => 200, 'msg' => 'success']);
             else $this->json_die(['code' => 403, 'msg' => 'unauthorized']);
         } catch (\InvalidArgumentException $e) {
