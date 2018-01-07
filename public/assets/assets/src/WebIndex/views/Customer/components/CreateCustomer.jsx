@@ -10,7 +10,7 @@ const CreateCustomer = Form.create()(
         const { visible, onCancel, onCreate, form, okText, title, checkedCustomer } = props;
         const { getFieldDecorator, setFieldsValue } = form;
 
-        if(title === '修改用户') {
+        if(title === '修改客户') {
             getFieldDecorator('birthday', {
                 initialValue: checkedCustomer !== undefined ? moment(checkedCustomer['birthday']) : moment(),
             });

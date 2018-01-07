@@ -20,10 +20,11 @@ class Customer extends Component {
         };
     }
     componentWillMount() {
-        const { fetchCustomerTypeCount } = this.props;
+        const { fetchCustomerTypeCount, setStaffUuid } = this.props;
         fetchCustomerTypeCount();
         if(jwt.decode(cookieUtil.get('token')) !== null) {
             let authority = jwt.decode(cookieUtil.get('token')).authority;
+            setStaffUuid(jwt.decode(cookieUtil.get('token')).uuid);
             if(authority != null && parseInt(authority) <= 2) {
                 this.setState({
                     customerPermissionVisible:true

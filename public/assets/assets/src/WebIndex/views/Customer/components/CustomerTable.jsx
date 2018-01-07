@@ -23,8 +23,11 @@ class CustomerTable extends Component {
     }
 
     componentWillMount() {
-        const { fetchCustomer, phaseType, time, currentPage, customerType } = this.props;
-        fetchCustomer(phaseType, time, currentPage, customerType);
+        const { fetchCustomer, phaseType, time, currentPage, customerType, staffUuid } = this.props;
+        fetchCustomer(phaseType, time, currentPage, customerType, staffUuid);
+        if (this.props.staffData.length === 0) {
+            this.props.fetchStaff(0);
+        }
     }
     onDeleteCustomer = (id) => {
         const { deleteCustomer,  phaseType, time, currentPage, customerType, staffUuid } = this.props;
@@ -145,7 +148,6 @@ class CustomerTable extends Component {
         const { fetchCustomer, phaseType, time, setCurrentPage, customerType, staffUuid } = this.props;
         setCurrentPage(page);
         fetchCustomer(phaseType, time, page, customerType, staffUuid);
-        console.log(page);
     };
 
     render() {
@@ -210,7 +212,7 @@ const mapStateToProps = (state) => {
         currentPage:state.phaseAndTimeReducer.currentPage,
         customerType: state.phaseAndTimeReducer.customerType,
         staffData: state.staffReducer.staffData,
-        staffUuid: state.staffReducer.staffUuid
+        staffUuid: state.phaseAndTimeReducer.staffUuid
     };
 };
 

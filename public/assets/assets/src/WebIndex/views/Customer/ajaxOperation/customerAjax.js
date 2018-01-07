@@ -5,6 +5,11 @@ import * as customerTypeCountAction from '../../Customer/actions/customerTypeCou
 import * as customerDetailAction from '../../Customer/actions/customerDetailAction';
 import moment from 'moment';
 
+message.config({
+    top: 300,
+    duration: 0.5,
+});
+
 const fetchCustomerAddress = '/software_training/public/customer/list';
 const deleteCustomerAddress = '/software_training/public/customer/delete';
 const addCustomerAddress = '/software_training/public/customer/insert';
