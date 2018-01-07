@@ -47,7 +47,7 @@ const ModifyStaff = Form.create()(
                         {
                             getFieldDecorator('authority', {
                                 rules: [{ required: true, message: '请选择权限' }],
-                                initialValue: authorityList[Number(staff.authority) - 1],
+                                initialValue: staff.authority,
                             })(
                                 <Select
                                     placeholder="选择员工权限"
