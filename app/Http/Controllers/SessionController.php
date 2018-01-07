@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Gregwar\Captcha\CaptchaBuilder;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Webmozart\Assert\Assert;
 use App\traits\Auth;
 
@@ -37,6 +38,7 @@ class SessionController extends Controller
                     'companyId' =>$user->company_id,
                     'companyName'=>$user->company_name
                 ]);
+                Redis::set('name','hello');
                 setcookie('token', (String)$token, time() + 3600, '/');
                 $this->json_die(['code' => 200, 'msg' => 'success']);
             } else $this->json_die(['code' => 403, 'msg' => 'password or username error']);
