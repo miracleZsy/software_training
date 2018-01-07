@@ -38,7 +38,7 @@ class SessionController extends Controller
                     'companyId' =>$user->company_id,
                     'companyName'=>$user->company_name
                 ]);
-                Redis::set('name','hello');
+                Redis::set('token'.$user->uuid,$token);
                 setcookie('token', (String)$token, time() + 3600, '/');
                 $this->json_die(['code' => 200, 'msg' => 'success']);
             } else $this->json_die(['code' => 403, 'msg' => 'password or username error']);
