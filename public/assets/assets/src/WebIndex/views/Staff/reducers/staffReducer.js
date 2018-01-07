@@ -31,7 +31,7 @@ const staffReducer = (state = INITIAL_STATE, action) => {
         return {
             ...state,
             newStaff: action.staff,
-            staffData: state.staffData.push(action.staff),
+            staffData: [...state.staffData, action.staff],
             staffCount: state.staffCount ++,
         };
     case types.SET_ACTIVE_STAFF:
