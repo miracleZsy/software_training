@@ -26,13 +26,8 @@ class CustomerPermission extends Component {
                 });
         }
     };
-    handleChange = (value) => {
-        // const { setStaffUuid } = this.props;
-        // console.log(value);
-    };
     selectStaff = (value) => {
         const{ phaseType, time, currentPage, customerType, fetchCustomer, setStaffUuid, fetchCustomerTypeCount } = this.props;
-        // console.log(value);
         setStaffUuid(value);
         fetchCustomer(phaseType, time, currentPage, customerType, value);
         fetchCustomerTypeCount(value);
@@ -40,9 +35,11 @@ class CustomerPermission extends Component {
     blurStaff = (value) => {
         console.log(value);
         const{ phaseType, time, currentPage, customerType, fetchCustomer, setStaffUuid, fetchCustomerTypeCount } = this.props;
-        setStaffUuid(value);
-        fetchCustomer(phaseType, time, currentPage, customerType, value);
-        fetchCustomerTypeCount(value);
+        if(value === '') {
+            setStaffUuid(value);
+            fetchCustomer(phaseType, time, currentPage, customerType, value);
+            fetchCustomerTypeCount(value);
+        }
     };
     render() {
         const { children } = this.state;
@@ -58,7 +55,6 @@ class CustomerPermission extends Component {
                 size="default"
                 placeholder="根据员工查看客户"
                 optionLabelProp="title"
-                onChange={this.handleChange}
                 onSearch={debounce(this.searchStaffInCustomer, 800)}
                 style={{ width: '100%' }}
                 showArrow={false}
