@@ -6,7 +6,7 @@ import cookieUtil from '../../../../lib/cookieUtil';
 import jwt from 'jsonwebtoken';
 
 message.config({
-    top: 210,
+    top: 300,
     duration: 0.5,
 });
 
