@@ -5,7 +5,6 @@ import isBoss from '../../../../lib/isBoss';
 import cookieUtil from '../../../../lib/cookieUtil';
 import jwt from 'jsonwebtoken';
 
-
 const authorityList = store.getState().staffReducer.authorityList;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -13,9 +12,10 @@ const Option = Select.Option;
 const ModifyStaff = Form.create()(
     (props) => {
         const {
-            staff, visible, onCancel, onOk, form, okText, title, checkStaff
+            visible, onCancel, onOk, form, okText, title, checkStaff
         } = props;
         const { getFieldDecorator, setFieldsValue } = form;
+        const staff = store.getState().staffReducer.activeStaff;
         return (
             <Modal
                 visible={visible}

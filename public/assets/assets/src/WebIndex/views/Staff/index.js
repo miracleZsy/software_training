@@ -47,6 +47,7 @@ class Staff extends Component {
             this.setState({
                 modifyVisible: false,
             });
+            modifyForm.resetFields();
         });
     }
     handleCancel = () => {
@@ -56,10 +57,10 @@ class Staff extends Component {
     }
     handleModifyCancel = () => {
         const modifyForm = this.modifyForm;
-        modifyForm.resetFields();
         this.setState({
             modifyVisible: false,
         });
+        modifyForm.resetFields();
     }
     handleStaffModalOpen = (staff) => {
         this.props.setActiveStaff(staff);
@@ -130,7 +131,6 @@ class Staff extends Component {
                     ref={(form) => {
                         this.modifyForm = form;
                     }}
-                    staff={activeStaff}
                     visible={this.state.modifyVisible}
                     title="修改员工信息"
                     okText="修改"
