@@ -44,6 +44,9 @@ class CustomerTable extends Component {
         form.resetFields();
     };
     onShareCustomer = (record) => {
+        if (this.props.staffData.length === 0) {
+            this.props.fetchStaff(0);
+        }
         this.setState({
             showSharingRecord: record,
             showSharing: true,

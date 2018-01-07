@@ -1,20 +1,27 @@
 import React, { Component } from 'react';
 import { Form, Modal, Input, Icon, Button, Select } from 'antd';
+import store from '../../../store';
+import isBoss from '../../../../lib/isBoss';
+import cookieUtil from '../../../../lib/cookieUtil';
+import jwt from 'jsonwebtoken';
 
+const authorityList = store.getState().staffReducer.authorityList;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 const ModifyStaff = Form.create()(
     (props) => {
         const {
-            staff, visible, onCancel, onOk, form, okText, title, checkStaff
+            visible, onCancel, onOk, form, okText, title, checkStaff
         } = props;
         const { getFieldDecorator, setFieldsValue } = form;
+        const staff = store.getState().staffReducer.activeStaff;
         return (
             <Modal
                 visible={visible}
                 title={title}
                 okText={okText}
+                cancelText="取消"
                 onCancel={onCancel}
                 onOk={onOk}
                 style={{ top: 0 }}
@@ -40,13 +47,14 @@ const ModifyStaff = Form.create()(
                         {
                             getFieldDecorator('authority', {
                                 rules: [{ required: true, message: '请选择权限' }],
-                                initialValue: staff.authority,
+                                initialValue: authorityList[Number(staff.authority) - 1]
                             })(
                                 <Select
                                     placeholder="选择员工权限"
+                                    disabled={staff.authority == jwt.decode(cookieUtil.get('token')).authority}
                                 >
-                                    <Option value="2">2</Option>
-                                    <Option value="3">3</Option>
+                                    <Option value="销售总监">销售总监</Option>
+                                    <Option value="普通销售">普通销售</Option>
                                 </Select>
                             )
                         }

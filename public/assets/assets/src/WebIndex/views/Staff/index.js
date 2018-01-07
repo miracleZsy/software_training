@@ -42,10 +42,12 @@ class Staff extends Component {
         const modifyForm = this.modifyForm;
         modifyForm.validateFields((err, value) => {
             if (err) return;
+            value.authority = this.props.authorityList.indexOf(value.authority) + 1;
             this.props.modifyStaff({ ...value, uuid: this.props.activeStaff.uuid });
             this.setState({
                 modifyVisible: false,
             });
+            modifyForm.resetFields();
         });
     }
     handleCancel = () => {
@@ -54,9 +56,11 @@ class Staff extends Component {
         });
     }
     handleModifyCancel = () => {
+        const modifyForm = this.modifyForm;
         this.setState({
             modifyVisible: false,
         });
+        modifyForm.resetFields();
     }
     handleStaffModalOpen = (staff) => {
         this.props.setActiveStaff(staff);
@@ -127,7 +131,6 @@ class Staff extends Component {
                     ref={(form) => {
                         this.modifyForm = form;
                     }}
-                    staff={activeStaff}
                     visible={this.state.modifyVisible}
                     title="修改员工信息"
                     okText="修改"
@@ -150,6 +153,7 @@ const mapStateToProps = (state) => {
         staffData: state.staffReducer.staffData,
         staffCount: state.staffReducer.staffCount,
         activeStaff: state.staffReducer.activeStaff,
+        authorityList: state.staffReducer.authorityList,
     };
 };
 

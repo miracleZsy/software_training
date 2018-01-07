@@ -30,7 +30,7 @@ export const createStaff = ({ username, password, authority, name }) => (dispatc
         return message.info('修改失败，用户名被占用！');
     } else {
         dispatch(actions.createStaff({
-            id: value,
+            uuid: value,
             username,
             password,
             authority,
@@ -40,10 +40,9 @@ export const createStaff = ({ username, password, authority, name }) => (dispatc
     }
 });
 
-export const modifyStaff = ({ uuid, username, password, authority, name }) => (dispatch) => axiosUtil('post', modifyStaffUrl, {
+export const modifyStaff = ({ uuid, username, authority, name }) => (dispatch) => axiosUtil('post', modifyStaffUrl, {
     uuid,
     username,
-    password, 
     authority,
     name,
 }).then((value) => {
@@ -57,7 +56,6 @@ export const modifyStaff = ({ uuid, username, password, authority, name }) => (d
         dispatch(actions.modifyStaff({
             uuid,
             username,
-            password,
             authority,
             name,
         }));
