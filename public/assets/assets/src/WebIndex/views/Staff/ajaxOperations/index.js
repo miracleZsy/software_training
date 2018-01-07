@@ -23,7 +23,11 @@ export const createStaff = ({ username, password, authority, name }) => (dispatc
     name,
 }).then((value) => {
     if (value === 500) {
-        message.info('创建失败!');
+        return message.info('创建失败！');
+    } else if(value === 403) {
+        return message.info('创建失败，无权限！');
+    } else if(value === 405) {
+        return message.info('修改失败，用户名被占用！');
     } else {
         dispatch(actions.createStaff({
             uuid: value,
@@ -32,28 +36,30 @@ export const createStaff = ({ username, password, authority, name }) => (dispatc
             authority,
             name,
         }));
-        message.info('创建成功！');
+        return message.info('创建成功！');
     }
 });
 
-export const modifyStaff = ({ uuid, username, password, authority, name }) => (dispatch) => axiosUtil('post', modifyStaffUrl, {
+export const modifyStaff = ({ uuid, username, authority, name }) => (dispatch) => axiosUtil('post', modifyStaffUrl, {
     uuid,
     username,
-    password, 
     authority,
     name,
 }).then((value) => {
     if (value === 500) {
-        message.info('修改失败!');
+        return message.info('修改失败!');
+    } else if(value === 403) {
+        return message.info('修改失败，无权限！');
+    } else if(value === 405) {
+        return message.info('修改失败，用户名被占用！');
     } else {
         dispatch(actions.modifyStaff({
             uuid,
             username,
-            password,
             authority,
             name,
         }));
-        message.info('修改成功！');
+        return message.info('修改成功！');
     }
 });
 

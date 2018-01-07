@@ -42,6 +42,7 @@ class Staff extends Component {
         const modifyForm = this.modifyForm;
         modifyForm.validateFields((err, value) => {
             if (err) return;
+            value.authority = this.props.authorityList.indexOf(value.authority) + 1;
             this.props.modifyStaff({ ...value, uuid: this.props.activeStaff.uuid });
             this.setState({
                 modifyVisible: false,
@@ -54,6 +55,8 @@ class Staff extends Component {
         });
     }
     handleModifyCancel = () => {
+        const modifyForm = this.modifyForm;
+        modifyForm.resetFields();
         this.setState({
             modifyVisible: false,
         });
@@ -150,6 +153,7 @@ const mapStateToProps = (state) => {
         staffData: state.staffReducer.staffData,
         staffCount: state.staffReducer.staffCount,
         activeStaff: state.staffReducer.activeStaff,
+        authorityList: state.staffReducer.authorityList,
     };
 };
 

@@ -47,14 +47,14 @@ const ModifyStaff = Form.create()(
                         {
                             getFieldDecorator('authority', {
                                 rules: [{ required: true, message: '请选择权限' }],
-                                initialValue: staff.authority,
+                                initialValue: authorityList[Number(staff.authority) - 1]
                             })(
                                 <Select
                                     placeholder="选择员工权限"
                                     disabled={staff.authority == jwt.decode(cookieUtil.get('token')).authority}
                                 >
-                                    <Option value="2">销售总监</Option>
-                                    <Option value="3">普通销售</Option>
+                                    <Option value="销售总监">销售总监</Option>
+                                    <Option value="普通销售">普通销售</Option>
                                 </Select>
                             )
                         }
