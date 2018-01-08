@@ -6,7 +6,11 @@ use App\traits\Auth;
 use App\User;
 use Closure;
 use Illuminate\Support\Facades\Log;
-
+/**
+ * Class CustomerController
+ * @package App\Http\Controllers
+ * @auther zhouqianyu
+ */
 class Session
 {
     /**

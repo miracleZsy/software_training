@@ -10,7 +10,11 @@ namespace App\Http\Controllers;
 
 
 use App\traits\Auth;
-
+/**
+ * Class CustomerController
+ * @package App\Http\Controllers
+ * @auther zhouqianyu
+ */
 class IndexController extends Controller
 {
     public function index(){

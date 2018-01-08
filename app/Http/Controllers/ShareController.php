@@ -6,7 +6,11 @@ use App\Share;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Webmozart\Assert\Assert;
-
+/**
+ * Class CustomerController
+ * @package App\Http\Controllers
+ * @auther zhouqianyu
+ */
 class ShareController extends Controller
 {
     public function shareList(Request $request)

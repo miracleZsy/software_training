@@ -7,7 +7,11 @@
  */
 
 namespace App;
-
+/**
+ * Class CustomerController
+ * @package App\Http\Controllers
+ * @auther zhouqianyu
+ */
 class WebpackLoader
 {
     private static $assets;
