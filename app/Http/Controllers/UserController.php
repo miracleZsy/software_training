@@ -14,7 +14,11 @@ use Illuminate\Support\Facades\Log;
 use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
 
-
+/**
+ * Class CustomerController
+ * @package App\Http\Controllers
+ * @auther yanqiqi
+ */
 class UserController extends Controller
 {
     public function list(Request $request)
@@ -41,6 +45,10 @@ class UserController extends Controller
 
         }
     }
+    /**
+     * @param Request $request
+     * @author zhouqianyu
+     */
     public function insert(Request $request)
     {
         try {

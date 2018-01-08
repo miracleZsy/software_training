@@ -7,7 +7,11 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
-
+/**
+ * Class CustomerController
+ * @package App\Http\Controllers
+ * @auther zhouqianyu
+ */
 class SalePlan extends Model
 {
     use SoftDeletes;

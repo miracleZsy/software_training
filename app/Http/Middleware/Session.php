@@ -5,7 +5,12 @@ namespace App\Http\Middleware;
 use App\traits\Auth;
 use App\User;
 use Closure;
-
+use Illuminate\Support\Facades\Log;
+/**
+ * Class CustomerController
+ * @package App\Http\Controllers
+ * @auther zhouqianyu
+ */
 class Session
 {
     /**
@@ -17,16 +22,20 @@ class Session
      */
     public function handle($request, Closure $next)
     {
-        if ($token = Auth::create()->verify()) {
-            $user = new User();
-            $user->username = $token->getClaim('username');
-            $user->uuid = $token->getClaim('uuid');
-            $user->company_id = $token->getClaim('companyId');
-            $request->attributes->set('user', $user);
-            return $next($request);
-        } else die(json_encode([
-            'code' => 401,
-            'msg' => 'please login'
-        ]));
+        try {
+            if ($token = Auth::create()->verify()) {
+                $user = new User();
+                $user->username = $token->getClaim('username');
+                $user->uuid = $token->getClaim('uuid');
+                $user->company_id = $token->getClaim('companyId');
+                $request->attributes->set('user', $user);
+                return $next($request);
+            } else die(json_encode([
+                'code' => 401,
+                'msg' => 'please login'
+            ]));
+        }catch (\Exception $e) {
+        Log::error($e);
+        }
     }
 }

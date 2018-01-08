@@ -4,7 +4,11 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-
+/**
+ * Class CustomerController
+ * @package App\Http\Controllers
+ * @auther zhouqianyu
+ */
 class Share extends Model
 {
     protected $table = 'share';

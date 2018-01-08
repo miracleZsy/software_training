@@ -3,7 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+/**
+ * Class CustomerController
+ * @package App\Http\Controllers
+ * @auther zhouqianyu
+ */
 class CustomerPhaseLog extends Model
 {
     protected $table = 'customer_phase_log';

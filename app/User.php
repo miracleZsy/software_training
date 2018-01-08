@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
-
+/**
+ * Class CustomerController
+ * @package App\Http\Controllers
+ * @auther yanqiqi
+ */
 class User extends Model
 {
     use Notifiable;
